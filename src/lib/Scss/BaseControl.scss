@@ -1,0 +1,89 @@
+$primary-color: rgb(26, 102, 243);
+$border-color: #dcdfe6;
+$base-color: #fff;
+
+input[type="text"].dynamic-form-base-control,
+input[type="password"].dynamic-form-base-control, 
+textarea.dynamic-form-base-control, 
+select.dynamic-form-base-control {
+  padding: 1px 11px;
+  background-color: $base-color;
+  background-image: none;
+  border-radius: 5px;
+  border: 1px solid $border-color;
+  font-size: 14px;
+  line-height: 30px;
+  height: 30px;
+  outline: none;
+
+  &::-webkit-input-placeholder {
+    color: #bbbbbb;
+  }
+
+  &:disabled {
+    background-color: rgba(75, 75, 75, 0.514);
+    color: #919191;
+  }
+
+  &:hover, &:active, &:focus {
+    border-color: $primary-color;
+  }
+}
+
+
+textarea.dynamic-form-base-control {
+  height: unset;
+}
+
+.dynamic-form-base-control.base-button {
+  
+}
+.dynamic-form-base-control.base-checkbox {
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  overflow: hidden;
+  background-color: $base-color;
+  background-image: none;
+  border-radius: 5px;
+  border: 1px solid $border-color;
+  color: $primary-color;
+  margin: 0;
+  margin-right: 10px;
+
+  &:after {
+    display: inline-block;
+    width: 22px;
+    line-height: 22px;
+    top: 0px;
+    content: "";
+    color: $primary-color;
+    border: none;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  &:checked:after {
+    content: "✔️";
+    color: $primary-color;
+  }
+}
+
+.dynamic-form-row {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  flex-direction: 'row';
+}
+.dynamic-form-col {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
