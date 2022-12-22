@@ -18,7 +18,7 @@
       </div>
 
       <slot name="deleteButton" :onClick="() => handleRemove(childData)">
-        <button v-if="showDeleteButton" title="删除" class="delete button" @click="handleRemove(childData)">
+        <button v-if="showDeleteButton" title="删除" class="dynamic-form-base-control base-button delete" type="button" @click="handleRemove(childData)">
           ×
         </button>
       </slot>
@@ -26,7 +26,7 @@
 
     <!--添加按钮-->
     <slot name="addButton" :onClick="handleAdd">
-      <button v-if="showAddButton" class="add button" @click="handleAdd">
+      <button v-if="showAddButton" class="add dynamic-form-base-control base-button" type="button" @click="handleAdd">
         + 添加
       </button>
     </slot>
@@ -108,11 +108,11 @@ export default defineComponent({
     flex-direction: column;
     flex: 1;
   }
-  .button {
+  .base-button {
     cursor: pointer;
 
-
     &.add {
+      color: #fff;
       background-color: #409eff;
 
       &:hover {
@@ -120,6 +120,7 @@ export default defineComponent({
       }
     }
     &.delete {
+      color: #fff;
       background-color: #f56c6c;
 
       &:hover {

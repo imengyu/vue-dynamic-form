@@ -166,6 +166,9 @@ export default defineComponent({
         formItems.value.delete(item.getFieldName());
       },
       getItemValue: (item: FormItemInternalContext) => model.value[item.getFieldName()],
+      getItemRequieed: (item: FormItemInternalContext) => {
+        return checkRuleRequired(item.getFieldName());
+      },
       validateTrigger,
       hideRequiredMark,
       colon,
@@ -175,6 +178,14 @@ export default defineComponent({
       wrapperCol,
       showLabel,
     } as FormContext;
+
+    function checkRuleRequired(name: string) {
+      const rule = rules.value[name];
+      if (rule instanceof Array)
+        return rule.find((r) => r.required === true) !== undefined;
+      else if (rule)
+        return rule.required === true;
+    }
 
     onMounted(() => {
       //Save intital model

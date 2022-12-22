@@ -32,6 +32,7 @@ export type FormContext = {
   showLabel: Ref<boolean>;
   name: Ref<string>;
   getItemValue: (item: FormItemInternalContext) => unknown;
+  getItemRequieed: (item: FormItemInternalContext) => boolean;
 };
 
 export const FormItemContextContextKey: InjectionKey<FormItemContext> = Symbol('ContextProps');

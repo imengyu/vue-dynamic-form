@@ -4,9 +4,9 @@
     :rows="rows"
     :cols="cols"
     :maxlength="maxlength"
-    :modelValue="value"
+    :value="value"
     @blur="onBlur"
-    @update:modelValue="onValueUpdate"
+    @change="(e: Event) => onValueUpdate((e.target as HTMLInputElement).value)"
   ></textarea>
 </template>
 

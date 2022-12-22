@@ -6,6 +6,7 @@
       :modelValue="value"
       :id="name"
       @update:modelValue="onValueUpdate"
+      @change="(e: Event) => onValueUpdate((e.target as HTMLInputElement).checked)"
       @blur="onBlur"
     />
     <label :for="name">{{text}}</label>
@@ -34,7 +35,7 @@ const formContext = useInjectFormItemContext();
 function onBlur() {
   formContext.onFieldBlur();
 }
-function onValueUpdate(v: string) {
+function onValueUpdate(v: boolean) {
   emit('update:value', v);
   formContext.onFieldChange(v);
 }

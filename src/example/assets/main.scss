@@ -3,6 +3,8 @@ body {
 }
 .side {
   width: 300px;
+  display: flex;
+  flex-direction: column;
 
   h1 {
 
@@ -58,8 +60,7 @@ main {
   }
 }
 .demo-result {
-  width: 100%;
-  min-height: 400px;
+  min-height: 100px;
   padding: 10px;
   background-color: #efefef;
 }

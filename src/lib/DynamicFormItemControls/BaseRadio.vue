@@ -47,16 +47,3 @@ function onValueUpdate(v: string) {
   formContext.onFieldChange(v);
 }
 </script>
-
-
-<style lang="scss">
-.dynamic-form-base-control.radio {
-  display: flex;
-  flex-direction: row;
-
-  .item {
-    display: flex;
-    flex-direction: row;
-  }
-}
-</style>

@@ -72,6 +72,8 @@
           :model="model"
           :item="item"
           :rawModel="rawModel"
+          :addCallback="item.newChildrenObject"
+          :deleteCallback="item.deleteChildrenCallback"
           v-bind="(item.additionalProps as Record<string, unknown>)"
         >
           <template #addButton="props">

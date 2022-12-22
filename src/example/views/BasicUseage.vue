@@ -1,12 +1,13 @@
 <template>
   <div>
     <div class="demo-row">
-      <div class="demo-row" style="width:50%;">
+      <div class="demo-col" style="width:50%;">
         <DynamicForm
           :options="formOptions"
           :model="formModel"
           @submit="onSubmit"
         />
+        <textarea v-model="resultJson" class="demo-result" readonly></textarea>
       </div>
       <div class="demo-col" style="width:50%;">
         <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '你可以动态修改JSON，看看表单会发生什么变化' }}</div>
@@ -20,9 +21,6 @@
           :extensions="editorExtensions"
         />
       </div>
-    </div>
-    <div class="demo-row">
-      <textarea v-model="resultJson" class="demo-result"></textarea>
     </div>
   </div>
 </template>

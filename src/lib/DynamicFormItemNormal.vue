@@ -109,6 +109,7 @@ export default defineComponent({
           ...item.value.formProps,
           label: item.value.label,
           name: item.value.name,
+          'data-dynamic-form-name': name.value,
         }, {
           default: renderChildrenSlot,
         })

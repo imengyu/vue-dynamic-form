@@ -209,7 +209,10 @@ export default defineComponent({
                     ...labelStyle.value,
                   }}
                 >
-                  { (showRequiredBadge.value && required.value && formContextProps?.hideRequiredMark.value !== true) ? <span class="required">*</span> : '' }
+                  {
+                    (showRequiredBadge.value && (required.value || formContextProps.getItemRequieed(formItemInternalContext)) 
+                      && formContextProps?.hideRequiredMark.value !== true) ? <span class="required">*</span> : ''
+                  }
                   { label.value }
                   { colon.value || formContextProps?.colon.value ? <span class="colon">:</span> : '' }
                 </label>

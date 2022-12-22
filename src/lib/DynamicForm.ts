@@ -50,9 +50,13 @@ export interface IDynamicFormItem {
    */
   children?: IDynamicFormItem[];
   /**
-   * 当子对象为数组时，需要这个，用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。
+   * 当子对象为数组时，可设置这个自定义回调。用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。
    */
-  newChildrenObject?: () => unknown;
+  newChildrenObject?: (arrayNow: unknown[]) => unknown;
+  /**
+   * 当子对象为数组时，可设置这个自定义回调。删除按钮回调，可选，不提供时默认操作为将 item 从 array 中移除。
+   */
+  deleteChildrenCallback?: (arrayNow: unknown[], deleteObject: unknown) => unknown;
   /**
    * 子条目的 Col 配置属性(应用到当前条目的所有子条目上)。仅在 object 或者其他容器条目中有效。
    */

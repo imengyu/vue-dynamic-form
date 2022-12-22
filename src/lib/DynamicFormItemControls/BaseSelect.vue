@@ -1,10 +1,10 @@
 <template>
   <select
     class="dynamic-form-base-control" 
-    :modelValue="value"
     @blur="onBlur"
-    @update:modelValue="onValueUpdate">
-    <option v-for="(it, k) in options" :key="k" :value="it.value" :selected="it.value === value">{{ it.text }}</option>
+    @change="(e: Event) => onValueUpdate(options[parseInt((e.target as HTMLSelectElement).value)].value)"
+  >
+    <option v-for="(it, k) in options" :key="k" :value="k" :selected="it.value === value">{{ it.text }}</option>
   </select>
 </template>
 
@@ -28,7 +28,7 @@ const formContext = useInjectFormItemContext();
 function onBlur() {
   formContext.onFieldBlur();
 }
-function onValueUpdate(v: string) {
+function onValueUpdate(v: unknown) {
   emit('update:value', v);
   formContext.onFieldChange(v);
 }

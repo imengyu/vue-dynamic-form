@@ -2,10 +2,10 @@
   <input
     class="dynamic-form-base-control"
     type="text" 
-    :modelValue="value"
-    :placeholder="placeholder"
+    :value="value"
     @blur="onBlur"
     @update:modelValue="(e: string) => onValueUpdate(e)"
+    @change="(e: Event) => onValueUpdate((e.target as HTMLInputElement).value)"
   />
 </template>
 

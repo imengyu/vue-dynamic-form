@@ -1,4 +1,4 @@
-$primary-color: rgb(26, 102, 243);
+$primary-color: #1a91f3;
 $border-color: #dcdfe6;
 $base-color: #fff;
 
@@ -30,13 +30,85 @@ select.dynamic-form-base-control {
   }
 }
 
+.dynamic-form-base-control.radio {
+  display: flex;
+  flex-direction: row;
+
+  .item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  input {
+    position: relative;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 22px;
+    background-color: $base-color;
+    border: 1px solid $border-color;
+    margin: 0;
+    margin-right: 5px;
+    
+    &:after {
+      position: absolute;
+      display: inline-block;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      content: "";
+      border: none;
+      text-align: center;
+      border-radius: 14px;
+    }
+
+    &:checked {
+      &:after {
+        background-color: $primary-color;
+      }
+    }
+
+  }
+}
 
 textarea.dynamic-form-base-control {
   height: unset;
 }
 
 .dynamic-form-base-control.base-button {
-  
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+  user-select: none;
+  width: auto;
+  white-space: nowrap;
+  transition: background-color .1s,transform .1s,color .35s cubic-bezier(.65,0,.25,1);
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 60px;
+  height: 30px;
+  padding: 0 14px;
+  font-size: 14px;
+
+  background: #f0f0f0;
+  color: #333;
+
+  &:hover {
+    background-color: #ebebeb;
+  }
+  &:active {
+    background-color: #d8d8d8;
+    transform: scale(0.9);
+  }
 }
 .dynamic-form-base-control.base-checkbox {
   vertical-align: middle;
