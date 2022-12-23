@@ -4,6 +4,7 @@
 import { defineComponent, h, inject, markRaw, onMounted, PropType, ref, toRefs, watch } from "vue";
 import { IDynamicFormItem } from "../DynamicForm";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
+import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
 import BaseInputVue from "../DynamicFormItemControls/BaseInput.vue";
 import BaseRadio from "../DynamicFormItemControls/BaseRadio.vue";
 import BaseSelectVue from "../DynamicFormItemControls/BaseSelect.vue";
@@ -55,6 +56,7 @@ export default defineComponent({
         DynamicFormItemRegistry.registerDynamicFormItemControl('base-textarea', markRaw(BaseTextAreaVue));
         DynamicFormItemRegistry.registerDynamicFormItemControl('base-check', markRaw(BaseCheckVue));
         DynamicFormItemRegistry.registerDynamicFormItemControl('base-radio', markRaw(BaseRadio));
+        DynamicFormItemRegistry.registerDynamicFormItemControl('base-divider', markRaw(BaseDivider));
       }
     }
     function findComponent() {
@@ -124,7 +126,7 @@ export default defineComponent({
       
     } else {
       return h('span', {
-        style: { color: '#f00' },
+        class: 'dynamic-form-error-alert'
       }, `警告：未找到表单组件实例 ${(this.item as IDynamicFormItem)?.type || '未知'} ${JSON.stringify(this.widgetOvrride)}`);
     }
   },

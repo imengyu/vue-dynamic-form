@@ -2,10 +2,7 @@ import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
 
-export interface DynamicFormModel { 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [index: string]: any;
-}
+export type IDynamicFormObject = Record<string, unknown>;
 
 export interface IDynamicFormItem {
   /**
@@ -15,7 +12,7 @@ export interface IDynamicFormItem {
   /**
    * 显示当前条目的附加条件
    */
-  showCondition?: (model: DynamicFormModel, item: IDynamicFormItem, formRules?: Record<string, Rule>) => boolean;
+  showCondition?: (model: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => boolean;
   /**
    * 附加组件属性
    */
@@ -40,7 +37,7 @@ export interface IDynamicFormItem {
   /**
    * 当前表单说明文字
    */
-  label: string;
+  label?: string;
   /**
    * 当前表单是否必填
    */

@@ -214,7 +214,7 @@ export default defineComponent({
                       && formContextProps?.hideRequiredMark.value !== true) ? <span class="required">*</span> : ''
                   }
                   { label.value }
-                  { colon.value || formContextProps?.colon.value ? <span class="colon">:</span> : '' }
+                  { colon.value || (colon.value !== false && formContextProps?.colon.value === true) ? <span class="colon">:</span> : '' }
                 </label>
               </Col> : ''
           }

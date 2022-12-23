@@ -31,7 +31,6 @@ function onBlur() {
   formContext.onFieldBlur();
 }
 function onValueUpdate(v: string) {
-  console.log('onValueUpdate', v);
   emit('update:value', v);
   
   formContext.onFieldChange(v);

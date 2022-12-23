@@ -1,64 +1,126 @@
 
 <template>
-  <div v-if="model && (!item.showCondition || item.showCondition(model, item, formRules))">
+  <div class="dynamic-form-item-wrapper" v-if="(!item.showCondition || item.showCondition(model, item, formRules))">
     <!--对象组-->
     <template v-if="item.type === 'object'">
-      <!--循环子条目-->
-      <DynamicFormItem 
-        v-for="(child, k) in item.children"
-        :key="k"
-        :item="child"
-        :name="item.name+'.'+child.name"
-        :rawModel="rawModel"
-        :model="((model[item.name] as Record<string, unknown>)[child.name] as Record<string, unknown>)"
-        :disabled="disabled"
-      />
+      <div v-if="model === undefined">
+        <span class="dynamic-form-error-alert"> [object] 警告：输入字段 {{ name }} 是 undefined</span>
+      </div>
+      <template v-else>
+        <!--标题-->
+        <DynamicFormItemNormal 
+          :item="item"
+          :name="''"
+          :rawModel="rawModel"
+          :model="null"
+          :noLable="true"
+          :disabled="disabled"
+        >
+          <template #insertion>
+            <span class="dynamic-form-object-title">{{ item.label }}</span>
+          </template>
+        </DynamicFormItemNormal>
+        <!--循环子条目-->
+        <DynamicFormItem 
+          v-for="(child, k) in item.children"
+          :key="k"
+          :item="child"
+          :name="name+'.'+child.name"
+          :rawModel="rawModel"
+          :model="(model as IDynamicFormObject)[child.name]"
+          @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+          :disabled="disabled"
+        />
+      </template>
     </template>
     <!--对象组-->
     <FormGroup v-else-if="item.type === 'group-object'" :title="item.label" v-bind="item.additionalProps">
-      <Col
-        v-for="(child, k) in item.children" 
-        v-bind="{ ...item.childrenColProps, ...child.colProps }"
-        :key="k"
-      >
-        <!--循环子条目-->
-        <DynamicFormItem 
-          :item="child"
-          :name="item.name+'.'+child.name"
-          :rawModel="rawModel"
-          :model="((model[item.name] as Record<string, unknown>)[child.name] as Record<string, unknown>)"
-          :disabled="disabled"
-        />
-      </Col>
+      <div v-if="model === undefined">
+        <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
+      </div>
+      <template v-else>
+        <Col
+          v-for="(child, k) in item.children" 
+          v-bind="{ ...item.childrenColProps, ...child.colProps }"
+          :key="k"
+        >
+          <!--循环子条目-->
+          <DynamicFormItem 
+            :item="child"
+            :name="name+'.'+child.name"
+            :rawModel="rawModel"
+            :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
+            @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+            :disabled="disabled"
+          />
+        </Col>
+      </template>
     </FormGroup>
     <!--扁平组-->
     <FormGroup v-else-if="item.type === 'group-flat'" :title="item.label" v-bind="item.additionalProps">
-      <Col
-        v-for="(child, k) in item.children" 
-        v-bind="{ ...item.childrenColProps, ...child.colProps }"
-        :key="k"
-      >
-        <!--循环子条目-->
-        <DynamicFormItem 
-          :item="child"
-          :model="model"
-          :name="item.name+'.'+child.name"
-          :rawModel="rawModel"
-          :disabled="disabled"
+      <div v-if="model === undefined">
+        <span class="dynamic-form-error-alert"> [group-flat] 警告：输入字段 {{ name }} 是 undefined</span>
+      </div>
+      <template v-else>
+        <Col
+          v-for="(child, k) in item.children" 
+          v-bind="{ ...item.childrenColProps, ...child.colProps }"
+          :key="k"
         >
-          <template #formCeil="{item,model,rawModel,rule,disabled}">
-            <slot 
-              name="formCeil"
+          <!--循环子条目-->
+          <DynamicFormItem 
+            :item="child"
+            :name="name+'.'+child.name"
+            :rawModel="rawModel"
+            :model="((model as IDynamicFormObject)[child.name])"
+            @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+            :disabled="disabled"
+          >
+            <template #formCeil="values">
+              <slot name="formCeil" v-bind="values" />
+            </template>
+          </DynamicFormItem>
+        </Col>
+      </template>
+    </FormGroup>
+    <!--数组变量组-->
+    <DynamicFormItemNormal v-else-if="item.type === 'array-single'" 
+      :item="item"
+      :name="name"
+      :disabled="disabled"
+      :model="(model as IDynamicFormObject)"
+      :rawModel="rawModel"
+    >
+      <template #insertion>
+        <FormArrayGroup
+          :model="(model as unknown as unknown[])"
+          :item="item"
+          :name="name"
+          :rawModel="rawModel"
+          :isObject="false"
+          :addCallback="item.newChildrenObject"
+          :deleteCallback="item.deleteChildrenCallback"
+          v-bind="(item.additionalProps as IDynamicFormObject)"
+        >
+          <template #addButton="props">
+            <slot name="arrayButtonAdd" v-bind="props" />
+          </template>
+          <template #itemButton="props">
+            <slot name="arrayButtons" v-bind="props" />
+          </template>
+          <template #child="{ item, kname, model, onUpdateValue }">
+            <DynamicFormItem
               :item="item"
-              :model="model"
+              :name="kname"
               :rawModel="rawModel"
-              :rule="rule"
+              :model="model"
               :disabled="disabled"
+              @update:value="(v: unknown) => onUpdateValue(v)"
             />
           </template>
-        </DynamicFormItem>
-      </Col>
-    </FormGroup>
+        </FormArrayGroup>
+      </template>
+    </DynamicFormItemNormal>
     <!--数组对象组-->
     <DynamicFormItemNormal v-else-if="item.type === 'array-object'" 
       :item="item"
@@ -69,26 +131,29 @@
     >
       <template #insertion>
         <FormArrayGroup
-          :model="model"
+          :model="(model as unknown as unknown[])"
           :item="item"
+          :name="name"
           :rawModel="rawModel"
+          :isObject="true"
           :addCallback="item.newChildrenObject"
           :deleteCallback="item.deleteChildrenCallback"
-          v-bind="(item.additionalProps as Record<string, unknown>)"
+          v-bind="(item.additionalProps as IDynamicFormObject)"
         >
           <template #addButton="props">
             <slot name="arrayButtonAdd" v-bind="props" />
           </template>
-          <template #deleteButton="props">
-            <slot name="arrayButtonDelete" v-bind="props" />
+          <template #itemButton="props">
+            <slot name="arrayButtons" v-bind="props" />
           </template>
-          <template #child="{ item, kname, model }">
+          <template #child="{ item, kname, model, onUpdateValue }">
             <DynamicFormItem
               :item="item"
               :name="kname"
               :rawModel="rawModel"
               :model="model"
               :disabled="disabled"
+              @update:value="(v: unknown) => onUpdateValue(v)"
             />
           </template>
         </FormArrayGroup>
@@ -100,15 +165,16 @@
       :item="item"
       :name="name"
       :disabled="disabled"
-      :model="model"
       :rawModel="rawModel"
+      :model="model"
+      @update:model="(v: unknown) => $emit('update:model', v)"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, inject, PropType } from 'vue';
-import { IDynamicFormItem } from './DynamicForm';
+import { IDynamicFormItem, IDynamicFormObject } from './DynamicForm';
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
@@ -126,18 +192,22 @@ export default defineComponent({
       required: true,
     },
     name: {
-      type: String
+      type: String,
+      required: true,
     },
     disabled: {
-      type: Boolean
+      type: Boolean,
+      defalut: false,
     },
     model: {
-      type: Object as PropType<Record<string, unknown>>,
+      required: true,
     },
     rawModel: {
-      type: Object as PropType<Record<string, unknown>>,
+      type: Object as PropType<IDynamicFormObject>,
+      required: true,
     },
   },
+  emits: [ 'update:model' ],
   setup() {
     const formRules = inject<Record<string, Rule>>('formRules'); 
 

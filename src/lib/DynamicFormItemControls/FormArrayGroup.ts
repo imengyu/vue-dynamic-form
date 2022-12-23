@@ -12,6 +12,10 @@ export interface FormArrayGroupProps {
    */
   showDeleteButton?: boolean,
   /**
+   * 是否显示上移下移按钮，默认是
+   */
+  showUpDownButton?: boolean,
+  /**
    * 删除按钮回调，可选，不提供时默认操作为将 item 从 array 中移除。
    */
   deleteCallback?: (array: unknown[], item: unknown) => void,

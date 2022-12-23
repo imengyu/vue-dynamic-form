@@ -22,18 +22,21 @@ export default defineComponent({
       type: Boolean
     },
     model: {
-      type: Object as PropType<Record<string, unknown>>,
     },
     rawModel: {
       type: Object as PropType<Record<string, unknown>>,
     },
+    noLable: {
+      type: Boolean,
+      default: false
+    },
   },
+  emits: [ 'update:model' ],
   setup(props, ctx) {
-    const { model, rawModel, name, item, disabled } = toRefs(props);
+    const { model, rawModel, name, item, disabled, noLable } = toRefs(props);
 
-    function onModelUpdate(key: string, newVal: unknown) {
-      // eslint-disable-next-line vue/no-mutating-props
-      (model.value as Record<string, unknown>)[key] = newVal;
+    function onModelUpdate(newVal: unknown) {
+      ctx.emit('update:model', newVal);
     }
 
     const formRules = inject<Record<string, Rule>>('formRules'); 
@@ -55,7 +58,8 @@ export default defineComponent({
       else if (item.value.type === 'custom') {
         return renderSlot(ctx.slots, 'formCeil', {
           item: item.value,
-          model: model.value?.[item.value.name] || model.value,
+          model: model.value,
+          onUpdateValue: (v: unknown) => onModelUpdate(v),
           rawModel: rawModel.value,
           rule: formRules ? formRules[item.value.name] : undefined,
           disabled: disabled.value,
@@ -64,7 +68,7 @@ export default defineComponent({
       //静态文字
       else if (item.value.type === 'static-text') {
         return h('span', { ...item.value.additionalProps as {}}, [
-          (model.value?.[item.value.name] || (item.value.additionalProps as Record<string, unknown>)?.text) as string
+          (model.value || (item.value.additionalProps as Record<string, unknown>)?.text) as string
         ]);
       }
       //提交按钮
@@ -77,11 +81,12 @@ export default defineComponent({
       }
       //库组件
       else {
+
         return h(DynamicFormItemRenderer, {
           ref: currentFormItem,
-          value: model.value?.[item.value.name],
+          value: model.value,
           rawModel: rawModel.value,
-          'onUpdate:value': (v: unknown) => onModelUpdate(item.value.name, v),
+          'onUpdate:value': (v: unknown) => onModelUpdate(v),
           item: item.value,
           disabled: disabled.value,
           additionalProps: (item.value.additionalProps as Record<string, unknown>),
@@ -96,8 +101,9 @@ export default defineComponent({
       if (internalWidgetsFormItem) {
         return h(internalWidgetsFormItem, {
           ...item.value.formProps,
-          [internalWidgetsFormItem.propsMap.label || 'label']: item.value.label,
-          [internalWidgetsFormItem.propsMap.name || 'name']: item.value.name,
+          colon: noLable.value !== true,
+          [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : item.value.label,
+          [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
         }, {
           default: renderChildrenSlot,
         })
@@ -106,10 +112,10 @@ export default defineComponent({
       //默认Form
       return (
         h(FormItem, {
+          colon: noLable.value !== true,
           ...item.value.formProps,
-          label: item.value.label,
-          name: item.value.name,
-          'data-dynamic-form-name': name.value,
+          label: noLable.value ? '' : item.value.label,
+          name: name.value,
         }, {
           default: renderChildrenSlot,
         })

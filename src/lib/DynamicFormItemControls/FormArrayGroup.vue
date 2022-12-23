@@ -1,28 +1,60 @@
 <template>
   <div class="dynamic-form-array-group">
-    <!--循环数据条目-->
-    <div 
-      v-for="(childData, key) in model[item.name]" :key="key"
-      class="item-container"
-    >
-      <div class="form-container">
-        <!--循环子条目-->
-        <slot 
-          name="child" 
-          v-for="(child, k) in item.children"
-          :key="k"
-          :item="child"
-          :kname="item.name+'.'+key+'.'+child.name"
-          :model="(childData as Record<string, unknown>)"
-        />
-      </div>
-
-      <slot name="deleteButton" :onClick="() => handleRemove(childData)">
-        <button v-if="showDeleteButton" title="删除" class="dynamic-form-base-control base-button delete" type="button" @click="handleRemove(childData)">
-          ×
-        </button>
-      </slot>
+    <div v-if="model === undefined">
+      <span class="dynamic-form-error-alert"> [array] 警告：输入字段 {{ name }} 是 undefined</span>
     </div>
+    <!--循环数据条目-->
+    <!--对象类型-->
+    <template v-else-if="isObject">
+      <div v-for="(childData, key) in model"
+        :key="key" 
+        class="item-container"
+      >
+        <FormArrayGroupItem 
+          :item="item"
+          :name="name"
+          :childData="childData"
+          :keyName="`[${key}]`"
+          :isObject="true"
+          :showAddButton="showAddButton"
+          :showDeleteButton="showDeleteButton"
+          :showUpDownButton="showUpDownButton"
+          @delete="handleRemove"
+          @down="handleDown"
+          @up="handleUp"
+        >
+          <template #child="values">
+            <slot name="child" v-bind="values" />
+          </template>
+        </FormArrayGroupItem>
+      </div>
+    </template>
+    <!--普通变量类型-->
+    <template v-else>
+      <div v-for="(childData, key) in model"
+        :key="key" 
+        class="item-container single"
+      >
+        <FormArrayGroupItem 
+          :item="item"
+          :name="name"
+          :isObject="false"
+          :childData="childData"
+          :keyName="`[${key}]`"
+          :showAddButton="showAddButton"
+          :showDeleteButton="showDeleteButton"
+          :showUpDownButton="showUpDownButton"
+          @update:childData="(v) => (model as unknown as IDynamicFormObject)[key] = v"
+          @delete="handleRemove"
+          @down="handleDown"
+          @up="handleUp"
+        >
+          <template #child="values">
+            <slot name="child" v-bind="values" />
+          </template>
+        </FormArrayGroupItem>
+      </div>
+    </template>
 
     <!--添加按钮-->
     <slot name="addButton" :onClick="handleAdd">
@@ -36,22 +68,38 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { IDynamicFormItem } from "../DynamicForm";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { IDynamicFormObject } from "../DynamicForm";
+import ArrayUtils from "../DynamicFormBasicControls/Utils/ArrayUtils";
+import FormArrayGroupItem from "./FormArrayGroupItem.vue";
 
 export default defineComponent({
   props: {
     model: {
-      type: Object as PropType<Record<string, unknown>>,
+      type: Object as PropType<Array<unknown>>,
       required: true,
     },
     item: {
       type: Object as PropType<IDynamicFormItem>,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    isObject: {
+      type: Boolean,
+      default: true,
+    },
     showAddButton: {
       type: Boolean,
       default: true,
     },
     showDeleteButton: {
+      type: Boolean,
+      default: true,
+    },
+    showUpDownButton: {
       type: Boolean,
       default: true,
     },
@@ -66,22 +114,37 @@ export default defineComponent({
   },
   methods: {
     handleAdd() {
-      if (typeof this.addCallback === 'function') {
-        const ret = this.addCallback(this.model[this.item.name]);
-        if (typeof ret !== 'undefined')
-          (this.model[this.item.name] as unknown[]).push(ret);
+      if (typeof this.addCallback === "function") {
+        const arr = this.model;
+        const ret = this.addCallback(this.model);
+        if (typeof ret !== "undefined")
+          arr.push(ret);
       }
     },
     handleRemove(data: unknown) {
-      const arr = this.model[this.item.name] as unknown[];
-      if (typeof this.deleteCallback === 'function')
+      const arr = this.model;
+      if (typeof this.deleteCallback === "function")
         this.deleteCallback(arr, data);
       else {
         const index = arr.indexOf(data);
-        if (index >= 0) arr.splice(index, 1);
+        if (index >= 0)
+          arr.splice(index, 1);
       }
     },
+    handleUp(data: unknown) {
+      const arr = this.model;
+      const index = arr.indexOf(data);
+      if (index > 0)
+        ArrayUtils.upData(arr, index);
+    },
+    handleDown(data: unknown) {
+      const arr = this.model as unknown[];
+      const index = arr.indexOf(data);
+      if (index < arr.length - 1)
+        ArrayUtils.downData(arr, index);
+    },
   },
+  components: { FormArrayGroupItem }
 });
 </script>
 
@@ -101,15 +164,22 @@ export default defineComponent({
     padding-bottom: 0;
     border-radius: 10px;
     margin-bottom: 10px;
-    width: 100%;
+    flex: 1;
   }
+
   .form-container {
     display: flex;
     flex-direction: column;
     flex: 1;
   }
+
   .base-button {
     cursor: pointer;
+    min-width: 20px !important;
+
+    &.margin {
+      margin-left: 6px;
+    }
 
     &.add {
       color: #fff;
@@ -119,6 +189,7 @@ export default defineComponent({
         background-color: #79bbff;
       }
     }
+
     &.delete {
       color: #fff;
       background-color: #f56c6c;
