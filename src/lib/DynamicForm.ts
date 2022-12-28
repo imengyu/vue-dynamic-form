@@ -70,12 +70,12 @@ export interface IDynamicFormRef {
    * 获取表单组件的 Ref
    * @returns 
    */
-  getFormRef?: <T>() => T;
+  getFormRef: <T>() => T;
   /**
    * 获取表单组件的 Ref
    * @returns 
    */
-  getFormItemControlRef?: <T>(key: string) => T;
+  getFormItemControlRef: <T>(key: string) => T;
 }
 
 export interface IDynamicFormInternalWidgets {

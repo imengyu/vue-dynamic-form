@@ -60,7 +60,7 @@ export default defineComponent({
 
     return () => {
 
-      const children = h(DynamicFormInner as any, { options: options.value, model: model.value }, ctx.slots);
+      const renderChildren = () => h(DynamicFormInner as any, { options: options.value, model: model.value }, ctx.slots);
       const internalWidgetsForm = options.value.internalWidgets?.Form;
       const {
         formRules = {},
@@ -71,8 +71,9 @@ export default defineComponent({
 
       //自定义渲染Form
       if (internalWidgetsForm) {
-        return h(internalWidgetsForm, {
+        return h(internalWidgetsForm.component as any, {
           ...props,
+          ref: formEditor,
           [internalWidgetsForm.propsMap.rules || 'rules']: formRules,
           [internalWidgetsForm.propsMap.model || 'model']: model.value,
           [internalWidgetsForm.propsMap.labelWidth || 'labelWidth']: formLabelWidth,
@@ -81,14 +82,16 @@ export default defineComponent({
           [internalWidgetsForm.propsMap.onFinish || 'onFinish']: (d: unknown) => ctx.emit('finish', d),
           [internalWidgetsForm.propsMap.onFinishFailed || 'onFinishFailed']: (d: unknown) => ctx.emit('finishFailed', d),
           [internalWidgetsForm.propsMap.onSubmit || 'onSubmit']: (d: unknown) => ctx.emit('submit', d),
-        }, [ children ])
+        }, {
+          default: renderChildren,
+        })
       }
 
       //默认Form
       return (
         h(DynamicFormDefaultForm, {
-          ref: formEditor,
           ...props,
+          ref: formEditor,
           rules: formRules,
           model: model.value,
           labelCol: formLabelCol,
@@ -98,7 +101,7 @@ export default defineComponent({
           onFinishFailed: (d) => ctx.emit('finishFailed', d),
           onSubmit: (d) => ctx.emit('submit', d),
         }, {
-          default: () => children,
+          default: renderChildren,
         })
       )
     };

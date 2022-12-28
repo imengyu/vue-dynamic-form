@@ -4,12 +4,11 @@
   "main": "dist/vue-dynamic-form.umd.js",
   "types": "types/main.d.ts",
   "name": "@imengyu/vue-dynamic-form",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A data driven form component for vue3",
   "files": [
     "dist",
-    "types",
-    "src"
+    "types"
   ],
   "keywords": [
     "vue",
@@ -24,7 +23,7 @@
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
     "build-only": "vite build",
-    "build-types": "tsc && node scripts/after-build-types.js",
+    "build-types": "vue-tsc --declaration --emitDeclarationOnly ",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
