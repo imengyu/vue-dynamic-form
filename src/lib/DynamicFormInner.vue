@@ -22,6 +22,7 @@
         :name="item.name"
         :rawModel="model"
         :model="model[item.name]"
+        :parentModel="model"
         @update:value="(v: unknown) => model[item.name] = v"
         :disabled="options.disabled"
       >
