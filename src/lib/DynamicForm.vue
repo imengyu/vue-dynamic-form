@@ -67,6 +67,8 @@ export default defineComponent({
         formLabelWidth = '150px',
         formLabelCol = {},
         formWrapperCol = {},
+        formAdditionaProps = {},
+        formAdditionalEvents = {},
       } = options.value;
 
       //自定义渲染Form
@@ -82,6 +84,8 @@ export default defineComponent({
           [internalWidgetsForm.propsMap.onFinish || 'onFinish']: (d: unknown) => ctx.emit('finish', d),
           [internalWidgetsForm.propsMap.onFinishFailed || 'onFinishFailed']: (d: unknown) => ctx.emit('finishFailed', d),
           [internalWidgetsForm.propsMap.onSubmit || 'onSubmit']: (d: unknown) => ctx.emit('submit', d),
+          ...formAdditionaProps,
+          ...formAdditionalEvents,
         }, {
           default: renderChildren,
         })
@@ -97,9 +101,11 @@ export default defineComponent({
           labelCol: formLabelCol,
           labelWidth: formLabelWidth,
           wrapperCol: formWrapperCol,
+          ...formAdditionaProps,
           onFinish: (d) => ctx.emit('finish', d),
           onFinishFailed: (d) => ctx.emit('finishFailed', d),
           onSubmit: (d) => ctx.emit('submit', d),
+          ...formAdditionalEvents,
         }, {
           default: renderChildren,
         })

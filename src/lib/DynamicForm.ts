@@ -135,6 +135,16 @@ export interface IDynamicFormOptions {
    */
   formWrapperCol?: { span: number, offset?: number },
   /**
+   * 表单组件附加属性
+   */
+  formAdditionaProps?: Record<string, unknown>;
+  /**
+   * 表单组件附加事件绑定
+   */
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  formAdditionalEvents?: Record<string, Function>;
+
+  /**
    * 自定义重写表单控件。你可以重写内置控件，在这个表单中会以此重写列表为先查找表单组件。
    */
   widgets?: Record<string, DynamicFormItemRegistryItem>,
