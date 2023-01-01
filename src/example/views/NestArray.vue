@@ -11,8 +11,8 @@
       <div class="demo-col" style="width:50%;">
         <div class="demo-alert">这里是表单的 model 数据结果，你可以修改数据，将其应用到表单上，或者从表单 model 获取数据显示。看看数据的结构是如何自动处理的</div>
         <div class="demo-row">
-          <button @click="onApplyClick">应用JSON至表单 model 上</button>
-          <button @click="onSubmit">从表单 model 获取数据显示</button>
+          <button @click="onApplyClick">&lt;&lt; 应用JSON至表单 model 上</button>
+          <button @click="onSubmit">&gt;&gt; 从表单 model 获取数据显示</button>
         </div>
         <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '格式没问题' }}</div>
         <codemirror
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { BaseCheckProps, BaseSelectProps, DynamicForm, IDynamicFormOptions } from '@/lib/main';
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
@@ -54,14 +54,23 @@ const formModel = ref({
       enabled: false,
     },
   },
-  arrayProp: [],
-  arrayObjectProp: [],
+  arrayProp: [
+    '我是简单数组数据'
+  ],
+  arrayObjectProp: [
+    {
+      name: '我是对象数组数据',
+      value: '100',
+      enabled: true,
+    }
+  ],
   numberProp: 2,
   numberProp2: 3,
   booleanProp: false,
 });
 const formOptions : IDynamicFormOptions = {
-  formLabelWidth: '200px',
+  formLabelCol: { span: 6 },
+  formWrapperCol: { span: 18 },
   formItems: [
     { 
       type: 'object', label: '单个对象条目', name: 'singleObjectProp', 
@@ -102,7 +111,7 @@ const formOptions : IDynamicFormOptions = {
           },
           children: [
             { 
-              type: 'base-select', label: '商品信息-商品', name: 'product', 
+              type: 'base-select', label: '商品信息-商品', name: 'product_id', 
               additionalProps: {
                 options: [
                   { text: '全部', value: 0 },
@@ -170,6 +179,10 @@ const formOptions : IDynamicFormOptions = {
     ],
   },
 };
+
+onMounted(() => {
+  onSubmit();
+});
 
 function onSubmit() {
   editorJson.value = JSON.stringify(formModel.value, undefined, 2);

@@ -76,7 +76,7 @@
             :rawModel="rawModel"
             :model="((parentModel as IDynamicFormObject)[child.name])"
             :parentModel="parentModel"
-            @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+            @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
             :disabled="disabled"
           >
             <template #formCeil="values">
@@ -111,7 +111,7 @@
               :rawModel="rawModel"
               :model="((parentModel as IDynamicFormObject)[child.name])"
               :parentModel="parentModel"
-              @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+              @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
               :disabled="disabled"
             >
               <template #formCeil="values">
@@ -209,7 +209,11 @@
       :rawModel="rawModel"
       :model="model"
       @update:model="(v: unknown) => $emit('update:model', v)"
-    />
+    >
+      <template #formCeil="values">
+        <slot name="formCeil" v-bind="values" />
+      </template>
+    </DynamicFormItemNormal>
   </div>
 </template>
 

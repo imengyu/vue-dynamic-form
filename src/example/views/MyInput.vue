@@ -1,26 +1,23 @@
 <template>
-  <input
-    class="dynamic-form-base-control"
-    type="text" 
-    :value="value"
-    :placeholder="placeholder"
-    @blur="onBlur"
-    @update:modelValue="(e: string) => onValueUpdate(e)"
-    @change="(e: Event) => onValueUpdate((e.target as HTMLInputElement).value)"
-  />
+  <div>
+    <input  />
+
+  </div>
 </template>
+
 
 <script lang="ts" setup>
 import { useInjectFormItemContext } from "../DynamicFormBasicControls";
 
 defineProps({
-  value: {
+  value: {},
+  name: {
     type: String,
-    default: "",
+    default: '',
   },
-  placeholder: {
+  text: {
     type: String,
-    default: "",
+    default: '',
   },
 });
 
@@ -31,9 +28,8 @@ const formContext = useInjectFormItemContext();
 function onBlur() {
   formContext.onFieldBlur();
 }
-function onValueUpdate(v: string) {
+function onValueUpdate(v: boolean) {
   emit('update:value', v);
-  
   formContext.onFieldChange(v);
 }
 </script>

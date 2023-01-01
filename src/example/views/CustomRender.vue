@@ -2,16 +2,36 @@
   <div>
     <div class="demo-row">
       <div class="demo-col" style="width:50%;padding:20px;text-align:center;">
-        <div class="demo-alert">这是与 <a href="https://arco.design/vue/docs/start" target="_blank">arco design vue</a> 
-          配合使用的案例，你也可以使用其他组件库例如 ant desgin vue、element等等，具体请参考文档。
-        </div>
         <h1>注册</h1>
         <DynamicForm
           ref="formRef"
           :options="formOptions"
           :model="formModel"
           @submit="onSubmit"
-        />
+        >
+          <template #formCeil="{ item, model, onModelUpdate }">
+            <template v-if="item.name == 'test_custom_render'">
+              <div class="demo-row">
+                <a-avatar :imageUrl="model.avata" />
+                <div class="demo-col" style="text-align: left;margin-left: 10px;">
+                  <span style="font-size: 18px; margin-bottom: 4px;">{{ model.name }} (自定义渲染+仅展示)</span>
+                  <span>这在展示的表单中非常有用，你可以在这里面嵌入表格等等其他组件</span>
+                </div>
+              </div>
+              <br>
+            </template>
+            <template v-else-if="item.name == 'test_custom_check'">
+              <a-checkbox :modelValue="model" @update:modelValue="onModelUpdate">
+                我已阅读并同意
+                <a href="/" target="_blank">《用户服务协议》</a>
+                (自定义渲染+数据绑定)
+              </a-checkbox>
+            </template>
+            <template v-else>
+              {{item.name}}
+            </template>
+          </template>
+        </DynamicForm>
         <a-button type="primary" long @click="handleLogin" style="margin-top:20px">注册</a-button>
       </div>
       <div class="demo-col" style="width:50%;">
@@ -54,6 +74,11 @@ const formModel = ref({
   authorization_code: '',
   vcode: '',
   vcode_image: 'https://imengyu.top/assets/images/test/1.jpg',
+  test_custom_render: {
+    name: '测试用户',
+    avatar: 'https://imengyu.top/assets/images/test/2.jpg',
+  },
+  test_custom_check: false,
 });
 const formOptions : IDynamicFormOptions = {
   ...defaultConfig,
@@ -97,7 +122,8 @@ const formOptions : IDynamicFormOptions = {
     },
     { type: 'password', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码' } as InputInstance['$props'] },
     { type: 'password', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码' } as InputInstance['$props'] },
-    { type: 'text', label: '授权密码', name: 'authorization_code', additionalProps: { placeholder: '请输入授权码' } as InputInstance['$props'] },
+    { type: 'custom', label: '', name: 'test_custom_check' },
+    { type: 'custom', label: '', name: 'test_custom_render' },
   ],
 };
 

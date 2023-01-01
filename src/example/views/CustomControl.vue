@@ -5,6 +5,7 @@
         <DynamicForm
           :options="formOptions"
           :model="formModel"
+          @submit="onSubmit"
         />
         <textarea v-model="resultJson" class="demo-result" readonly></textarea>
       </div>
@@ -26,7 +27,7 @@
 
 <script setup lang="ts">
 import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@/lib/main';
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
 
@@ -34,9 +35,7 @@ const editorExtensions = [json()];
 const editorJson = ref('');
 const editorHasError = ref('');
 
-const resultJson = computed(() => {
-  return JSON.stringify(formModel, undefined, 2);
-});
+const resultJson = ref('请点击提交按钮获取表单提交数据');
 
 const formModel = reactive({
   stringProp: '',
@@ -114,5 +113,9 @@ watch(editorJson, () => {
     editorHasError.value = '' + e;
   }
 });
+
+function onSubmit() {
+  resultJson.value = JSON.stringify(formModel, undefined, 2);
+}
 
 </script>

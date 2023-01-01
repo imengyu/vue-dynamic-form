@@ -22,7 +22,7 @@ export default defineComponent({
       default: null
     },
   },
-  emits: [
+  emits: [ 
     /**
      * 提交表单且数据验证成功后回调事件
      */

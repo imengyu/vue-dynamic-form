@@ -13,7 +13,7 @@
     :rawModel="model"
     :model="model[item.name]"
     :parentModel="model"
-    @update:value="(v: unknown) => model[item.name] = v"
+    @update:model="(v: unknown) => model[item.name] = v"
     :disabled="options.disabled"
   >
     <template #arrayButtonAdd="props">

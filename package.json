@@ -28,6 +28,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@arco-design/web-vue": "^2.41.0",
     "async-validator": "^4.2.5",
     "scroll-into-view-if-needed": "^3.0.3",
     "vue": "^3.2.45"

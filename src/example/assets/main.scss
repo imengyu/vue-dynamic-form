@@ -12,7 +12,19 @@ body {
   a {
     margin: 0 20px;
     color: #1a7ff1;
-    text-decoration: underline;
+    text-decoration: none;
+    line-height: 40px;
+    font-size: 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.router-link-exact-active {
+      color: #000;
+      font-size: 25px;
+      text-decoration: none;
+    }
   }
 }
 .demo {
@@ -24,7 +36,7 @@ body {
   padding: 10px;
 }
 main {
-  display: flex;
+  display: flex!important;
   padding: 0 20px;
   background-color: #efefef;
 }
@@ -47,8 +59,7 @@ main {
   background-color: #efefef;
   overflow: hidden;
   opacity: 1;
-  display: flex;
-  align-items: center;
+  display: block;
 
   &.success {
     background-color: #cef1bc;
@@ -62,7 +73,8 @@ main {
 .demo-result {
   min-height: 100px;
   padding: 10px;
-  background-color: #efefef;
+  background-color: #fff;
+  border: none;
 }
 
 @media (min-width: 1024px) {

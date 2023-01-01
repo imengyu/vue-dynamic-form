@@ -59,7 +59,7 @@ export default defineComponent({
         return renderSlot(ctx.slots, 'formCeil', {
           item: item.value,
           model: model.value,
-          onUpdateValue: (v: unknown) => onModelUpdate(v),
+          onModelUpdate: (v: unknown) => onModelUpdate(v),
           rawModel: rawModel.value,
           rule: formRules ? formRules[item.value.name] : undefined,
           disabled: disabled.value,
