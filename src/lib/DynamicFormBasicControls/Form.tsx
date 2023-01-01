@@ -144,6 +144,39 @@ export default defineComponent({
     const intitalModel = ref<Record<string, unknown>|null>(null);
     const formItems = ref(new Map<string, FormItemInternalContext>());
 
+    function accessFormModel(keyName: string, isSet: boolean, setValue: unknown) : unknown {
+      const keys = keyName.split('.');
+      let ret : unknown = undefined;
+      let obj = model.value as Record<string, unknown>;
+      let keyIndex = 0;
+      let key = keys[keyIndex];
+      while (obj) {
+        const leftIndex = key.indexOf('[');
+        if (leftIndex > 0 && key.endsWith(']')) {
+          const arr = obj[key.substring(0, leftIndex)] as Record<string, unknown>[];
+          const index = parseInt(key.substring(leftIndex + 1, key.length - 1))    
+          obj = arr[index];
+          if (keyIndex >= keys.length - 1) {
+            ret = obj;
+            if (isSet) arr[index] = setValue as Record<string, unknown>;
+          }
+        } else {
+          const newObj = obj[key] as Record<string, unknown>;
+          if (keyIndex >= keys.length - 1) {
+            ret = newObj;
+            if (isSet)
+              obj[key] = setValue as Record<string, unknown>;
+          }
+          obj = newObj;
+        }
+        if (keyIndex < keys.length - 1)
+          key = keys[++keyIndex];
+        else
+          break;
+      }
+      return ret;
+    } 
+
     //Context
     const formContext = {
       onFieldBlur: (item: FormItemInternalContext) => {
@@ -152,8 +185,7 @@ export default defineComponent({
           validate(item.getFieldName());
       },
       onFieldChange: (item: FormItemInternalContext, newValue: unknown) => {
-        model.value[item.getFieldName()] = newValue;
-
+        accessFormModel(item.getFieldName(), true, newValue)
         //validate
         if (item.getValidateTrigger() === 'change')
           validate(item.getFieldName());
@@ -165,7 +197,9 @@ export default defineComponent({
       removeFormItemField: (item: FormItemInternalContext) => {
         formItems.value.delete(item.getFieldName());
       },
-      getItemValue: (item: FormItemInternalContext) => model.value[item.getFieldName()],
+      getItemValue: (item: FormItemInternalContext) => {
+        return accessFormModel(item.getFieldName(), false, undefined);
+      },
       getItemRequieed: (item: FormItemInternalContext) => {
         return checkRuleRequired(item.getFieldName());
       },

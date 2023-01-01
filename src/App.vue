@@ -7,6 +7,7 @@
       <h1>Vue3 Dynamic Form</h1>
       <router-link :to="{ name: 'BasicUseage' }">基础使用</router-link>
       <router-link :to="{ name: 'NestArray' }">嵌套对象与数组</router-link>
+      <router-link :to="{ name: 'IngrateUI' }">与其他UI库组件使用</router-link>
     </div>
     <div class="demo">
       <RouterView />

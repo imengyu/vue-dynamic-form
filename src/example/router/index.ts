@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import BasicUseage from '../views/BasicUseage.vue'
 import NestArray from '../views/NestArray.vue'
+import IngrateUI from '../views/IngrateUI.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +13,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/NestArray',
     name: 'NestArray',
     component: NestArray,
+  },
+  {
+    path: '/IngrateUI',
+    name: 'IngrateUI',
+    component: IngrateUI,
   },
 ]
 
