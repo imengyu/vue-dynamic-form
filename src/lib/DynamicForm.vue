@@ -60,19 +60,22 @@ export default defineComponent({
 
     return () => {
 
-      const children = h(DynamicFormInner as any, { options: options.value, model: model.value }, ctx.slots);
+      const renderChildren = () => h(DynamicFormInner as any, { options: options.value, model: model.value }, ctx.slots);
       const internalWidgetsForm = options.value.internalWidgets?.Form;
       const {
         formRules = {},
         formLabelWidth = '150px',
         formLabelCol = {},
         formWrapperCol = {},
+        formAdditionaProps = {},
+        formAdditionalEvents = {},
       } = options.value;
 
       //自定义渲染Form
       if (internalWidgetsForm) {
-        return h(internalWidgetsForm, {
+        return h(internalWidgetsForm.component as any, {
           ...props,
+          ref: formEditor,
           [internalWidgetsForm.propsMap.rules || 'rules']: formRules,
           [internalWidgetsForm.propsMap.model || 'model']: model.value,
           [internalWidgetsForm.propsMap.labelWidth || 'labelWidth']: formLabelWidth,
@@ -81,24 +84,30 @@ export default defineComponent({
           [internalWidgetsForm.propsMap.onFinish || 'onFinish']: (d: unknown) => ctx.emit('finish', d),
           [internalWidgetsForm.propsMap.onFinishFailed || 'onFinishFailed']: (d: unknown) => ctx.emit('finishFailed', d),
           [internalWidgetsForm.propsMap.onSubmit || 'onSubmit']: (d: unknown) => ctx.emit('submit', d),
-        }, [ children ])
+          ...formAdditionaProps,
+          ...formAdditionalEvents,
+        }, {
+          default: renderChildren,
+        })
       }
 
       //默认Form
       return (
         h(DynamicFormDefaultForm, {
-          ref: formEditor,
           ...props,
+          ref: formEditor,
           rules: formRules,
           model: model.value,
           labelCol: formLabelCol,
           labelWidth: formLabelWidth,
           wrapperCol: formWrapperCol,
+          ...formAdditionaProps,
           onFinish: (d) => ctx.emit('finish', d),
           onFinishFailed: (d) => ctx.emit('finishFailed', d),
           onSubmit: (d) => ctx.emit('submit', d),
+          ...formAdditionalEvents,
         }, {
-          default: () => children,
+          default: renderChildren,
         })
       )
     };

@@ -1,13 +1,29 @@
 {
-  "name": "vue-dynamic-form",
-  "version": "0.0.0",
-  "private": true,
+  "deprecated": false,
+  "license": "MIT",
+  "main": "dist/vue-dynamic-form.umd.js",
+  "types": "types/main.d.ts",
+  "name": "@imengyu/vue-dynamic-form",
+  "version": "0.0.5",
+  "description": "A data driven form component for vue3",
+  "files": [
+    "dist",
+    "types"
+  ],
+  "keywords": [
+    "vue",
+    "form",
+    "dynamic-form"
+  ],
+  "homepage": "https://github.com/imengyu/vue-dynamic-form",
+  "author": "imengyu",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
     "build-only": "vite build",
+    "build-types": "vue-tsc --declaration --emitDeclarationOnly ",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },

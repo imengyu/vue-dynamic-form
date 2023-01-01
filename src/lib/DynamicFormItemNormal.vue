@@ -77,7 +77,7 @@ export default defineComponent({
           type: item.value.name === 'submit' ? 'submit' : (item.value.name === 'reset' ? 'reset' : ''),
           class: 'dynamic-form-base-control base-button',
           ...item.value.additionalProps as {},
-        }, [ item.value.label ]);
+        }, [ (item.value.additionalProps as Record<string, unknown>)?.text as string || item.value.label ]);
       }
       //库组件
       else {
@@ -99,7 +99,7 @@ export default defineComponent({
 
       //自定义渲染Form
       if (internalWidgetsFormItem) {
-        return h(internalWidgetsFormItem, {
+        return h(internalWidgetsFormItem.component as any, {
           ...item.value.formProps,
           colon: noLable.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : item.value.label,

@@ -70,12 +70,12 @@ export interface IDynamicFormRef {
    * 获取表单组件的 Ref
    * @returns 
    */
-  getFormRef?: <T>() => T;
+  getFormRef: <T>() => T;
   /**
    * 获取表单组件的 Ref
    * @returns 
    */
-  getFormItemControlRef?: <T>(key: string) => T;
+  getFormItemControlRef: <T>(key: string) => T;
 }
 
 export interface IDynamicFormInternalWidgets {
@@ -134,6 +134,16 @@ export interface IDynamicFormOptions {
    * 表单组件栅格宽度
    */
   formWrapperCol?: { span: number, offset?: number },
+  /**
+   * 表单组件附加属性
+   */
+  formAdditionaProps?: Record<string, unknown>;
+  /**
+   * 表单组件附加事件绑定
+   */
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  formAdditionalEvents?: Record<string, Function>;
+
   /**
    * 自定义重写表单控件。你可以重写内置控件，在这个表单中会以此重写列表为先查找表单组件。
    */

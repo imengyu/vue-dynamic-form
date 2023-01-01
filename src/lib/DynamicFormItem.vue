@@ -28,6 +28,7 @@
           :name="name+'.'+child.name"
           :rawModel="rawModel"
           :model="(model as IDynamicFormObject)[child.name]"
+          :parentModel="model"
           @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
           :disabled="disabled"
         />
@@ -50,6 +51,7 @@
             :name="name+'.'+child.name"
             :rawModel="rawModel"
             :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
+            :parentModel="model"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
             :disabled="disabled"
           />
@@ -72,7 +74,8 @@
             :item="child"
             :name="name+'.'+child.name"
             :rawModel="rawModel"
-            :model="((model as IDynamicFormObject)[child.name])"
+            :model="((parentModel as IDynamicFormObject)[child.name])"
+            :parentModel="parentModel"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
             :disabled="disabled"
           >
@@ -83,6 +86,42 @@
         </Col>
       </template>
     </FormGroup>
+    <!--扁平普通-->
+    <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
+      :item="item"
+      :name="name"
+      :disabled="disabled"
+      :model="(model as IDynamicFormObject)"
+      :rawModel="rawModel"
+    >
+      <template #insertion>
+        <div v-if="model === undefined">
+          <span class="dynamic-form-error-alert"> [simple-flat] 警告：输入字段 {{ name }} 是 undefined</span>
+        </div>
+        <template v-else>
+          <Col
+            v-for="(child, k) in item.children" 
+            v-bind="{ ...item.childrenColProps, ...child.colProps }"
+            :key="k"
+          >
+            <!--循环子条目-->
+            <DynamicFormItem 
+              :item="child"
+              :name="name+'.'+child.name"
+              :rawModel="rawModel"
+              :model="((parentModel as IDynamicFormObject)[child.name])"
+              :parentModel="parentModel"
+              @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+              :disabled="disabled"
+            >
+              <template #formCeil="values">
+                <slot name="formCeil" v-bind="values" />
+              </template>
+            </DynamicFormItem>
+          </Col>
+        </template>
+      </template>
+    </DynamicFormItemNormal>
     <!--数组变量组-->
     <DynamicFormItemNormal v-else-if="item.type === 'array-single'" 
       :item="item"
@@ -108,12 +147,13 @@
           <template #itemButton="props">
             <slot name="arrayButtons" v-bind="props" />
           </template>
-          <template #child="{ item, kname, model, onUpdateValue }">
+          <template #child="{ item, kname, model: child, onUpdateValue }">
             <DynamicFormItem
               :item="item"
               :name="kname"
               :rawModel="rawModel"
-              :model="model"
+              :model="child"
+              :parentModel="model"
               :disabled="disabled"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
@@ -146,12 +186,13 @@
           <template #itemButton="props">
             <slot name="arrayButtons" v-bind="props" />
           </template>
-          <template #child="{ item, kname, model, onUpdateValue }">
+          <template #child="{ item, kname, model: child, onUpdateValue }">
             <DynamicFormItem
               :item="item"
               :name="kname"
               :rawModel="rawModel"
-              :model="model"
+              :model="child"
+              :parentModel="model"
               :disabled="disabled"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
@@ -200,6 +241,9 @@ export default defineComponent({
       defalut: false,
     },
     model: {
+      required: true,
+    },
+    parentModel: {
       required: true,
     },
     rawModel: {

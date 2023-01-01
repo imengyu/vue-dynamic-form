@@ -20,6 +20,9 @@
     "baseUrl": ".",
     "importsNotUsedAsValues": "preserve",
     "isolatedModules": false,
+    "declaration": true,
+    "declarationDir": "./types/",
+    "outDir": "./temp",
     "paths": {
       "@/*": ["./src/*"]
     },
