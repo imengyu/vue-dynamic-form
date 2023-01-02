@@ -78,7 +78,7 @@ function registerAllFormComponents() {
 }
 ```
 
-然后你就可以在表单中使用刚刚注册的组件了，下方是一个以 arco.design Vue 为例的注册表单，最终效果你可以[查看 Demo]()。
+然后你就可以在表单中使用刚刚注册的组件了，下方是一个以 arco.design Vue 为例的注册表单，最终效果你可以[查看 Demo](https://imengyu.top/pages/vue-dynamic-form-demo/#IngrateUI)。
 
 ```vue
 <template>

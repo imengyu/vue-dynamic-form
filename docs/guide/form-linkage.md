@@ -118,7 +118,7 @@ const formOptions : IDynamicFormOptions = {
 };
 ```
 
-完整源代码可以参考 [这里]()。
+完整源代码可以参考 [这里](https://github.com/imengyu/vue-dynamic-form/blob/master/src/example/views/FormLinkage.vue)。
 
 效果：
 

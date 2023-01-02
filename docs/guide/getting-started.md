@@ -91,7 +91,7 @@ const formOptions = ref<IDynamicFormOptions>({
 
 表单支持嵌套，你可以嵌套对象或者数组。
 
-具体请参考 [嵌套表单结构]()。
+具体请参考 [嵌套表单结构](./form-nest.md)。
 
 ### 表单验证
 

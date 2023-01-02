@@ -6,7 +6,7 @@ vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
 
 ## 文档
 
-[]()。
+[查看文档](https://imengyu.top/pages/vue-dynamic-form-docs)。
 
 ## 安装
 
