@@ -73,6 +73,7 @@ const formModel = ref({
 const formOptions : IDynamicFormOptions = {
   formRules: {
     enterprise_name: [{ required: true, message: '请输入企业全称' } ],
+    enterprise_id: [{ required: true, message: '请输入企业全称' } ],
     mobile: [{ required: true, message: '请输入手机号' } ],
     password: [{ required: true, message: '请输入密码' } ],
     vcode: [{ required: true, message: '请输入验证码' } ],
@@ -99,6 +100,10 @@ const formOptions : IDynamicFormOptions = {
       showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
       type: 'base-text', label: '企业全称', name: 'enterprise_name', additionalProps: { placeholder: '请输入企业全称' },
     },
+    {
+      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      type: 'base-text', label: '统一社会信用代码', name: 'enterprise_id', additionalProps: { placeholder: '请输入企业统一社会信用代码' },
+    },
     { type: 'base-text', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码', password: true },
     { type: 'base-text', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码', password: true },
     {
@@ -107,7 +112,7 @@ const formOptions : IDynamicFormOptions = {
       name: 'authorization_code',
       additionalProps: {
         placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
-      } as IDynamicFormItemCallbackAdditionalProps<InputInstance['$props']>
+      } as IDynamicFormItemCallbackAdditionalProps<BaseInputProps>
     },
   ],
 };

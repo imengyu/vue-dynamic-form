@@ -14,6 +14,7 @@ import { reactive } from 'vue'
 const formModel = reactive({
   mobile: '',
   enterprise_name: '',
+  enterprise_id: '',
   password: '',
   password_confirm: '',
   authorization_code: '',
@@ -22,6 +23,7 @@ const formModel = reactive({
 const formOptions : IDynamicFormOptions = {
   formRules: {
     enterprise_name: [{ required: true, message: '请输入企业全称' } ],
+    enterprise_id: [{ required: true, message: '请输入企业全称' } ],
     mobile: [{ required: true, message: '请输入手机号' } ],
     password: [{ required: true, message: '请输入密码' } ],
     vcode: [{ required: true, message: '请输入验证码' } ],
@@ -47,6 +49,10 @@ const formOptions : IDynamicFormOptions = {
     {
       showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
       type: 'base-text', label: '企业全称', name: 'enterprise_name', additionalProps: { placeholder: '请输入企业全称' },
+    },
+    {
+      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      type: 'base-text', label: '统一社会信用代码', name: 'enterprise_id', additionalProps: { placeholder: '请输入企业统一社会信用代码' },
     },
     { type: 'base-text', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码', password: true } },
     { type: 'base-text', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码', password: true } },
