@@ -8,9 +8,11 @@ export type IDynamicFormObject = Record<string, unknown>;
  * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
  * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
  * @param item 当前表单条目信息
- * @param formRules 当前条目
+ * @param formRules 当前条目校验数据
  */
 export type IDynamicFormItemCallback<T> = (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => T;
+
+export type IDynamicFormItemCallbackAdditionalProps<T> = { [P in keyof T]?: T[P]|IDynamicFormItemCallback<T[P]> }
 
 export interface IDynamicFormItem {
   /**
@@ -22,9 +24,13 @@ export interface IDynamicFormItem {
    */
   showCondition?: IDynamicFormItemCallback<boolean>;
   /**
-   * 附加组件属性。支持动态回调。当传入值是函数时，请使用 additionalDirectProps。
+   * 是否禁用当前表单项
    */
-  additionalProps?: Record<string, unknown>;
+  disabled?: boolean|IDynamicFormItemCallback<boolean>;
+  /**
+   * 附加组件属性。支持动态回调(只支持第一级传入回调)。当传入值是函数时，请使用 additionalDirectProps。
+   */
+  additionalProps?: Record<string, unknown|IDynamicFormItemCallback<unknown>>|unknown;
   /**
    * 附加组件事件绑定
    */
@@ -80,6 +86,29 @@ export interface IDynamicFormRef {
    * @returns 
    */
   getFormItemControlRef: <T>(key: string) => T;
+  /**
+   * 触发提交。同 getFormRef().submit() 。
+   * @returns 
+   */
+  submit: () => void;
+  /**
+   * 外部手动修改 formData，用于已填写的表单的数据回填
+   * @param formData 
+   * @returns 
+   */
+  setValues: (formData: IDynamicFormObject) => void,
+  /**
+   * 外部修改指定单个 field 的数据
+   * @param formData 
+   * @returns 
+   */
+  setValueByPath: (formData: Record<string, unknown>) => void,
+  /**
+   * 指定路径修改 formItem
+   * @param formData 
+   * @returns 
+   */
+  setSchemaByPath: (formData: Record<string, IDynamicFormItem>) => void,
 }
 
 export interface IDynamicFormInternalWidgets {

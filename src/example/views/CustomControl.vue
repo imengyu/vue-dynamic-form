@@ -45,6 +45,9 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
+  widgets: {
+
+  },
   formItems: [
     { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
     { 

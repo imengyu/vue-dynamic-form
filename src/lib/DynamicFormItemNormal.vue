@@ -77,6 +77,7 @@ export default defineComponent({
           model: model.value,
           onModelUpdate: (v: unknown) => onModelUpdate(v),
           rawModel: rawModel.value,
+          parentModel: parentModel.value,
           rule: formRules ? formRules[item.value.name] : undefined,
           disabled: disabled.value,
         });
@@ -101,6 +102,7 @@ export default defineComponent({
           ref: currentFormItem,
           value: model.value,
           rawModel: rawModel.value,
+          parentModel: parentModel.value,
           'onUpdate:value': (v: unknown) => onModelUpdate(v),
           item: item.value,
           disabled: disabled.value,
@@ -117,7 +119,7 @@ export default defineComponent({
         return h(internalWidgetsFormItem.component as any, {
           ...item.value.formProps,
           colon: noLable.value !== true,
-          [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : item.value.label,
+          [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
         }, {
           default: renderChildrenSlot,

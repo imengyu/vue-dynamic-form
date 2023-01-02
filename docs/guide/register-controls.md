@@ -4,8 +4,8 @@ title: 绑定组件
 
 # 绑定组件
 
-vue-dynamic-form 不带复杂的表单组件，不与任何UI库耦合。因此您可以选择安装这些UI框架或其他库，
-使用这些UI库的表单组件，将其绑定后即可在动态表单中使用。
+vue-dynamic-form 不带复杂的表单组件，不与任何UI库耦合。因此您可以选择安装自己喜欢的UI框架或其他库，
+使用UI库的表单组件，需要将其绑定后即可在动态表单中使用。
 
 推荐：
 
@@ -67,7 +67,7 @@ function registerAllFormComponents() {
   //
   //注册自定义组件请参考下方章节
   DynamicFormItemRegistry.registerDynamicFormItemControl('text', markRaw(Input), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('password', markRaw(WrapperInputPassword), {});
+  DynamicFormItemRegistry.registerDynamicFormItemControl('password', markRaw(Inpu.tPassword), {}, {}, 'modelValue');
   DynamicFormItemRegistry.registerDynamicFormItemControl('number', markRaw(InputNumber), {}, 'modelValue');
   DynamicFormItemRegistry.registerDynamicFormItemControl('text-area', markRaw(Textarea), {}, 'modelValue');
   DynamicFormItemRegistry.registerDynamicFormItemControl('switch', markRaw(Switch), {}, 'modelValue');
@@ -153,5 +153,15 @@ function onSubmit() {
 </script>
 ```
 
-## 例子：注册自定义组件
+## 注册自定义组件
+
+注册自定义组件与注册UI框架组件一致，你只需使用 registerDynamicFormItemControl 注册即可使用：
+
+```js
+import MyFormComponent from './MyFormComponent.vue';
+
+DynamicFormItemRegistry.registerDynamicFormItemControl('my-cmponent-name', markRaw(InpuMyFormComponenttNumber), {}, 'modelValue');
+```
+
+注意，在写自定义组件时请处理与表单/动态表单的数据关系。具体请参考 [自定义组件](./custom-control.md)。
 

@@ -14,7 +14,7 @@
           :rawModel="rawModel"
           :model="null"
           :noLable="true"
-          :disabled="disabled"
+          :disabled="disabled || evaluateCallback(item.disabled)"
         >
           <template #insertion>
             <span class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
@@ -30,7 +30,7 @@
           :model="(model as IDynamicFormObject)[child.name]"
           :parentModel="model"
           @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled"
+          :disabled="disabled || evaluateCallback(item.disabled)"
         />
       </template>
     </template>
@@ -53,7 +53,7 @@
             :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
             :parentModel="model"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-            :disabled="disabled"
+            :disabled="disabled || evaluateCallback(item.disabled)"
           />
         </Col>
       </template>
@@ -77,7 +77,7 @@
             :model="((parentModel as IDynamicFormObject)[child.name])"
             :parentModel="parentModel"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-            :disabled="disabled"
+            :disabled="disabled || evaluateCallback(item.disabled)"
           >
             <template #formCeil="values">
               <slot name="formCeil" v-bind="values" />
@@ -90,7 +90,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
       :item="item"
       :name="name"
-      :disabled="disabled"
+      :disabled="disabled || evaluateCallback(item.disabled)"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -113,7 +113,7 @@
               :model="((parentModel as IDynamicFormObject)[child.name])"
               :parentModel="parentModel"
               @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-              :disabled="disabled"
+              :disabled="disabled || evaluateCallback(item.disabled)"
             >
               <template #formCeil="values">
                 <slot name="formCeil" v-bind="values" />
@@ -127,7 +127,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'array-single'" 
       :item="item"
       :name="name"
-      :disabled="disabled"
+      :disabled="disabled || evaluateCallback(item.disabled)"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -156,7 +156,7 @@
               :rawModel="rawModel"
               :model="child"
               :parentModel="model"
-              :disabled="disabled"
+              :disabled="disabled || evaluateCallback(item.disabled)"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
           </template>
@@ -167,7 +167,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'array-object'" 
       :item="item"
       :name="name"
-      :disabled="disabled"
+      :disabled="disabled || evaluateCallback(item.disabled)"
       :model="model"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -196,7 +196,7 @@
               :rawModel="rawModel"
               :model="child"
               :parentModel="model"
-              :disabled="disabled"
+              :disabled="disabled || evaluateCallback(item.disabled)"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
           </template>
@@ -208,7 +208,7 @@
       v-else
       :item="item"
       :name="name"
-      :disabled="disabled"
+      :disabled="disabled || evaluateCallback(item.disabled)"
       :rawModel="rawModel"
       :parentModel="parentModel"
       :model="model"

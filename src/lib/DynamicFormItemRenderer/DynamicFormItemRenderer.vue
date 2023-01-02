@@ -27,6 +27,8 @@ export default defineComponent({
     disabled: {
       type: Boolean
     },
+    parentModel: {
+    },
     value: {
     },
     additionalProps: {
@@ -116,6 +118,7 @@ export default defineComponent({
         disabled: this.disabled,
         item: this.item,
         rawModel: this.rawModel,
+        parentModel: this.parentModel,
         name: this.item?.name,
         ...(this.item?.additionalEvents),
         ...(this.item?.additionalDirectProps),

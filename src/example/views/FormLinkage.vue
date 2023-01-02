@@ -2,9 +2,6 @@
   <div>
     <div class="demo-row">
       <div class="demo-col" style="width:50%;padding:20px;text-align:center;">
-        <div class="demo-alert">这是与 <a href="https://arco.design/vue/docs/start" target="_blank">arco design vue</a> 
-          配合使用的案例，你也可以使用其他组件库例如 ant desgin vue、element等等，具体请参考文档。
-        </div>
         <h1>注册</h1>
         <DynamicForm
           ref="formRef"
@@ -35,13 +32,13 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
+import { DynamicForm, IDynamicFormItemCallbackAdditionalProps, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
 import { ref } from 'vue'
 
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
 import { defaultConfig } from './IngrateArcoDesgin';
-import { CascaderInstance, FormInstance, InputInstance } from '@arco-design/web-vue';
+import { FormInstance, InputInstance } from '@arco-design/web-vue';
 
 const editorExtensions = [json()];
 const editorJson = ref('');
@@ -49,15 +46,18 @@ const editorHasError = ref('');
 
 const formModel = ref({
   mobile: '',
+  enterprise_name: '',
   password: '',
   password_confirm: '',
   authorization_code: '',
   vcode: '',
   vcode_image: 'https://imengyu.top/assets/images/test/1.jpg',
+  isEnterprise: false,
 });
 const formOptions : IDynamicFormOptions = {
   ...defaultConfig,
   formRules: {
+    enterprise_name: [{ required: true, message: '请输入企业全称' } ],
     mobile: [{ required: true, message: '请输入手机号' } ],
     password: [{ required: true, message: '请输入密码' } ],
     vcode: [{ required: true, message: '请输入验证码' } ],
@@ -75,7 +75,15 @@ const formOptions : IDynamicFormOptions = {
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [
-    { type: 'text', label: '手机号', name: 'mobile', additionalProps: { placeholder: '请输入手机号' } as InputInstance['$props'] },
+    { type: 'check-box', label: '企业用户', name: 'isEnterprise' },
+    {
+      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === false,
+      type: 'text', label: '手机号', name: 'mobile', additionalProps: { placeholder: '请输入手机号' } as InputInstance['$props'],
+    },
+    {
+      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      type: 'text', label: '企业全称', name: 'enterprise_name', additionalProps: { placeholder: '请输入企业全称' } as InputInstance['$props'],
+    },
     { 
       type: 'simple-flat', label: '验证码', name: 'vcode',
       children: [
@@ -95,15 +103,16 @@ const formOptions : IDynamicFormOptions = {
         },
       ]
     },
-    { 
-      type: 'cascader', label: '级联组件', name: 'test',
-      additionalProps: {
-        placeholder: '请输入授权码' 
-      } as CascaderInstance['$props']
-    },
     { type: 'password', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码' } as InputInstance['$props'] },
     { type: 'password', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码' } as InputInstance['$props'] },
-    { type: 'text', label: '授权密码', name: 'authorization_code', additionalProps: { placeholder: '请输入授权码' } as InputInstance['$props'] },
+    {
+      type: 'text', 
+      label: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码',
+      name: 'authorization_code',
+      additionalProps: {
+        placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
+      } as IDynamicFormItemCallbackAdditionalProps<InputInstance['$props']>
+    },
   ],
 };
 

@@ -271,6 +271,8 @@ export default defineComponent({
     function validate(name?: string|string[]) {
       const filteredRules = {} as Record<string, Rule|undefined>;
 
+      clearValidate();
+
       //筛选需要验证的字段
       formItems.value.forEach((_, key) => {
         const rule = rules.value ? rules.value[key] : undefined;

@@ -4,6 +4,7 @@ import NestArray from '../views/NestArray.vue'
 import IngrateUI from '../views/IngrateUI.vue'
 import CustomRender from '../views/CustomRender.vue'
 import CustomControl from '../views/CustomControl.vue'
+import FormLinkage from '../views/FormLinkage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/CustomControl',
     name: 'CustomControl',
     component: CustomControl,
+  },
+  {
+    path: '/FormLinkage',
+    name: 'FormLinkage',
+    component: FormLinkage,
   },
 ]
 

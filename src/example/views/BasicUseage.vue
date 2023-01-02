@@ -50,7 +50,7 @@ const formOptions = ref<IDynamicFormOptions>({
     { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
     { 
       type: 'base-textarea', label: '文本域', name: 'stringProp2', 
-      formProps: {
+      formProps: { 
         center: false,
       },
       additionalProps: { 

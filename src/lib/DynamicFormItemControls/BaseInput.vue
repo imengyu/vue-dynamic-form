@@ -1,7 +1,7 @@
 <template>
   <input
     class="dynamic-form-base-control"
-    type="text" 
+    :type="password?'password':'text'" 
     :value="value"
     :placeholder="placeholder"
     @blur="onBlur"
@@ -21,6 +21,10 @@ defineProps({
   placeholder: {
     type: String,
     default: "",
+  },
+  password: {
+    type: Boolean,
+    default: false,
   },
 });
 
