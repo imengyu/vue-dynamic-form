@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, h, inject, PropType, ref, renderSlot, toRefs } from 'vue';
-import { IDynamicFormInternalWidgets, IDynamicFormItem } from './DynamicForm';
+import { IDynamicFormInternalWidgets, IDynamicFormItem, IDynamicFormItemCallback } from './DynamicForm';
 import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem';
 import { Rule } from 'async-validator';
@@ -23,6 +23,8 @@ export default defineComponent({
     },
     model: {
     },
+    parentModel: {
+    },
     rawModel: {
       type: Object as PropType<Record<string, unknown>>,
     },
@@ -33,7 +35,7 @@ export default defineComponent({
   },
   emits: [ 'update:model' ],
   setup(props, ctx) {
-    const { model, rawModel, name, item, disabled, noLable } = toRefs(props);
+    const { model, rawModel, parentModel, name, item, disabled, noLable } = toRefs(props);
 
     function onModelUpdate(newVal: unknown) {
       ctx.emit('update:model', newVal);
@@ -43,6 +45,20 @@ export default defineComponent({
     const internalWidgets = inject<IDynamicFormInternalWidgets>('internalWidgets'); 
     const widgetsRefMap = inject<Record<string,() => unknown>>('widgetsRefMap'); 
     const currentFormItem = ref<DynamicFormItemRendererInterface>(); 
+
+    function evaluateCallback(val: unknown|IDynamicFormItemCallback<unknown>) {
+      if (typeof val === 'function')
+        return val(model.value, rawModel.value, parentModel.value, item.value, formRules);
+      return val;
+    }
+    function evaluateCallbackObj(val: Record<string, unknown|IDynamicFormItemCallback<unknown>>) {
+      const newObj = {} as Record<string, unknown>;
+      for (const key in val) {
+        if (Object.prototype.hasOwnProperty.call(val, key))
+          newObj[key] = evaluateCallback(val[key]);
+      }
+      return newObj;
+    }
 
     if (widgetsRefMap && name.value)
       widgetsRefMap[name.value] = () => {
@@ -67,8 +83,8 @@ export default defineComponent({
       }
       //静态文字
       else if (item.value.type === 'static-text') {
-        return h('span', { ...item.value.additionalProps as {}}, [
-          (model.value || (item.value.additionalProps as Record<string, unknown>)?.text) as string
+        return h('span', { ...evaluateCallbackObj(item.value.additionalProps as {}) }, [
+          (model.value || evaluateCallback(item.value.additionalProps as Record<string, unknown>)?.text) as string
         ]);
       }
       //提交按钮
@@ -76,12 +92,11 @@ export default defineComponent({
         return h('button', { 
           type: item.value.name === 'submit' ? 'submit' : (item.value.name === 'reset' ? 'reset' : ''),
           class: 'dynamic-form-base-control base-button',
-          ...item.value.additionalProps as {},
-        }, [ (item.value.additionalProps as Record<string, unknown>)?.text as string || item.value.label ]);
+          ...evaluateCallbackObj(item.value.additionalProps as {}),
+        }, [ (item.value.additionalProps as Record<string, unknown>)?.text as string || evaluateCallback(item.value.label) ]);
       }
       //库组件
       else {
-
         return h(DynamicFormItemRenderer, {
           ref: currentFormItem,
           value: model.value,
@@ -89,7 +104,7 @@ export default defineComponent({
           'onUpdate:value': (v: unknown) => onModelUpdate(v),
           item: item.value,
           disabled: disabled.value,
-          additionalProps: (item.value.additionalProps as Record<string, unknown>),
+          additionalProps: evaluateCallbackObj(item.value.additionalProps as Record<string, unknown>),
         });
       }
     }
@@ -114,7 +129,7 @@ export default defineComponent({
         h(FormItem, {
           colon: noLable.value !== true,
           ...item.value.formProps,
-          label: noLable.value ? '' : item.value.label,
+          label: noLable.value ? '' : evaluateCallback(item.value.label),
           name: name.value,
         }, {
           default: renderChildrenSlot,

@@ -28,3 +28,4 @@ types/
 *.njsproj
 *.sln
 *.sw?
+docs/.vitepress/cache/

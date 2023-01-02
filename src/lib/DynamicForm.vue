@@ -2,7 +2,7 @@
 import { defineComponent, provide, toRefs, ref, h, PropType } from 'vue';
 import DynamicFormInner from './DynamicFormInner.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
-import { IDynamicFormOptions } from './DynamicForm';
+import { defaultDynamicFormOptions, IDynamicFormOptions } from './DynamicForm';
 
 /**
  * 动态表单组件。
@@ -37,11 +37,15 @@ export default defineComponent({
     'submit',
   ],
   setup(props, ctx) {
-    const { options: options, model } = toRefs(props);
+    const { options, model } = toRefs(props);
+    const finalOptions = {
+      ...defaultDynamicFormOptions,
+      ...options.value,
+    } as IDynamicFormOptions;
 
-    provide('widgetOvrride', options.value.widgets || {});
-    provide('internalWidgets', options.value.internalWidgets);
-    provide('formRules', options.value.formRules);
+    provide('widgetOvrride', finalOptions.widgets || {});
+    provide('internalWidgets', finalOptions.internalWidgets);
+    provide('formRules', finalOptions.formRules);
     provide('rawModel', model.value);
 
     const formEditor = ref();
@@ -60,8 +64,8 @@ export default defineComponent({
 
     return () => {
 
-      const renderChildren = () => h(DynamicFormInner as any, { options: options.value, model: model.value }, ctx.slots);
-      const internalWidgetsForm = options.value.internalWidgets?.Form;
+      const renderChildren = () => h(DynamicFormInner as any, { options: finalOptions, model: model.value }, ctx.slots);
+      const internalWidgetsForm = finalOptions.internalWidgets?.Form;
       const {
         formRules = {},
         formLabelWidth = '150px',
@@ -69,7 +73,7 @@ export default defineComponent({
         formWrapperCol = {},
         formAdditionaProps = {},
         formAdditionalEvents = {},
-      } = options.value;
+      } = finalOptions;
 
       //自定义渲染Form
       if (internalWidgetsForm) {

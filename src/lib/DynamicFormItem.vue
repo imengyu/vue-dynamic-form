@@ -1,6 +1,6 @@
 
 <template>
-  <div class="dynamic-form-item-wrapper" v-if="(!item.showCondition || item.showCondition(model, item, formRules))">
+  <div class="dynamic-form-item-wrapper" v-if="(!item.showCondition || evaluateCallback(item.showCondition))">
     <!--对象组-->
     <template v-if="item.type === 'object'">
       <div v-if="model === undefined">
@@ -17,7 +17,7 @@
           :disabled="disabled"
         >
           <template #insertion>
-            <span class="dynamic-form-object-title">{{ item.label }}</span>
+            <span class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
           </template>
         </DynamicFormItemNormal>
         <!--循环子条目-->
@@ -35,7 +35,7 @@
       </template>
     </template>
     <!--对象组-->
-    <FormGroup v-else-if="item.type === 'group-object'" :title="item.label" v-bind="item.additionalProps">
+    <FormGroup v-else-if="item.type === 'group-object'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
       <div v-if="model === undefined">
         <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
       </div>
@@ -59,7 +59,7 @@
       </template>
     </FormGroup>
     <!--扁平组-->
-    <FormGroup v-else-if="item.type === 'group-flat'" :title="item.label" v-bind="item.additionalProps">
+    <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
       <div v-if="model === undefined">
         <span class="dynamic-form-error-alert"> [group-flat] 警告：输入字段 {{ name }} 是 undefined</span>
       </div>
@@ -93,6 +93,7 @@
       :disabled="disabled"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
+      :parentModel="parentModel"
     >
       <template #insertion>
         <div v-if="model === undefined">
@@ -129,6 +130,7 @@
       :disabled="disabled"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
+      :parentModel="parentModel"
     >
       <template #insertion>
         <FormArrayGroup
@@ -168,6 +170,7 @@
       :disabled="disabled"
       :model="model"
       :rawModel="rawModel"
+      :parentModel="parentModel"
     >
       <template #insertion>
         <FormArrayGroup
@@ -207,6 +210,7 @@
       :name="name"
       :disabled="disabled"
       :rawModel="rawModel"
+      :parentModel="parentModel"
       :model="model"
       @update:model="(v: unknown) => $emit('update:model', v)"
     >
@@ -218,8 +222,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, PropType } from 'vue';
-import { IDynamicFormItem, IDynamicFormObject } from './DynamicForm';
+import { defineComponent, inject, PropType, toRefs } from 'vue';
+import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject } from './DynamicForm';
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
@@ -256,11 +260,17 @@ export default defineComponent({
     },
   },
   emits: [ 'update:model' ],
-  setup() {
+  setup(props) {
+    const propsP = toRefs(props);
     const formRules = inject<Record<string, Rule>>('formRules'); 
 
     return {
       formRules,
+      evaluateCallback: (val: unknown|IDynamicFormItemCallback<unknown>) => {
+        if (typeof val === 'function')
+          return val(propsP.model.value, propsP.rawModel.value, propsP.parentModel.value, propsP.item.value, formRules);
+        return val;
+      },
     }
   },
   components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col }

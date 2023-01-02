@@ -3,6 +3,14 @@ import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFo
 import { Rule } from 'async-validator';
 
 export type IDynamicFormObject = Record<string, unknown>;
+/**
+ * @param model 当前表单条目的值
+ * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
+ * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
+ * @param item 当前表单条目信息
+ * @param formRules 当前条目
+ */
+export type IDynamicFormItemCallback<T> = (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => T;
 
 export interface IDynamicFormItem {
   /**
@@ -10,13 +18,13 @@ export interface IDynamicFormItem {
    */
   type: string;
   /**
-   * 显示当前条目的附加条件
+   * 显示当前条目的附加条件，不传默认显示
    */
-  showCondition?: (model: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => boolean;
+  showCondition?: IDynamicFormItemCallback<boolean>;
   /**
-   * 附加组件属性
+   * 附加组件属性。支持动态回调。当传入值是函数时，请使用 additionalDirectProps。
    */
-  additionalProps?: unknown;
+  additionalProps?: Record<string, unknown>;
   /**
    * 附加组件事件绑定
    */
@@ -35,13 +43,9 @@ export interface IDynamicFormItem {
    */
   name: string;
   /**
-   * 当前表单说明文字
+   * 当前表单说明文字。支持动态回调。
    */
-  label?: string;
-  /**
-   * 当前表单是否必填
-   */
-  required?: boolean,
+  label?: string|IDynamicFormItemCallback<string>;
   /**
    * 子条目。仅在 object 或者其他容器条目中有效。
    */
@@ -156,4 +160,20 @@ export interface IDynamicFormOptions {
    * 表单是否禁用。默认否
    */
   disabled?: boolean,
+}
+
+/**
+ * 默认的动态表单属性
+ */
+export let defaultDynamicFormOptions = {} as IDynamicFormOptions;
+
+/**
+ * 配置默认的动态表单属性
+ * @param options 
+ */
+export function configDefaultDynamicFormOptions(options: IDynamicFormOptions) {
+  defaultDynamicFormOptions = {
+    ...defaultDynamicFormOptions,
+    ...options,
+  };
 }
