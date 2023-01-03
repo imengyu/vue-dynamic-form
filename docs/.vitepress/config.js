@@ -11,8 +11,8 @@ const config = {
     ],
     nav: [
       { text: '教程', link: '/guide/about' },
-      { text: 'API 参考', link: '/api' },
-      { text: '更新日志', link: 'https://github.com/...' }
+      { text: 'API 参考', link: '/api/' },
+      { text: '更新日志', link: 'https://github.com/imengyu/vue-dynamic-form/CHANGELOG.md' }
     ],
     sidebar: [
       {

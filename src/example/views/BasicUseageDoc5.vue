@@ -9,13 +9,13 @@
 
 <script setup lang="ts">
 import { BaseRadioProps, BaseSelectProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 
 const formModel = ref({
   type: 1,
   item_id: 0 as number|null,
 });
-const formOptions : IDynamicFormOptions = {
+const formOptions = reactive<IDynamicFormOptions>({
   formRules: {},
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
@@ -40,7 +40,7 @@ const formOptions : IDynamicFormOptions = {
       } as BaseSelectProps,
     },
   ],
-};
+});
 
 function loadPackageSelect(newType: number) {
   //这里是写死手动判断了，实际在这里你可以去请求后端数据

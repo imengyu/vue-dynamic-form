@@ -2,6 +2,10 @@
 title: 什么是 vue-dynamic-form?
 ---
 
+<script setup>
+import DynamicFormBasicUseage from '../../src/example/views/BasicUseageDoc.vue'
+</script>
+
 # 什么是 vue-dynamic-form?
 
 vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
@@ -34,3 +38,7 @@ vue-dynamic-form 并不是开发中所必须的，它只是一个帮助你加快
 * 写法可能不是特别直观，需要适应。
 * 可能需要自己封装组件或者使用其他人的组件。
 * 需要牺牲一些高度自定义的写法。
+
+效果：
+
+<DynamicFormBasicUseage />

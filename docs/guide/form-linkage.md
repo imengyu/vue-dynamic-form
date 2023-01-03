@@ -127,19 +127,19 @@ const formOptions : IDynamicFormOptions = {
 
 ## 完全自定义
 
-你也可以通过监听数据变化，然后执行你的自定义操作，达到联动的效果，例如，
+如果涉及到值的联动，或者极其复杂的表单展示联动，你也可以通过监听数据变化，然后执行你的自定义操作，达到联动的效果，例如，
 下方是一个表单联动例子，他的效果是当 type 更改时，更改 item_id 的 options （也可以去后端加载数据）。
 
 ```ts
 
 import { BaseRadioProps, BaseSelectProps, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
-import { ref, watch } from 'vue'
+import { ref, reactive, watch } from 'vue'
 
 const formModel = ref({
   type: 1,
   item_id: 0 as number|null,
 });
-const formOptions : IDynamicFormOptions = {
+const formOptions = reactive<IDynamicFormOptions>({
   formRules: {},
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
@@ -164,7 +164,7 @@ const formOptions : IDynamicFormOptions = {
       } as BaseSelectProps,
     },
   ],
-};
+});
 
 function loadPackageSelect(newType: number) {
   //这里是写死手动判断了，实际在这里你可以去请求后端数据
