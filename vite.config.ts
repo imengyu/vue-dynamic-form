@@ -13,6 +13,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  base: '/pages/vue-dynamic-form-demo/',
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
