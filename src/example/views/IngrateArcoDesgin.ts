@@ -1,6 +1,7 @@
 import { markRaw } from "vue";
 import { Alert, Checkbox, DatePicker, Form, FormItem, Image, Input, InputNumber, Rate, Switch, Textarea, TimePicker } from "@arco-design/web-vue";
 import { DynamicFormItemRegistry, IDynamicFormOptions } from "@/lib/main";
+import MyCheckBox from "./MyCheckBox.vue";
 
 export const defaultConfig = {
   internalWidgets: {
@@ -34,4 +35,7 @@ export function registerAllFormComponents() {
   DynamicFormItemRegistry.registerDynamicFormItemControl('date-time', markRaw(DatePicker), { showTime: true });
   DynamicFormItemRegistry.registerDynamicFormItemControl('alert', markRaw(Alert));
   DynamicFormItemRegistry.registerDynamicFormItemControl('static-image', markRaw(Image), {}, "src");
+
+  //这是注册自己的组件
+  DynamicFormItemRegistry.registerDynamicFormItemControl('my-check', markRaw(MyCheckBox), {}, "value");
 }

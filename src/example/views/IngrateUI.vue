@@ -95,12 +95,6 @@ const formOptions : IDynamicFormOptions = {
         },
       ]
     },
-    { 
-      type: 'cascader', label: '级联组件', name: 'test',
-      additionalProps: {
-        placeholder: '请输入授权码' 
-      } as CascaderInstance['$props']
-    },
     { type: 'password', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码' } as InputInstance['$props'] },
     { type: 'password', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码' } as InputInstance['$props'] },
     { type: 'text', label: '授权密码', name: 'authorization_code', additionalProps: { placeholder: '请输入授权码' } as InputInstance['$props'] },

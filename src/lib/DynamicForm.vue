@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, provide, toRefs, ref, h, PropType } from 'vue';
+import { defineComponent, provide, toRefs, ref, h, PropType, onMounted } from 'vue';
 import DynamicFormInner from './DynamicFormInner.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
 import { defaultDynamicFormOptions, IDynamicFormOptions } from './DynamicForm';
@@ -35,6 +35,10 @@ export default defineComponent({
      * 数据验证成功后回调事件
      */
     'submit',
+    /**
+     * 表单初始化完成，实例引用已经就绪时发出事件
+     */
+    'ready',
   ],
   setup(props, ctx) {
     const { options, model } = toRefs(props);
@@ -57,9 +61,75 @@ export default defineComponent({
       return widgetsRefMap.value[key]?.();
     }
     
-    ctx.expose({
+    function accessFormModel(keyName: string, isSet: boolean, setValue: unknown) : unknown {
+      const keys = keyName.split('.');
+      let ret : unknown = undefined;
+      let obj = model.value as Record<string, unknown>;
+      let keyIndex = 0;
+      let key = keys[keyIndex];
+      while (obj) {
+        const leftIndex = key.indexOf('[');
+        if (leftIndex > 0 && key.endsWith(']')) {
+          const arr = obj[key.substring(0, leftIndex)] as Record<string, unknown>[];
+          const index = parseInt(key.substring(leftIndex + 1, key.length - 1))    
+          obj = arr[index];
+          if (keyIndex >= keys.length - 1) {
+            ret = obj;
+            if (isSet) arr[index] = setValue as Record<string, unknown>;
+          }
+        } else {
+          const newObj = obj[key] as Record<string, unknown>;
+          if (keyIndex >= keys.length - 1) {
+            ret = newObj;
+            if (isSet)
+              obj[key] = setValue as Record<string, unknown>;
+          }
+          obj = newObj;
+        }
+        if (keyIndex < keys.length - 1)
+          key = keys[++keyIndex];
+        else
+          break;
+      }
+      return ret;
+    } 
+
+    onMounted(() => {
+      setTimeout(() => {
+        ctx.emit('ready');
+      }, 400);
+    });
+
+    ctx.expose({  
+      /**
+       * 获取表单组件的 Ref
+       * @returns 
+       */
       getFormRef: () => formEditor.value,
+      /**
+       * 获取表单组件的 Ref
+       * @returns 
+       */
       getFormItemControlRef,
+      /**
+       * 触发提交。同 getFormRef().submit() 。
+       * @returns 
+       */
+      submit: () => formEditor.value.submit(),
+      /**
+       * 外部修改指定单个 field 的数据
+       * @returns 
+       */
+      setValueByPath: (path: string, value: unknown) => {
+        return accessFormModel(path, true, value);
+      },
+      /**
+       * 外部获取指定单个 field 的数据
+       * @returns 
+       */
+      getValueByPath: (path: string) => {
+        return accessFormModel(path, false, undefined);
+      },
     });
 
     return () => {

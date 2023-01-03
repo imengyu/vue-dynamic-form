@@ -44,6 +44,6 @@ const formContext = useInjectFormItemContext();
 
 function onValueUpdate(v: string) {
   emit('update:value', v);
-  formContext.onFieldChange(v);
+  formContext?.onFieldChange(v);
 }
 </script>

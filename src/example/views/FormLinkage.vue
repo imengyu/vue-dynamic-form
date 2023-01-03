@@ -8,6 +8,7 @@
           :options="formOptions"
           :model="formModel"
           @submit="onSubmit"
+          @ready="onReady"
         />
         <a-button type="primary" long @click="handleLogin" style="margin-top:20px">注册</a-button>
       </div>
@@ -32,18 +33,22 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormItemCallbackAdditionalProps, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
-import { ref } from 'vue'
+import { BaseRadioProps, DynamicForm, IDynamicFormItemCallbackAdditionalProps, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
+import { markRaw, onMounted, ref, watch } from 'vue'
 
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
 import { defaultConfig } from './IngrateArcoDesgin';
 import { FormInstance, InputInstance } from '@arco-design/web-vue';
+import { IDynamicFormItemSelectValueOption, SimpleSelectValueFormItemRef } from './MySelect';
+import MySelect from './MySelect.vue';
 
 const editorExtensions = [json()];
 const editorJson = ref('');
 const editorHasError = ref('');
 
+
+const formRef = ref<IDynamicFormRef>();
 const formModel = ref({
   mobile: '',
   enterprise_name: '',
@@ -53,9 +58,18 @@ const formModel = ref({
   vcode: '',
   vcode_image: 'https://imengyu.top/assets/images/test/1.jpg',
   isEnterprise: false,
+  type: 1,
+  item_id: 0 as number|null,
 });
 const formOptions : IDynamicFormOptions = {
   ...defaultConfig,
+  widgets: {
+    'my-select': {
+      componentInstance: markRaw(MySelect),
+      valueName: 'value',
+      additionalProps: {},
+    },
+  },
   formRules: {
     enterprise_name: [{ required: true, message: '请输入企业全称' } ],
     mobile: [{ required: true, message: '请输入手机号' } ],
@@ -113,10 +127,61 @@ const formOptions : IDynamicFormOptions = {
         placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
       } as IDynamicFormItemCallbackAdditionalProps<InputInstance['$props']>
     },
+    { 
+      type: 'base-radio', label: '会员类型', name: 'type', 
+      additionalProps: {
+        items: [
+          { label: '短期', value: 1 },
+          { label: '长期', value: 2 },
+          { label: '试用', value: 3 },
+        ]
+      } as BaseRadioProps,
+    },
+    {
+      type: 'my-select', label: '选择套餐', name: 'item_id', 
+      additionalProps: { placeholder: '请选择套餐' },
+    },
   ],
 };
 
-const formRef = ref<IDynamicFormRef>();
+function loadPackageSelect(newType: number) {
+  //这里是写死手动判断了，实际在这里你可以去请求后端数据
+  let newData = [] as IDynamicFormItemSelectValueOption[];
+  switch (newType) {
+    case 1:
+      newData = [
+        { text: '短期合作套餐', value: 0 },
+        { text: '短期高级套餐', value: 1 },
+      ];
+      break;
+    case 2:
+      newData = [
+        { text: '基础套餐', value: 0 },
+        { text: '商业套餐', value: 1 },
+        { text: '贵宾套餐', value: 2 },
+      ];
+      break;
+    case 3:
+      newData = [
+        { text: '试用套餐', value: 0 },
+      ];
+      break;
+  }
+  //更改后调用实例方法，重新加载数据
+  formRef.value?.getFormItemControlRef<SimpleSelectValueFormItemRef>('item_id')?.setData(newData);
+
+  formModel.value.item_id = null;
+}
+
+//监听 type 属性的更改
+watch(() => formModel.value.type, (newType) => {
+  //更改后重新加载数据
+  loadPackageSelect(newType);
+});
+function onReady() {
+  //初始化的时候也加载一下数据
+  loadPackageSelect(1);
+}
 
 function handleLogin() {
   (formRef.value?.getFormRef?.() as FormInstance).validate().then((res) => {

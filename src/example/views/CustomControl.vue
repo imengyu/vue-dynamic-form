@@ -3,119 +3,68 @@
     <div class="demo-row">
       <div class="demo-col" style="width:50%;">
         <DynamicForm
+          ref="formRef"
           :options="formOptions"
           :model="formModel"
           @submit="onSubmit"
+          @ready="onReady"
         />
-        <textarea v-model="resultJson" class="demo-result" readonly></textarea>
       </div>
       <div class="demo-col" style="width:50%;">
-        <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '你可以动态修改JSON，看看表单会发生什么变化' }}</div>
-        <codemirror
-          v-model="editorJson"
-          placeholder="源代码"
-          :style="{ height: '600px', width: '100%' }"
-          :autofocus="true"
-          :indent-with-tab="true"
-          :tab-size="2"
-          :extensions="editorExtensions"
-        />
+        <textarea v-model="resultJson" :style="{ height: '600px', width: '100%' }" class="demo-result" readonly></textarea>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@/lib/main';
-import { onMounted, reactive, ref, watch } from 'vue'
-import { Codemirror } from 'vue-codemirror';
-import { json } from '@codemirror/lang-json';
-
-const editorExtensions = [json()];
-const editorJson = ref('');
-const editorHasError = ref('');
+import { DynamicForm, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
+import { markRaw, reactive, ref } from 'vue'
+import MySelect from './MySelect.vue';
+import { IDynamicFormItemSelectValueOption, SimpleSelectValueFormItemRef } from './MySelect';
 
 const resultJson = ref('请点击提交按钮获取表单提交数据');
 
+const formRef = ref<IDynamicFormRef>();
 const formModel = reactive({
   stringProp: '',
-  stringProp2: '',
-  numberProp: 2,
-  numberProp2: 3,
+  numberProp: 1,
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
   widgets: {
-
+    //注册局部组件，这样在当前表单中即可使用
+    'my-select': {
+      componentInstance: markRaw(MySelect),
+      valueName: 'value',
+      additionalProps: {},
+    },
   },
   formItems: [
-    { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
-    { 
-      type: 'base-textarea', label: '文本域', name: 'stringProp2', 
-      formProps: {
-        center: false,
-      },
-      additionalProps: { 
-        placeholder: '请输入文本域',
-        rows: 6,
-        cols: 100,
-        style: { width: '400px' }
-      } as BaseTextAreaProps
-    },
-    { 
-      type: 'base-select', label: '选择', name: 'numberProp', 
-      additionalProps: {
-        options: [
-          { text: '苹果', value: 1 },
-          { text: '香蕉', value: 2 },
-          { text: '葡萄', value: 3 },
-        ]
-      } as BaseSelectProps
+    { type: 'base-text', label: '正常组件', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
+    {
+      type: 'my-check', label: '全局自定义组件', name: 'booleanProp', 
+      additionalProps: { text: '这是自定义的复选框' },
     },
     {
-      type: 'base-check', label: '复选框', name: 'booleanProp',
-      additionalProps: {
-        text: '我是复选框的说明',
-      } as BaseCheckProps,
-    },
-    { 
-      type: 'base-radio', label: '单选框', name: 'numberProp2', 
-      additionalProps: {
-        items: [
-          { label: '苹果', value: 1 },
-          { label: '香蕉', value: 2 },
-          { label: '葡萄', value: 3 },
-        ]
-      } as BaseRadioProps,
+      type: 'my-select', label: '局部自定义组件', name: 'numberProp', 
+      additionalProps: { text: '请选择套餐' },
     },
     { 
       type: 'base-button', label: '提交', name: 'submit',
     },
   ],
-  formRules: {
-    stringProp: [
-      { required: true, message: '请输入文本' },
-      { max: 20, message: '文本最长20个字符' },
-    ],
-    stringProp2: [
-      { required: true, message: '请输入文本域' },
-      { max: 200, message: '文本域最长200个字符' },
-    ],
-  },
+  formRules: {},
 });
 
-onMounted(() => {
-  editorJson.value = JSON.stringify(formOptions.value, undefined, 2);
-});
-watch(editorJson, () => {
-  try {
-    const newObj = JSON.parse(editorJson.value);
-    formOptions.value = newObj;
-    editorHasError.value = '';
-  } catch (e) {
-    editorHasError.value = '' + e;
-  }
-});
+function onReady() {
+  //加载一下自定义组件的数据
+  formRef.value?.getFormItemControlRef<SimpleSelectValueFormItemRef>('numberProp')?.setData([
+    { text: '基础套餐', value: 0 },
+    { text: '商业套餐', value: 1 },
+    { text: '贵宾套餐', value: 2 },
+  ] as IDynamicFormItemSelectValueOption[]);
+}
 
 function onSubmit() {
   resultJson.value = JSON.stringify(formModel, undefined, 2);

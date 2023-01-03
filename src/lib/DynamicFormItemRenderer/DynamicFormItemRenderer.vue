@@ -31,6 +31,9 @@ export default defineComponent({
     },
     value: {
     },
+    name: {
+      type: String
+    },
     additionalProps: {
       type: Object as PropType<Record<string, unknown>>,
     },
@@ -39,13 +42,24 @@ export default defineComponent({
     'update:value'
   ],
   setup(props, context) {
-    const { item } = toRefs(props);
+    const {
+      item,
+      additionalProps,
+      disabled,
+      parentModel,
+      value,
+      name,
+    } = toRefs(props);
 
+    const componentRef = ref();
     const componentInstance = ref(null as any);
     const componentAdditionalProps = ref(null as any);
     const componentValueName = ref(null as any);
     const componentOnUpdateValueName = ref(null as any);
 
+    function getRef() {
+      return componentRef.value;
+    }
     function onUpdateValue(v: unknown) {
       context.emit('update:value', v);
     }
@@ -98,39 +112,43 @@ export default defineComponent({
     const rawModel = inject<Record<string, unknown>>('rawModel'); 
     const widgetOvrride = inject<Record<string, DynamicFormItemRegistryItem>>('widgetOvrride'); 
 
-    return {
+    context.expose({
       onUpdateValue,
       registerInternalDynamicFormItemControls,
       findComponent,
+      getRef,
       rawModel,
       widgetOvrride,
+      componentRef,
       componentInstance,
       componentAdditionalProps,
       componentValueName,
       componentOnUpdateValueName,
-    }
-  },
-  render() {
-    if (this.componentInstance) {
-      return h(this.componentInstance, {
-        ...(this.componentAdditionalProps as Record<string, unknown>),
-        ...(this.additionalProps as Record<string, unknown>),
-        disabled: this.disabled,
-        item: this.item,
-        rawModel: this.rawModel,
-        parentModel: this.parentModel,
-        name: this.item?.name,
-        ...(this.item?.additionalEvents),
-        ...(this.item?.additionalDirectProps),
-        //双向数据绑定属性
-        [this.componentValueName]: this.value,
-        [this.componentOnUpdateValueName]: (v: unknown) => this.onUpdateValue(v),
-      });
-      
-    } else {
-      return h('span', {
-        class: 'dynamic-form-error-alert'
-      }, `警告：未找到表单组件实例 ${(this.item as IDynamicFormItem)?.type || '未知'} ${JSON.stringify(this.widgetOvrride)}`);
+    });
+
+    return () => {
+      if (componentInstance.value) {
+        return h(componentInstance.value, {
+          ref: componentRef,
+          ...(componentAdditionalProps.value as Record<string, unknown>),
+          ...(additionalProps.value as Record<string, unknown>),
+          disabled: disabled.value,
+          item: item.value,
+          rawModel: rawModel,
+          parentModel: parentModel.value,
+          name: name.value,
+          ...(item.value?.additionalEvents),
+          ...(item.value?.additionalDirectProps),
+          //双向数据绑定属性
+          [componentValueName.value]: value.value,
+          [componentOnUpdateValueName.value]: (v: unknown) => onUpdateValue(v),
+        });
+        
+      } else {
+        return h('span', {
+          class: 'dynamic-form-error-alert'
+        }, `警告：未找到表单组件实例 ${(item.value as IDynamicFormItem)?.type || '未知'} ${JSON.stringify(widgetOvrride || {})}`);
+      }
     }
   },
 });

@@ -105,6 +105,7 @@ export default defineComponent({
           parentModel: parentModel.value,
           'onUpdate:value': (v: unknown) => onModelUpdate(v),
           item: item.value,
+          name: name.value,
           disabled: disabled.value,
           additionalProps: evaluateCallbackObj(item.value.additionalProps as Record<string, unknown>),
         });

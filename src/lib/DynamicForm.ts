@@ -92,23 +92,18 @@ export interface IDynamicFormRef {
    */
   submit: () => void;
   /**
-   * 外部手动修改 formData，用于已填写的表单的数据回填
-   * @param formData 
-   * @returns 
-   */
-  setValues: (formData: IDynamicFormObject) => void,
-  /**
    * 外部修改指定单个 field 的数据
-   * @param formData 
+   * @param path 路径
+   * @param value 值
    * @returns 
    */
-  setValueByPath: (formData: Record<string, unknown>) => void,
+  setValueByPath: (path: string, value: unknown) => void,
   /**
-   * 指定路径修改 formItem
-   * @param formData 
+   * 外部获取指定单个 field 的数据
+   * @param path 路径
    * @returns 
    */
-  setSchemaByPath: (formData: Record<string, IDynamicFormItem>) => void,
+  getValueByPath: (path: string) => unknown,
 }
 
 export interface IDynamicFormInternalWidgets {
