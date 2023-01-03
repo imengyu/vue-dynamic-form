@@ -73,6 +73,7 @@ export default defineComponent({
       //自定义
       else if (item.value.type === 'custom') {
         return renderSlot(ctx.slots, 'formCeil', {
+          name: name.value,
           item: item.value,
           model: model.value,
           onModelUpdate: (v: unknown) => onModelUpdate(v),
@@ -118,7 +119,7 @@ export default defineComponent({
       //自定义渲染Form
       if (internalWidgetsFormItem) {
         return h(internalWidgetsFormItem.component as any, {
-          ...item.value.formProps,
+          ...item.value.formProps as {},
           colon: noLable.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
@@ -131,7 +132,7 @@ export default defineComponent({
       return (
         h(FormItem, {
           colon: noLable.value !== true,
-          ...item.value.formProps,
+          ...item.value.formProps as {},
           label: noLable.value ? '' : evaluateCallback(item.value.label),
           name: name.value,
         }, {

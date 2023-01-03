@@ -36,6 +36,7 @@ title: API 参考 - DynamicForm
 
 | 属性 | 描述 | 类型 | 默认值 |
 | :----: | :----: | :----: | :----: |
+| name | 表单项的完整路径 | `string` | — |
 | item | 表单项定义 | `IDynamicFormItem` | — |
 | model | 表单项当前的值 | `Object` | — |
 | onModelUpdate | 用于双向绑定数据回调 | `(v: unknown) => void` | — |

@@ -27,6 +27,7 @@ const config = {
           text: '高级用法',
           items: [
             { text: '绑定组件', link: '/guide/register-controls' },
+            { text: '自定义渲染', link: '/guide/custom-render' },
             { text: '自定义组件', link: '/guide/custom-control' },
             { text: '表单联动', link: '/guide/form-linkage' },
             { text: '表单方法', link: '/guide/form-funs' },
