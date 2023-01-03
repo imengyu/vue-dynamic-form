@@ -3,6 +3,7 @@
     <DynamicForm
       :options="formOptions"
       :model="formModel"
+      @submit="onSubmit"
     />
     <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 200px;" readonly></textarea>
   </div>
@@ -81,4 +82,9 @@ const formOptions = ref<IDynamicFormOptions>({
     ],
   },
 });
+
+function onSubmit() {
+  alert('你提交的数据：' + JSON.stringify(formModel, undefined, 2));
+}
+
 </script>

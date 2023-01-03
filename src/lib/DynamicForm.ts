@@ -1,6 +1,7 @@
 import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
+import { RowProps } from "./DynamicFormBasicControls";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -37,15 +38,15 @@ export interface IDynamicFormItem {
   // eslint-disable-next-line @typescript-eslint/ban-types
   additionalEvents?: Record<string, Function>;
   /**
-   * 附加组件属性。此属性直接应用到目标渲染组件上
+   * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
    */
   additionalDirectProps?: Record<string, unknown>;
   /**
-   * 附加FormItem组件属性
+   * 附加 FormItem 组件属性
    */
-  formProps?: Record<string, unknown>;
+  formProps?: unknown;
   /**
-   * 当前表单名称
+   * 当前表单项名称。
    */
   name: string;
   /**
@@ -72,6 +73,10 @@ export interface IDynamicFormItem {
    * 条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
   colProps?: ColProps,
+  /**
+   * 条目的 Row 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
+   */
+  rowProps?: RowProps,
 }
 
 //DynamicForm 实例方法接口
@@ -82,7 +87,7 @@ export interface IDynamicFormRef {
    */
   getFormRef: <T>() => T;
   /**
-   * 获取表单组件的 Ref
+   * 获取指定表单项组件的 Ref
    * @returns 
    */
   getFormItemControlRef: <T>(key: string) => T;
@@ -177,7 +182,7 @@ export interface IDynamicFormOptions {
    */
   widgets?: Record<string, DynamicFormItemRegistryItem>,
   /**
-   * 自定义重写内置表单控件例如 Col、Row、Form等等。你可以使用其他组件库的组件例如 elemnent-ui 或者 ant-desgin-vue
+   * 自定义重写内置表单控件 Form FormItem。你可以使用其他组件库的组件例如 elemnent-ui 或者 ant-desgin-vue
    */
   internalWidgets?: IDynamicFormInternalWidgets,
   /**
@@ -192,8 +197,8 @@ export interface IDynamicFormOptions {
 export let defaultDynamicFormOptions = {} as IDynamicFormOptions;
 
 /**
- * 配置默认的动态表单属性
- * @param options 
+ * 配置默认的动态表单属性，配置后将会对所有动态表单生效。
+ * @param options 参数
  */
 export function configDefaultDynamicFormOptions(options: IDynamicFormOptions) {
   defaultDynamicFormOptions = {

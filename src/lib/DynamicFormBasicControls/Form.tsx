@@ -33,7 +33,7 @@ export interface FormProps {
    */
   hideRequiredMark?: boolean;
   /**
-   * 统一设置左侧文本对其
+   * 统一设置左侧文本对齐
    */
   labelAlign?: 'left'|'center'|'right';
   /**
@@ -52,15 +52,11 @@ export interface FormProps {
    */
   validateTrigger?: ValidTrigger;
   /**
-   * 属性改变后立即触发一次验证
-   */
-  validateOnRuleChange?: boolean;
-  /**
    * 是否显左边标题，默认是
    */
   showLabel?: boolean;
   /**
-   * Form Name
+   * 表单的名称
    */
   name?: string;
 }
@@ -288,9 +284,6 @@ export default defineComponent({
 
       //获取当前参数
       const nowValues = model.value;
-
-      console.log('nowValues', nowValues);
-      
 
       //开始验证
       return new Promise<void>((resolve, reject) => {

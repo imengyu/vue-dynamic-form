@@ -26,6 +26,9 @@
           <template #child="values">
             <slot name="child" v-bind="values" />
           </template>
+          <template #itemButton="values">
+            <slot name="itemButton" v-bind="values" />
+          </template>
         </FormArrayGroupItem>
       </div>
     </template>
@@ -51,6 +54,9 @@
         >
           <template #child="values">
             <slot name="child" v-bind="values" />
+          </template>
+          <template #itemButton="values">
+            <slot name="itemButton" v-bind="values" />
           </template>
         </FormArrayGroupItem>
       </div>

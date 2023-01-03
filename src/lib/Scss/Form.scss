@@ -18,6 +18,10 @@
     color: #f55;
   }
 
+  &.no-bottom-margin {
+    margin-bottom: 0;
+  }
+
   label {
     color: #333;
     height: 32px;

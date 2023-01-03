@@ -35,6 +35,7 @@ import { onMounted, ref } from 'vue'
 
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
+import { FormArrayGroupProps } from '@/lib/DynamicFormItemControls/FormArrayGroup';
 
 const editorExtensions = [json()];
 const editorJson = ref('');
@@ -137,6 +138,11 @@ const formOptions : IDynamicFormOptions = {
       formProps: {
         center: false,
       },
+      additionalProps: {
+        showAddButton: true,
+        showUpDownButton: true,
+        showDeleteButton: true,
+      } as FormArrayGroupProps,
       newChildrenObject: (arrayNow) => `新建数据项${arrayNow.length+1}`,
       children: [
         { type: 'base-text', label: '名称', name: '.', additionalProps: { placeholder: '请输入名称' } },

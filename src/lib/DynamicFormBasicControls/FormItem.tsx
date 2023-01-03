@@ -33,17 +33,17 @@ export interface FormItemProps {
    */
   showRequiredBadge?: boolean;
   /**
-   * 左侧文本对其
+   * 左侧文本对齐
    */
   labelAlign?: 'left'|'center'|'right';
   /**
    * 左侧文本的flex占比，默认是2
    */
-  labelCol?: number;
+  labelCol?: { span?: number, offset?: number };
   /**
    * 输入框的flex占比
    */
-  wrapperCol?: number;
+  wrapperCol?: { span?: number, offset?: number };
   /**
    * 左侧文本的样式
    */
@@ -67,6 +67,10 @@ export interface FormItemProps {
    * 是否显左边标题，默认是
    */
   showLabel?: boolean;
+  /**
+   * 是否去掉底部编辑，默认否
+   */
+  noBottomMargin?: boolean;
 }
 
 /**
@@ -139,6 +143,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    noBottomMargin: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: { 
     Col, 
@@ -151,6 +159,7 @@ export default defineComponent({
       showLabel, label, labelCol, wrapperCol, disabled, required, colon, center,
       labelDisableColor, labelColor, labelAlign, labelWidth, labelStyle, showRequiredBadge, 
       validateTrigger,
+      noBottomMargin,
     } = toRefs(props);
 
     const error = ref<string|null>(null);
@@ -190,7 +199,7 @@ export default defineComponent({
     return () => {
       return (
         <Row
-          class="dynamic-form-control-item"
+          class={"dynamic-form-control-item" + (noBottomMargin.value ? ' no-bottom-margin' : '')}
           align={center.value ? 'center' : 'flex-start'}
         >
           { 

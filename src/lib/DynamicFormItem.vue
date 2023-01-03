@@ -39,7 +39,7 @@
       <div v-if="model === undefined">
         <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
       </div>
-      <template v-else>
+      <Row v-else v-bind="item.rowProps">
         <Col
           v-for="(child, k) in item.children" 
           v-bind="{ ...item.childrenColProps, ...child.colProps }"
@@ -56,14 +56,11 @@
             :disabled="disabled || evaluateCallback(item.disabled)"
           />
         </Col>
-      </template>
+      </Row>
     </FormGroup>
     <!--扁平组-->
     <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
-      <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [group-flat] 警告：输入字段 {{ name }} 是 undefined</span>
-      </div>
-      <template v-else>
+      <Row v-bind="item.rowProps">
         <Col
           v-for="(child, k) in item.children" 
           v-bind="{ ...item.childrenColProps, ...child.colProps }"
@@ -84,7 +81,7 @@
             </template>
           </DynamicFormItem>
         </Col>
-      </template>
+      </Row>
     </FormGroup>
     <!--扁平普通-->
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
@@ -96,10 +93,7 @@
       :parentModel="parentModel"
     >
       <template #insertion>
-        <div v-if="model === undefined">
-          <span class="dynamic-form-error-alert"> [simple-flat] 警告：输入字段 {{ name }} 是 undefined</span>
-        </div>
-        <template v-else>
+        <Row v-bind="item.rowProps">
           <Col
             v-for="(child, k) in item.children" 
             v-bind="{ ...item.childrenColProps, ...child.colProps }"
@@ -120,7 +114,7 @@
               </template>
             </DynamicFormItem>
           </Col>
-        </template>
+        </Row>
       </template>
     </DynamicFormItemNormal>
     <!--数组变量组-->
@@ -229,6 +223,7 @@ import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
 import Col from './DynamicFormBasicControls/Layout/Col';
 import { Rule } from 'async-validator';
+import Row from './DynamicFormBasicControls/Layout/Row';
 
 /**
  * 动态表单条目渲染组件。
@@ -273,7 +268,7 @@ export default defineComponent({
       },
     }
   },
-  components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col }
+  components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col, Row }
 });
 
 </script>

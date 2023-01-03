@@ -87,11 +87,8 @@ const formOptions = ref<IDynamicFormOptions>({
 
 <DynamicFormBasicUseage1 />
 
-### 嵌套表单结构
-
-表单支持嵌套，你可以嵌套对象或者数组。
-
-具体请参考 [嵌套表单结构](./form-nest.md)。
+一个完整的表单就是由上面这些一条条表单描述数据组成的，因此，只要你的脑海中有了表单的结构数据，一个
+表单就可以快速搭建出来。
 
 ### 表单验证
 
@@ -101,34 +98,7 @@ const formOptions = ref<IDynamicFormOptions>({
 
 如果你将表单默认的 Form 替换了，传入的 formRules 请参考对应的文档。
 
-### 表单其他属性
-
-表单数据还支持设置 label 与 wrapper 占比。
-
-```ts
-const formOptions = ref<IDynamicFormOptions>({
-  //formLabelWidth: '100px', //单独设置宽度
-  formLabelCol: { span: 12 },
-  formWrapperCol: { span: 12 },
-  //...
-});
-```
-
-效果：
-
-<DynamicFormBasicUseage2 />
-
-表单数据还支持设置 Form 组件的其他属性，如果你使用自定义 Form 组件，可以使用 formAdditionaProps 设置自定义属性。
-
-```ts
-const formOptions = ref<IDynamicFormOptions>({
-  formAdditionaProps: {
-    //自定义属性
-    layout: 'inline',
-  },
-  //...
-});
-```
+默认表单组件会在提交时自动验证。
 
 ### 表单提交
 
@@ -177,6 +147,42 @@ function handleLogin() {
 </script>
 ```
 
+### 嵌套表单结构
+
+表单支持嵌套，你可以嵌套对象或者数组。
+
+具体请参考 [嵌套表单结构](./form-nest.md)。
+
+### 表单其他属性
+
+表单数据还支持设置 label 与 wrapper 占比。
+
+```ts
+const formOptions = ref<IDynamicFormOptions>({
+  //formLabelWidth: '100px', //单独设置宽度
+  formLabelCol: { span: 12 },
+  formWrapperCol: { span: 12 },
+  //...
+});
+```
+
+效果：
+
+<DynamicFormBasicUseage2 />
+
+表单数据还支持设置 Form 组件的其他属性，如果你使用自定义 Form 组件，可以使用 formAdditionaProps 设置自定义属性。
+
+```ts
+const formOptions = ref<IDynamicFormOptions>({
+  formAdditionaProps: {
+    //自定义属性
+    layout: 'inline',
+  },
+  //...
+});
+```
+
+
 ## 完整的最简单 Demo
 
 <DynamicFormBasicUseage />
@@ -187,6 +193,7 @@ function handleLogin() {
     <DynamicForm
       :options="formOptions"
       :model="formModel"
+      @submit="onSubmit"
     />
     <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 200px;" readonly></textarea>
   </div>
@@ -261,6 +268,10 @@ const formOptions = ref<IDynamicFormOptions>({
     ],
   },
 });
+
+function onSubmit() {
+  alert('你提交的数据：' + JSON.stringify(formModel, undefined, 2));
+}
 </script>
 ```
 

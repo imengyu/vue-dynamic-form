@@ -2,7 +2,7 @@ import { defineComponent, toRefs, type VNode } from 'vue';
 
 export interface RowProps {
   /**
-   * 列元素之间的间距（单位为 dp）
+   * 列元素之间的间距（单位为 px）
    */
   gutter?: number;
   /**
