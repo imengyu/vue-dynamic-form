@@ -1,12 +1,14 @@
 ---
-title: 什么是 vue-dynamic-form?
+title: 介绍
 ---
 
 <script setup>
 import DynamicFormBasicUseage from '../../src/example/views/BasicUseageDoc.vue'
 </script>
 
-# 什么是 vue-dynamic-form?
+# 介绍
+
+## 什么是 vue-dynamic-form?
 
 vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
 
@@ -38,7 +40,21 @@ vue-dynamic-form 并不是开发中所必须的，它只是一个帮助你加快
 * 写法可能不是特别直观，需要适应。
 * 可能需要自己封装组件或者使用其他人的组件。
 * 需要牺牲一些高度自定义的写法。
+* 需要牺牲一些性能。
 
 效果：
 
 <DynamicFormBasicUseage />
+
+上面的效果是使用了默认的组件，功能比较简陋，仅用于测试和展示。
+实际你可以在表单中嵌入使用你喜欢的 UI 组件库，例如 [Ant Design Vue](https://www.antdv.com/docs/vue/getting-started-cn)、[arco.design Vue](https://arco.design/vue/docs/start)、[Element plus](https://element-plus.gitee.io/zh-CN/guide/installation.html) 等等，嵌入其他UI组件库的最终效果你可以[查看 Demo](https://imengyu.top/pages/vue-dynamic-form-demo/#IngrateUI)。
+
+## 开始之前
+
+文档中所示案例，你都可在 [Github 仓库](https://github.com/imengyu/vue-dynamic-form/tree/master/src/example/views) 中找到完整的源代码。
+
+作者开发不易，如果这个项目对您有帮助，希望你可以去 [Github](https://github.com/imengyu/vue-dynamic-form) 或者 [Gitee](https://gitee.com/imengyu/vue-dynamic-form) 帮我点个 ⭐ ，这将是对我极大的鼓励。谢谢啦 (●'◡'●)
+
+如果你准备好了，那我们就开始吧~
+
+[立即开始](./getting-started.md)

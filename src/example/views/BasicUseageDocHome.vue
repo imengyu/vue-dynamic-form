@@ -7,7 +7,7 @@
           :model="formModel"
           @submit="onSubmit"
         />
-        <textarea v-model="resultJson" class="demo-result" readonly></textarea>
+        <div class="demo-result">{{resultJson}}</div>
       </div>
       <div class="demo-col" style="width:50%;">
         <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '你可以动态修改JSON，看看表单会发生什么变化' }}</div>
@@ -47,6 +47,8 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
+  formLabelCol: { span: 4 },
+  formWrapperCol: { span: 20 },
   formItems: [
     { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
     { 

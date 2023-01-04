@@ -8,6 +8,8 @@ vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
 
 [查看文档](https://imengyu.top/pages/vue-dynamic-form-docs)。
 
+![demo](./demo.jpg)
+
 ## 安装
 
 ```shell
@@ -32,17 +34,15 @@ vue-dynamic-form 并不是开发中所必须的，它只是一个帮助你加快
 
 > **本项目目前还处于早期发布阶段，可能会存在不少问题，如果遇到问题，欢迎在 [Github](https://github.com/imengyu/vue-dynamic-form/issues) 提出 Issue，我会尽量为你解决！**
 
-下面是动态表单的优劣：
+## 支持
 
-优点
+作者开发不易，如果这个项目对您有帮助，希望你可以帮我点个 ⭐ ，这将是对我极大的鼓励。谢谢啦 (●'◡'●)
 
-* 省去了手动布局表单组件（加快开发速度，减少代码体积）。
-* 比起手动布局组件结构清晰 (数据结构即表单结构)。
-* 动态使用数据驱动，这意味着可以由后端动态下发配置实现表单的动态控制。
-* 动态使用数据驱动，这意味着可以接入任何表单设计器。
+## 作者的其他项目
 
-缺点
+* [vue3-context-menu 一个简洁美观简单的Vue3右键菜单组件](https://github.com/imengyu/vue3-context-menu/)
+* [aeasy-ui-react-native 一款简单的 React Native 移动端UI组件库](https://github.com/imengyu/naeasy-ui-react-native)
 
-* 写法可能不是特别直观，需要适应。
-* 可能需要自己封装组件或者使用其他人的组件。
-* 需要牺牲一些高度自定义的写法。
+## License
+
+[MIT](./LICENSE)

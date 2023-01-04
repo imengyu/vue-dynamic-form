@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, provide, toRefs, ref, h, PropType, onMounted } from 'vue';
+import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch } from 'vue';
 import DynamicFormInner from './DynamicFormInner.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
 import { defaultDynamicFormOptions, IDynamicFormOptions } from './DynamicForm';
@@ -42,14 +42,22 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const { options, model } = toRefs(props);
-    const finalOptions = {
+
+    const finalOptions = ref<IDynamicFormOptions>({
       ...defaultDynamicFormOptions,
       ...options.value,
-    } as IDynamicFormOptions;
+    });
 
-    provide('widgetOvrride', finalOptions.widgets || {});
-    provide('internalWidgets', finalOptions.internalWidgets);
-    provide('formRules', finalOptions.formRules);
+    watch(options, () => {
+      finalOptions.value = {
+        ...defaultDynamicFormOptions,
+        ...options.value,
+      };
+    });
+
+    provide('widgetOvrride', finalOptions.value.widgets || {});
+    provide('internalWidgets', finalOptions.value.internalWidgets);
+    provide('formRules', finalOptions.value.formRules);
     provide('rawModel', model.value);
 
     const formEditor = ref();
@@ -134,8 +142,8 @@ export default defineComponent({
 
     return () => {
 
-      const renderChildren = () => h(DynamicFormInner as any, { options: finalOptions, model: model.value }, ctx.slots);
-      const internalWidgetsForm = finalOptions.internalWidgets?.Form;
+      const renderChildren = () => h(DynamicFormInner as any, { options: finalOptions.value, model: model.value }, ctx.slots);
+      const internalWidgetsForm = finalOptions.value.internalWidgets?.Form;
       const {
         formRules = {},
         formLabelWidth = '150px',
@@ -143,7 +151,7 @@ export default defineComponent({
         formWrapperCol = {},
         formAdditionaProps = {},
         formAdditionalEvents = {},
-      } = finalOptions;
+      } = finalOptions.value;
 
       //自定义渲染Form
       if (internalWidgetsForm) {

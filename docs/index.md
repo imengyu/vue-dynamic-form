@@ -1,7 +1,10 @@
-# vue-dynamic-form
+---
+title: vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
+layout: home
+---
 
-A data driven form component for vue3.
+<Index />
 
-一个用数据驱动的 Vue3 动态表单组件。
-
-[立即开始](./guide/about.md)
+<script setup>
+import Index from './index.vue'
+</script>
