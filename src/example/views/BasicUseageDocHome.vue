@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { Codemirror } from 'vue-codemirror';
+import { Codemirror } from 'vue-codemirror/dist/vue-codemirror.cjs.js'
 import { json } from '@codemirror/lang-json';
 
 const editorExtensions = [json()];

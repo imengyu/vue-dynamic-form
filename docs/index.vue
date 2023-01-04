@@ -30,7 +30,44 @@ function goView() {
 </script>
 
 <style lang="scss">
-@import '../src/example/assets/main.scss';
+.demo-row {
+  display: flex;
+  flex-direction: row;
+}
+.demo-col {
+  display: flex;
+  flex-direction: column;
+}
+.demo-alert {
+  width: 100%;
+  padding: 8px 16px;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+  position: relative;
+  background-color: #efefef;
+  overflow: hidden;
+  opacity: 1;
+  display: block;
+
+  &.success {
+    background-color: #cef1bc;
+    color: #67c23a;
+  }
+  &.error {
+    background-color: #f1cdcd;
+    color: #f56c6c;
+  }
+}
+.demo-result {
+  min-height: 100px;
+  padding: 10px;
+  background-color: #fff;
+  border: none;
+}
+div.demo-result {
+  white-space: pre;
+}
 
 $primary-color: #50af21;
 

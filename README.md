@@ -41,7 +41,7 @@ vue-dynamic-form 并不是开发中所必须的，它只是一个帮助你加快
 ## 作者的其他项目
 
 * [vue3-context-menu 一个简洁美观简单的Vue3右键菜单组件](https://github.com/imengyu/vue3-context-menu/)
-* [aeasy-ui-react-native 一款简单的 React Native 移动端UI组件库](https://github.com/imengyu/naeasy-ui-react-native)
+* [naeasy-ui-react-native 一款简单的 React Native 移动端UI组件库](https://github.com/imengyu/naeasy-ui-react-native)
 
 ## License
 
