@@ -154,7 +154,7 @@ export interface IDynamicFormOptions {
   /**
    * 表单的校验规则
    */
-  formRules?: Record<string, Rule>;
+  formRules?: Record<string, unknown>;
   /**
    * 表单label栅格宽度
    */
