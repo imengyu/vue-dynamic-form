@@ -1,32 +1,37 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <!--空显示-->
-  <slot name="empty" v-if="options.formItems.length == 0">
+  <slot name="empty" v-if="options.formItems.length == 0 || !model">
     <div class="dynamic-form-item-empty">暂无可供您编辑的数据</div>
   </slot>
-  <!--表单条目渲染核心-->
-  <DynamicFormItem 
-    v-for="(item, index) in options.formItems"
-    :key="index"
-    :item="item"
-    :name="item.name"
-    :rawModel="model"
-    :model="model[item.name]"
-    :parentModel="model"
-    @update:model="(v: unknown) => model[item.name] = v"
-    :disabled="options.disabled"
-  >
-    <template #arrayButtonAdd="props">
-      <slot name="formArrayButtonAdd" v-bind="props" />
-    </template>
-    <template #arrayButtons="props">
-      <slot name="formArrayButtons" v-bind="props" />
-    </template>
-    <template #formCeil="values">
-      <slot name="formCeil" v-bind="values" />
-    </template>
-  </DynamicFormItem>
-  <slot name="endButton" />
+  <div class="dynamic-form-item-empty" v-else-if="(typeof model !== 'object')">
+    DynamicForm 警告：model 不是 object 类型！
+  </div>
+  <template v-else>
+    <!--表单条目渲染核心-->
+    <DynamicFormItem 
+      v-for="(item, index) in options.formItems"
+      :key="index"
+      :item="item"
+      :name="item.name"
+      :rawModel="model"
+      :model="model[item.name]"
+      :parentModel="model"
+      @update:model="(v: unknown) => model[item.name] = v"
+      :disabled="options.disabled"
+    >
+      <template #arrayButtonAdd="props">
+        <slot name="formArrayButtonAdd" v-bind="props" />
+      </template>
+      <template #arrayButtons="props">
+        <slot name="formArrayButtons" v-bind="props" />
+      </template>
+      <template #formCeil="values">
+        <slot name="formCeil" v-bind="values" />
+      </template>
+    </DynamicFormItem>
+    <slot name="endButton" />
+  </template>
 </template>
 
 <script lang="ts">

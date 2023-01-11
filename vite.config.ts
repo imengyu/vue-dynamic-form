@@ -19,9 +19,11 @@ export default defineConfig({
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/lib/main.ts'),
       name: 'vue-dynamic-form',
+      formats: [ 'cjs', 'es', 'umd' ],
       // the proper extensions will be added
       fileName: 'vue-dynamic-form',
     },
+    minify: false,
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['vue'],
