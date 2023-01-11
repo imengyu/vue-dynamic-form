@@ -61,6 +61,9 @@ export default defineComponent({
       return componentRef.value;
     }
     function onUpdateValue(v: unknown) {
+      //通知更新
+      if (item.value?.watch)
+        item.value.watch(value.value, v);
       context.emit('update:value', v);
     }
     function registerInternalDynamicFormItemControls() : void {
@@ -128,7 +131,7 @@ export default defineComponent({
 
     return () => {
       if (componentInstance.value) {
-        return h(componentInstance.value, {
+        const props = {
           ref: componentRef,
           ...(componentAdditionalProps.value as Record<string, unknown>),
           ...(additionalProps.value as Record<string, unknown>),
@@ -137,12 +140,25 @@ export default defineComponent({
           rawModel: rawModel,
           parentModel: parentModel.value,
           name: name.value,
-          ...(item.value?.additionalEvents),
-          ...(item.value?.additionalDirectProps),
           //双向数据绑定属性
           [componentValueName.value]: value.value,
           [componentOnUpdateValueName.value]: (v: unknown) => onUpdateValue(v),
-        });
+        } as Record<string, unknown>;
+
+        const additionalEvents = item.value?.additionalEvents as Record<string, unknown>;
+        const additionalDirectProps = item.value?.additionalDirectProps as Record<string, unknown>;
+        if (additionalDirectProps && typeof additionalDirectProps === 'object') {
+          for (const key in additionalDirectProps)
+            props[key] = additionalDirectProps[key];
+        }
+        if (additionalEvents) {
+          for (const key in additionalEvents) {
+            //转换名称
+            props[`on${key.charAt(0).toLocaleUpperCase()}${key.substring(1)}`] = additionalEvents[key];
+          }
+        }
+
+        return h(componentInstance.value, props);
         
       } else {
         return h('span', {

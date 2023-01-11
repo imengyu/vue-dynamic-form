@@ -24,7 +24,7 @@ const formOptions = ref<IDynamicFormOptions>({
       },
     },
     {
-      showCondition: (_, model) => (model as IDynamicFormObject).booleanProp == true,
+      hidden: { callback: (_, model) => (model as IDynamicFormObject).booleanProp == false },
       type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' },
     },
   ],

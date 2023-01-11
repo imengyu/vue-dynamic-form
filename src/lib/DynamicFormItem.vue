@@ -1,6 +1,6 @@
 
 <template>
-  <div class="dynamic-form-item-wrapper" v-if="(!item.showCondition || evaluateCallback(item.showCondition))">
+  <div class="dynamic-form-item-wrapper" v-if="evaluateCallback(item.hidden) !== true">
     <!--对象组-->
     <template v-if="item.type === 'object'">
       <div v-if="model === undefined">
@@ -259,13 +259,15 @@ export default defineComponent({
     const propsP = toRefs(props);
     const formRules = inject<Record<string, Rule>>('formRules'); 
 
+    function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
+      if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<T>).callback === 'function')
+        return (val as IDynamicFormItemCallback<T>).callback(propsP.model.value, propsP.rawModel.value, propsP.parentModel.value, propsP.item.value, formRules);
+      return val as T;
+    }
+
     return {
       formRules,
-      evaluateCallback: (val: unknown|IDynamicFormItemCallback<unknown>) => {
-        if (typeof val === 'function')
-          return val(propsP.model.value, propsP.rawModel.value, propsP.parentModel.value, propsP.item.value, formRules);
-        return val;
-      },
+      evaluateCallback,
     }
   },
   components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col, Row }

@@ -16,7 +16,7 @@ IDynamicFormItem 表单项的以下属性支持传入回调，在回调中你可
 
 |属性名|类型|说明|
 |--|--|--|
-|showCondition|boolean|当前表单项是否显示|
+|hidden|boolean|显是否隐藏当前表单项|
 |disabled|boolean|是否禁用当前表单项|
 |label|string|当前表单说明文字|
 |additionalProps|object|附加组件属性(只支持第一级传入回调)|
@@ -49,7 +49,7 @@ const formOptions = ref<IDynamicFormOptions>({
       },
     },
     {
-      showCondition: (_, model) => (model as IDynamicFormObject).booleanProp == true,
+      hidden: { callback: (_, model) => (model as IDynamicFormObject).booleanProp == false },
       type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' },
     },
   ],
@@ -94,22 +94,22 @@ const formOptions : IDynamicFormOptions = {
   formItems: [
     { type: 'base-check', label: '企业用户', name: 'isEnterprise' },
     {
-      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === false,
+      hidden: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === false },
       type: 'base-text', label: '手机号', name: 'mobile', additionalProps: { placeholder: '请输入手机号' },
     },
     {
-      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      hidden: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true },
       type: 'base-text', label: '企业全称', name: 'enterprise_name', additionalProps: { placeholder: '请输入企业全称' },
     },
     {
-      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      hidden: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true },
       type: 'base-text', label: '统一社会信用代码', name: 'enterprise_id', additionalProps: { placeholder: '请输入企业统一社会信用代码' },
     },
     { type: 'base-text', label: '密码', name: 'password', additionalProps: { placeholder: '请输入密码', password: true },
     { type: 'base-text', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码', password: true },
     {
       type: 'base-text', 
-      label: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码',
+      label: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码' },
       name: 'authorization_code',
       additionalProps: {
         placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
@@ -153,6 +153,11 @@ const formOptions = reactive<IDynamicFormOptions>({
           { label: '试用', value: 3 },
         ]
       } as BaseRadioProps,
+      watch: (oldv, newV) => {
+        //也可以为条目设置watch
+        //loadPackageSelect(newV);
+        console.log('会员类型更改：', oldv, newV);
+      },
     },
     {
       type: 'base-select', label: '选择套餐', name: 'item_id', 

@@ -47,9 +47,9 @@ export default defineComponent({
     const currentFormItem = ref<DynamicFormItemRendererInterface>(); 
 
     function evaluateCallback(val: unknown|IDynamicFormItemCallback<unknown>) {
-      if (typeof val === 'function')
-        return val(model.value, rawModel.value, parentModel.value, item.value, formRules);
-      return val;
+      if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<unknown>).callback === 'function')
+        return (val as IDynamicFormItemCallback<unknown>).callback(model.value, rawModel.value, parentModel.value, item.value, formRules);
+      return val as unknown;
     }
     function evaluateCallbackObj(val: Record<string, unknown|IDynamicFormItemCallback<unknown>>) {
       const newObj = {} as Record<string, unknown>;
@@ -86,7 +86,7 @@ export default defineComponent({
       //静态文字
       else if (item.value.type === 'static-text') {
         return h('span', { ...evaluateCallbackObj(item.value.additionalProps as {}) }, [
-          (model.value || evaluateCallback(item.value.additionalProps as Record<string, unknown>)?.text) as string
+          (model.value || evaluateCallback((item.value.additionalProps as Record<string, unknown>).text)) as string
         ]);
       }
       //提交按钮
@@ -94,8 +94,8 @@ export default defineComponent({
         return h('button', { 
           type: item.value.name === 'submit' ? 'submit' : (item.value.name === 'reset' ? 'reset' : ''),
           class: 'dynamic-form-base-control base-button',
-          ...evaluateCallbackObj(item.value.additionalProps as {}),
-        }, [ (item.value.additionalProps as Record<string, unknown>)?.text as string || evaluateCallback(item.value.label) ]);
+          ...evaluateCallbackObj(item.value.additionalProps as {}) as {},
+        }, [ ((item.value.additionalProps as Record<string, unknown>)?.text || evaluateCallback(item.value.label)) as string ]);
       }
       //库组件
       else {
@@ -133,7 +133,7 @@ export default defineComponent({
         h(FormItem, {
           colon: noLable.value !== true,
           ...item.value.formProps as {},
-          label: noLable.value ? '' : evaluateCallback(item.value.label),
+          label: noLable.value ? '' : evaluateCallback(item.value.label) as string,
           name: name.value,
         }, {
           default: renderChildrenSlot,

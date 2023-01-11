@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { BaseRadioProps, DynamicForm, IDynamicFormItemCallbackAdditionalProps, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from '@/lib/main';
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { markRaw, ref, watch } from 'vue'
 
 import { Codemirror } from 'vue-codemirror';
 import { json } from '@codemirror/lang-json';
@@ -91,11 +91,11 @@ const formOptions : IDynamicFormOptions = {
   formItems: [
     { type: 'check-box', label: '企业用户', name: 'isEnterprise' },
     {
-      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === false,
+      hidden: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true },
       type: 'text', label: '手机号', name: 'mobile', additionalProps: { placeholder: '请输入手机号' } as InputInstance['$props'],
     },
     {
-      showCondition: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true,
+      hidden: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === false },
       type: 'text', label: '企业全称', name: 'enterprise_name', additionalProps: { placeholder: '请输入企业全称' } as InputInstance['$props'],
     },
     { 
@@ -121,10 +121,10 @@ const formOptions : IDynamicFormOptions = {
     { type: 'password', label: '确认密码', name: 'password_confirm', additionalProps: { placeholder: '请再输入一次密码' } as InputInstance['$props'] },
     {
       type: 'text', 
-      label: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码',
+      label: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码' },
       name: 'authorization_code',
       additionalProps: {
-        placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
+        placeholder: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码' },
       } as IDynamicFormItemCallbackAdditionalProps<InputInstance['$props']>
     },
     { 

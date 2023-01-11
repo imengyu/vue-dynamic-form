@@ -5,13 +5,22 @@ import { RowProps } from "./DynamicFormBasicControls";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
- * @param model 当前表单条目的值
- * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
- * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
- * @param item 当前表单条目信息
- * @param formRules 当前条目校验数据
+ * 表单动态属性定义
  */
-export type IDynamicFormItemCallback<T> = (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => T;
+export type IDynamicFormItemCallback<T> = {
+  /**
+   * 预留，暂未使用
+   */
+  type?: string,
+  /**
+   * @param model 当前表单条目的值
+   * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
+   * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
+   * @param item 当前表单条目信息
+   * @param formRules 当前条目校验数据
+   */
+  callback: (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => T;
+}
 
 export type IDynamicFormItemCallbackAdditionalProps<T> = { [P in keyof T]?: T[P]|IDynamicFormItemCallback<T[P]> }
 
@@ -21,15 +30,15 @@ export interface IDynamicFormItem {
    */
   type: string;
   /**
-   * 显示当前条目的附加条件，不传默认显示
+   * 是否隐藏当前表单项
    */
-  showCondition?: IDynamicFormItemCallback<boolean>;
+  hidden?: boolean|IDynamicFormItemCallback<boolean>;
   /**
    * 是否禁用当前表单项
    */
   disabled?: boolean|IDynamicFormItemCallback<boolean>;
   /**
-   * 附加组件属性。支持动态回调(只支持第一级传入回调)。当传入值是函数时，请使用 additionalDirectProps。
+   * 附加组件属性。支持动态回调(只支持第一级传入回调)。
    */
   additionalProps?: Record<string, unknown|IDynamicFormItemCallback<unknown>>|unknown;
   /**
@@ -40,7 +49,14 @@ export interface IDynamicFormItem {
   /**
    * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
    */
-  additionalDirectProps?: Record<string, unknown>;
+  additionalDirectProps?: unknown;
+  /**
+   * 监听当前表单数据更改
+   * @param oldValue 旧数据
+   * @param newValue 新数据
+   * @returns 
+   */
+  watch?: (oldValue: unknown, newValue: unknown) => void,
   /**
    * 附加 FormItem 组件属性
    */

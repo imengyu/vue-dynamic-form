@@ -26,13 +26,14 @@ title: API 参考 - IDynamicFormOptions
 | 属性 | 描述 | 类型 | 必填 |
 | :----: | :----: | :----: | :----: |
 | type | 当前表单类型 | `string` | 是 |
-| showCondition | [联动回调] 显示当前条目的附加条件，不传默认显示 | `IDynamicFormItemCallback<boolean>` | — |
+| hidden | [联动回调] 显是否隐藏当前表单项 | `boolean` or `IDynamicFormItemCallback<boolean>` | — |
 | disabled | [联动回调] 是否禁用当前表单项 | `boolean` or `IDynamicFormItemCallback<boolean>` | — |
 | additionalProps | [联动回调] 附加组件属性。支持动态回调(只支持第一级传入回调)。当传入值是函数时，请使用 additionalDirectProps。 | `string` | — |
 | additionalEvents | 附加组件事件绑定 | `Record<string, Function>` | — |
 | additionalDirectProps | 当前表单类型 | `string` | — |
 | type | 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。 | `Record<string, unknown>` | — |
 | formProps | 附加 FormItem 组件属性 | `unknown` | — |
+| watch | 监听当前表单数据更改 | `(oldValue: unknown, newValue: unknown) => void` | — |
 | name | 当前表单项名称。 | `string` | 是 |
 | label | [联动回调] 当前表单说明文字。支持动态回调。 | `string` or `IDynamicFormItemCallback<string>` | — |
 | children | 子条目。仅在 'object','array-single','array-object','group-object' 或者其他容器条目中有效。 | `IDynamicFormItem[]` | — |
