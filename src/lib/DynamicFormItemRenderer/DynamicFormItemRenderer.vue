@@ -110,6 +110,9 @@ export default defineComponent({
     onMounted(() => {
       registerInternalDynamicFormItemControls();
       findComponent();
+      //通知更新
+      if (item.value?.mounted)
+        item.value.mounted();
     });
 
     const rawModel = inject<Record<string, unknown>>('rawModel'); 
@@ -147,6 +150,8 @@ export default defineComponent({
 
         const additionalEvents = item.value?.additionalEvents as Record<string, unknown>;
         const additionalDirectProps = item.value?.additionalDirectProps as Record<string, unknown>;
+        const additionalSlot = item.value?.additionalSlot;
+
         if (additionalDirectProps && typeof additionalDirectProps === 'object') {
           for (const key in additionalDirectProps)
             props[key] = additionalDirectProps[key];
@@ -158,7 +163,7 @@ export default defineComponent({
           }
         }
 
-        return h(componentInstance.value, props);
+        return h(componentInstance.value, props, additionalSlot);
         
       } else {
         return h('span', {

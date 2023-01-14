@@ -2,6 +2,7 @@ import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
 import { RowProps } from "./DynamicFormBasicControls";
+import { Slot } from "vue";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -42,6 +43,10 @@ export interface IDynamicFormItem {
    */
   additionalProps?: Record<string, unknown|IDynamicFormItemCallback<unknown>>|unknown;
   /**
+   * 附加组件插槽。
+   */
+  additionalSlot?: Record<string, Slot>;
+  /**
    * 附加组件事件绑定
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -51,7 +56,12 @@ export interface IDynamicFormItem {
    */
   additionalDirectProps?: unknown;
   /**
-   * 监听当前表单数据更改
+   * 加载时的钩子函数
+   * @returns 
+   */
+  mounted?: () => void;
+  /**
+   * 监听当前表单项数据更改
    * @param oldValue 旧数据
    * @param newValue 新数据
    * @returns 
@@ -86,11 +96,11 @@ export interface IDynamicFormItem {
    */
   childrenColProps?: ColProps,
   /**
-   * 条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
+   * 当前条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
   colProps?: ColProps,
   /**
-   * 条目的 Row 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
+   * 当前条目的 Row 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
   rowProps?: RowProps,
 }

@@ -29,6 +29,7 @@
           :rawModel="rawModel"
           :model="(model as IDynamicFormObject)[child.name]"
           :parentModel="model"
+          :parentName="name"
           @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
           :disabled="disabled || evaluateCallback(item.disabled)"
         />
@@ -52,6 +53,7 @@
             :rawModel="rawModel"
             :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
             :parentModel="model"
+            :parentName="name"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
             :disabled="disabled || evaluateCallback(item.disabled)"
           />
@@ -69,10 +71,11 @@
           <!--循环子条目-->
           <DynamicFormItem 
             :item="child"
-            :name="name+'.'+child.name"
+            :name="parentName ? `${parentName}.${child.name}` : child.name"
             :rawModel="rawModel"
             :model="((parentModel as IDynamicFormObject)[child.name])"
             :parentModel="parentModel"
+            :parentName="parentName"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
             :disabled="disabled || evaluateCallback(item.disabled)"
           >
@@ -91,6 +94,7 @@
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
+      :parentName="parentName"
     >
       <template #insertion>
         <Row v-bind="item.rowProps">
@@ -102,10 +106,11 @@
             <!--循环子条目-->
             <DynamicFormItem 
               :item="child"
-              :name="name+'.'+child.name"
+              :name="parentName ? `${parentName}.${child.name}` : child.name"
               :rawModel="rawModel"
               :model="((parentModel as IDynamicFormObject)[child.name])"
               :parentModel="parentModel"
+              :parentName="parentName"
               @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
               :disabled="disabled || evaluateCallback(item.disabled)"
             >
@@ -125,6 +130,7 @@
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
+      :parentName="name"
     >
       <template #insertion>
         <FormArrayGroup
@@ -150,6 +156,7 @@
               :rawModel="rawModel"
               :model="child"
               :parentModel="model"
+              :parentName="name"
               :disabled="disabled || evaluateCallback(item.disabled)"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
@@ -165,6 +172,7 @@
       :model="model"
       :rawModel="rawModel"
       :parentModel="parentModel"
+      :parentName="parentName"
     >
       <template #insertion>
         <FormArrayGroup
@@ -190,6 +198,7 @@
               :rawModel="rawModel"
               :model="child"
               :parentModel="model"
+              :parentName="name"
               :disabled="disabled || evaluateCallback(item.disabled)"
               @update:value="(v: unknown) => onUpdateValue(v)"
             />
@@ -248,6 +257,10 @@ export default defineComponent({
     },
     parentModel: {
       required: true,
+    },
+    parentName: {
+      type: String,
+      default: null,
     },
     rawModel: {
       type: Object as PropType<IDynamicFormObject>,
