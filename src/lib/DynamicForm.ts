@@ -72,6 +72,14 @@ export interface IDynamicFormItem {
    */
   formProps?: unknown;
   /**
+   * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
+   */
+  formLabelCol?: { span: number, offset?: number },
+  /**
+   * 表单组件栅格宽度。如果使用自定义Form，请同时设置属性名映射。
+   */
+  formWrapperCol?: { span: number, offset?: number },
+  /**
    * 当前表单项名称。
    */
   name: string;
@@ -168,6 +176,8 @@ export interface IDynamicFormInternalWidgets {
     propsMap: {
       name?: string,
       label?: string,
+      labelCol?: string,
+      wrapperCol?: string,
     },
   },
 }
@@ -182,17 +192,17 @@ export interface IDynamicFormOptions {
    */
   formRules?: Record<string, unknown>;
   /**
-   * 表单label栅格宽度
+   * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
   formLabelCol?: { span: number, offset?: number },
   /**
-   * 表单label宽度
-   */
-  formLabelWidth?: number|string,
-  /**
-   * 表单组件栅格宽度
+   * 表单组件栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
   formWrapperCol?: { span: number, offset?: number },
+  /**
+   * 表单label宽度。部分UI库的Form组件可能不支持这个属性。
+   */
+  formLabelWidth?: number|string,
   /**
    * 表单组件附加属性
    */

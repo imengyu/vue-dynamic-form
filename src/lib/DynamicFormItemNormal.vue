@@ -123,6 +123,8 @@ export default defineComponent({
           colon: noLable.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
+          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol,
+          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol,
         }, {
           default: renderChildrenSlot,
         })
@@ -133,6 +135,8 @@ export default defineComponent({
         h(FormItem, {
           colon: noLable.value !== true,
           ...item.value.formProps as {},
+          labelCol: item.value.formLabelCol,
+          wrapperCol: item.value.formWrapperCol,
           label: noLable.value ? '' : evaluateCallback(item.value.label) as string,
           name: name.value,
         }, {

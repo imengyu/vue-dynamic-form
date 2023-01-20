@@ -1,6 +1,10 @@
 
 <template>
-  <div class="dynamic-form-item-wrapper" v-if="evaluateCallback(item.hidden) !== true">
+  <Col 
+    v-if="evaluateCallback(item.hidden) !== true"
+    class="dynamic-form-item-wrapper"
+    v-bind="colProps"
+  >
     <!--对象组-->
     <template v-if="item.type === 'object'">
       <div v-if="model === undefined">
@@ -41,49 +45,43 @@
         <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
       </div>
       <Row v-else v-bind="item.rowProps">
-        <Col
+        <!--循环子条目-->
+        <DynamicFormItem 
           v-for="(child, k) in item.children" 
-          v-bind="{ ...item.childrenColProps, ...child.colProps }"
           :key="k"
-        >
-          <!--循环子条目-->
-          <DynamicFormItem 
-            :item="child"
-            :name="name+'.'+child.name"
-            :rawModel="rawModel"
-            :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
-            :parentModel="model"
-            :parentName="name"
-            @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-            :disabled="disabled || evaluateCallback(item.disabled)"
-          />
-        </Col>
+          :item="child"
+          :colProps="{ ...item.childrenColProps, ...child.colProps }"
+          :name="name+'.'+child.name"
+          :rawModel="rawModel"
+          :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
+          :parentModel="model"
+          :parentName="name"
+          @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+          :disabled="disabled || evaluateCallback(item.disabled)"
+        />
       </Row>
     </FormGroup>
     <!--扁平组-->
     <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
       <Row v-bind="item.rowProps">
-        <Col
+        <!--循环子条目-->
+        <DynamicFormItem 
           v-for="(child, k) in item.children" 
-          v-bind="{ ...item.childrenColProps, ...child.colProps }"
+          :colProps="{ ...item.childrenColProps, ...child.colProps }"
           :key="k"
+          :item="child"
+          :name="parentName ? `${parentName}.${child.name}` : child.name"
+          :rawModel="rawModel"
+          :model="((parentModel as IDynamicFormObject)[child.name])"
+          :parentModel="parentModel"
+          :parentName="parentName"
+          @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
+          :disabled="disabled || evaluateCallback(item.disabled)"
         >
-          <!--循环子条目-->
-          <DynamicFormItem 
-            :item="child"
-            :name="parentName ? `${parentName}.${child.name}` : child.name"
-            :rawModel="rawModel"
-            :model="((parentModel as IDynamicFormObject)[child.name])"
-            :parentModel="parentModel"
-            :parentName="parentName"
-            @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-            :disabled="disabled || evaluateCallback(item.disabled)"
-          >
-            <template #formCeil="values">
-              <slot name="formCeil" v-bind="values" />
-            </template>
-          </DynamicFormItem>
-        </Col>
+          <template #formCeil="values">
+            <slot name="formCeil" v-bind="values" />
+          </template>
+        </DynamicFormItem>
       </Row>
     </FormGroup>
     <!--扁平普通-->
@@ -98,27 +96,24 @@
     >
       <template #insertion>
         <Row v-bind="item.rowProps">
-          <Col
+          <!--循环子条目-->
+          <DynamicFormItem 
             v-for="(child, k) in item.children" 
-            v-bind="{ ...item.childrenColProps, ...child.colProps }"
             :key="k"
+            :item="child"
+            :colProps="{ ...item.childrenColProps, ...child.colProps }"
+            :name="parentName ? `${parentName}.${child.name}` : child.name"
+            :rawModel="rawModel"
+            :model="((parentModel as IDynamicFormObject)[child.name])"
+            :parentModel="parentModel"
+            :parentName="parentName"
+            @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
+            :disabled="disabled || evaluateCallback(item.disabled)"
           >
-            <!--循环子条目-->
-            <DynamicFormItem 
-              :item="child"
-              :name="parentName ? `${parentName}.${child.name}` : child.name"
-              :rawModel="rawModel"
-              :model="((parentModel as IDynamicFormObject)[child.name])"
-              :parentModel="parentModel"
-              :parentName="parentName"
-              @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-              :disabled="disabled || evaluateCallback(item.disabled)"
-            >
-              <template #formCeil="values">
-                <slot name="formCeil" v-bind="values" />
-              </template>
-            </DynamicFormItem>
-          </Col>
+            <template #formCeil="values">
+              <slot name="formCeil" v-bind="values" />
+            </template>
+          </DynamicFormItem>
         </Row>
       </template>
     </DynamicFormItemNormal>
@@ -221,7 +216,7 @@
         <slot name="formCeil" v-bind="values" />
       </template>
     </DynamicFormItemNormal>
-  </div>
+  </Col>
 </template>
 
 <script lang="ts">
@@ -230,7 +225,7 @@ import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject } from '
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
-import Col from './DynamicFormBasicControls/Layout/Col';
+import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col';
 import { Rule } from 'async-validator';
 import Row from './DynamicFormBasicControls/Layout/Row';
 
@@ -266,6 +261,10 @@ export default defineComponent({
       type: Object as PropType<IDynamicFormObject>,
       required: true,
     },
+    colProps: {
+      type: Object as PropType<ColProps>,
+      default: null,
+    }
   },
   emits: [ 'update:model' ],
   setup(props) {
