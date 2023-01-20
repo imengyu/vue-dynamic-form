@@ -1,8 +1,9 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <!-- eslint-disable vue/no-mutating-props -->
 <script lang="ts">
-import { defineComponent, h, inject, markRaw, onMounted, PropType, ref, toRefs, watch } from "vue";
-import { IDynamicFormItem } from "../DynamicForm";
+import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, ref, toRefs, watch } from "vue";
+import { IDynamicFormItem, MESSAGE_RELOAD } from "../DynamicForm";
+import { IDynamicFormMessageCenter } from "../DynamicFormInternal";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
 import BaseInputVue from "../DynamicFormItemControls/BaseInput.vue";
@@ -63,7 +64,7 @@ export default defineComponent({
     function onUpdateValue(v: unknown) {
       //通知更新
       if (item.value?.watch)
-        item.value.watch(value.value, v);
+        item.value.watch(value.value, v, getRef);
       context.emit('update:value', v);
     }
     function registerInternalDynamicFormItemControls() : void {
@@ -104,19 +105,42 @@ export default defineComponent({
       componentOnUpdateValueName.value = 'onUpdate:'+ type.valueName;
     }
 
+    const rawModel = inject<Record<string, unknown>>('rawModel'); 
+    const widgetOvrride = inject<Record<string, DynamicFormItemRegistryItem>>('widgetOvrride'); 
+    const messageCenter = inject<IDynamicFormMessageCenter>('messageCenter'); 
+    
     watch(item, () => {
       findComponent();
     });
     onMounted(() => {
       registerInternalDynamicFormItemControls();
       findComponent();
-      //通知更新
-      if (item.value?.mounted)
-        item.value.mounted();
+      //注册事件中心
+      messageCenter?.addInstance(name.value!, onMessage)
+      //通知钩子
+      item.value?.mounted?.(value.value, getRef);
+    });
+    onBeforeUnmount(() => {
+      //移除事件中心
+      messageCenter?.removeInstance(name.value!)
+      //通知钩子
+      item.value?.beforeUnmount?.(getRef());
     });
 
-    const rawModel = inject<Record<string, unknown>>('rawModel'); 
-    const widgetOvrride = inject<Record<string, DynamicFormItemRegistryItem>>('widgetOvrride'); 
+    function onMessage(messageName: string, data: unknown) {
+      switch (messageName) {
+        case MESSAGE_RELOAD:
+          if (typeof componentRef.value?.reload === 'function')
+            componentRef.value.reload();
+          break;
+        default:
+          if (typeof componentRef.value?.message === 'function')
+            componentRef.value.message(messageName, data);
+          break;
+      }
+      //通知钩子
+      item.value?.message?.(messageName, data, getRef());
+    }
 
     context.expose({
       onUpdateValue,

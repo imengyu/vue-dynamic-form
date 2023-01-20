@@ -25,6 +25,8 @@ export type IDynamicFormItemCallback<T> = {
 
 export type IDynamicFormItemCallbackAdditionalProps<T> = { [P in keyof T]?: T[P]|IDynamicFormItemCallback<T[P]> }
 
+export const MESSAGE_RELOAD = 'reload';
+
 export interface IDynamicFormItem {
   /**
    * 当前表单类型
@@ -57,16 +59,33 @@ export interface IDynamicFormItem {
   additionalDirectProps?: unknown;
   /**
    * 加载时的钩子函数
+   * @param nowValue 当前组件的实例
+   * @param getComponentRef 当前组件的实例
    * @returns 
    */
-  mounted?: () => void;
+  mounted?: (nowValue: unknown, getComponentRef: () => unknown) => void;
+  /**
+   * 当前表单组件卸载之前的钩子函数
+   * @param componentRef 当前组件的实例
+   * @returns 
+   */
+  beforeUnmount?: (componentRef: () => unknown) => void;
   /**
    * 监听当前表单项数据更改
    * @param oldValue 旧数据
    * @param newValue 新数据
+   * @param getComponentRef 当前组件的实例
    * @returns 
    */
-  watch?: (oldValue: unknown, newValue: unknown) => void,
+  watch?: (oldValue: unknown, newValue: unknown, getComponentRef: () => unknown) => void,
+  /**
+   * 监听从外部或者其他表单发送过来的消息事件
+   * @param messageName 消息名称
+   * @param data 消息数据
+   * @param getComponentRef 当前组件的实例
+   * @returns 
+   */
+  message?: (messageName: string, data: unknown, getComponentRef: () => unknown) => void,
   /**
    * 附加 FormItem 组件属性
    */
@@ -143,6 +162,19 @@ export interface IDynamicFormRef {
    * @returns 
    */
   getValueByPath: (path: string) => unknown,
+  /**
+   * 向所有或者指定的子组件分发消息事件。
+   * @param messageName 消息名称。
+   * @param data 可选参数。
+   * @param receiveFilter 可选名称筛选正则，此正则通过名称的子组件会接受事件，其他则不会。
+   * @returns 
+   */
+  dispatchMessage: (messageName: string, data?: unknown, receiveFilter?: RegExp) => void;
+  /**
+   * 向所有子组件分发重新加载消息事件。
+   * @returns 
+   */
+  dispatchReload: () => void;
 }
 
 export interface IDynamicFormInternalWidgets {

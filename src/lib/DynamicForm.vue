@@ -2,7 +2,10 @@
 import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch } from 'vue';
 import DynamicFormInner from './DynamicFormInner.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
-import { defaultDynamicFormOptions, IDynamicFormOptions } from './DynamicForm';
+import { defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD } from './DynamicForm';
+import { IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback } from './DynamicFormInternal';
+
+
 
 /**
  * 动态表单组件。
@@ -62,13 +65,20 @@ export default defineComponent({
 
     const formEditor = ref();
     const widgetsRefMap = ref<Record<string,() => unknown>>({});
+    const messageCenterMap = new Map<string, IDynamicFormMessageCenterCallback>();
       
     provide('widgetsRefMap', widgetsRefMap.value);
+    provide('messageCenter', {
+      addInstance: (name: string, fn: IDynamicFormMessageCenterCallback) => messageCenterMap.set(name, fn),
+      removeInstance: (name: string) => messageCenterMap.delete(name),
+    } as IDynamicFormMessageCenter);
 
+    //获取组件引用
     function getFormItemControlRef(key: string) {
       return widgetsRefMap.value[key]?.();
     }
     
+    //通过路径访问
     function accessFormModel(keyName: string, isSet: boolean, setValue: unknown) : unknown {
       const keys = keyName.split('.');
       let ret : unknown = undefined;
@@ -101,6 +111,19 @@ export default defineComponent({
       }
       return ret;
     } 
+
+    //发送通知消息
+    function dispatchMessage(messageName: string, data?: unknown, receiveFilter?: RegExp) {
+      for (const iterator of messageCenterMap) {
+        if (!receiveFilter || receiveFilter.test(iterator[0]))
+          iterator[1](messageName, data);
+      }
+    }
+
+    //发送重新加载消息
+    function dispatchReload() {
+      dispatchMessage(MESSAGE_RELOAD);
+    }
 
     onMounted(() => {
       setTimeout(() => {
@@ -138,6 +161,8 @@ export default defineComponent({
       getValueByPath: (path: string) => {
         return accessFormModel(path, false, undefined);
       },
+      dispatchMessage,
+      dispatchReload,
     });
 
     return () => {
