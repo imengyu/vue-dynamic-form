@@ -46,6 +46,10 @@ export interface IDynamicFormItem {
   additionalProps?: Record<string, unknown|IDynamicFormItemCallback<unknown>>|unknown;
   /**
    * 附加组件插槽。
+   * 
+   * 组件还内置了两个插槽：
+   * * dynamicFormPrefix 表单项内容前缀
+   * * dynamicFormSuffix 表单项内容后缀
    */
   additionalSlot?: Record<string, Slot>;
   /**
@@ -175,6 +179,10 @@ export interface IDynamicFormRef {
    * @returns 
    */
   dispatchReload: () => void;
+  /**
+   * 获取当前表单中可见的所有字段名
+   */
+  getVisibleFormNames: () => string[];
 }
 
 export interface IDynamicFormInternalWidgets {

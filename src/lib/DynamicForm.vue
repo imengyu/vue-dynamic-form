@@ -125,13 +125,22 @@ export default defineComponent({
       dispatchMessage(MESSAGE_RELOAD);
     }
 
+    //获取当前表单中可见的所有字段名
+    function getVisibleFormNames() {
+      return Array.from(messageCenterMap.keys());
+    }
+
     onMounted(() => {
       setTimeout(() => {
         ctx.emit('ready');
       }, 400);
     });
 
-    ctx.expose({  
+    ctx.expose({
+      /**
+       * 获取当前表单中可见的所有字段名
+       */
+      getVisibleFormNames,
       /**
        * 获取表单组件的 Ref
        * @returns 

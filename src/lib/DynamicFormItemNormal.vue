@@ -4,6 +4,7 @@ import { IDynamicFormInternalWidgets, IDynamicFormItem, IDynamicFormItemCallback
 import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem';
 import { Rule } from 'async-validator';
+import { VNode } from 'vue';
 
 /**
  * 动态表单条目渲染组件。
@@ -32,10 +33,22 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    formWrapperColDefault: {
+      type: Object,
+      default: null
+    },
+    formLabelColDefault: {
+      type: Object,
+      default: null
+    },
   },
   emits: [ 'update:model' ],
   setup(props, ctx) {
-    const { model, rawModel, parentModel, name, item, disabled, noLable } = toRefs(props);
+    const {
+       model, rawModel, parentModel, 
+       name, item, disabled, noLable,
+       formWrapperColDefault, formLabelColDefault
+    } = toRefs(props);
 
     function onModelUpdate(newVal: unknown) {
       ctx.emit('update:model', newVal);
@@ -66,13 +79,18 @@ export default defineComponent({
       };
 
     function renderChildrenSlot() {
+      const vnodes = [] as VNode[];
+      //前缀渲染
+      if (item.value.additionalSlot?.dynamicFormPrefix)
+        vnodes.push(...item.value.additionalSlot.dynamicFormPrefix());
+
       //外部引用
       if (ctx.slots.insertion) {
-        return renderSlot(ctx.slots, 'insertion');
+        vnodes.push(renderSlot(ctx.slots, 'insertion'));
       }
       //自定义
       else if (item.value.type === 'custom') {
-        return renderSlot(ctx.slots, 'formCeil', {
+        vnodes.push(renderSlot(ctx.slots, 'formCeil', {
           name: name.value,
           item: item.value,
           model: model.value,
@@ -81,25 +99,25 @@ export default defineComponent({
           parentModel: parentModel.value,
           rule: formRules ? formRules[item.value.name] : undefined,
           disabled: disabled.value,
-        });
+        }));
       }
       //静态文字
       else if (item.value.type === 'static-text') {
-        return h('span', { ...evaluateCallbackObj(item.value.additionalProps as {}) }, [
+        vnodes.push(h('span', { ...evaluateCallbackObj(item.value.additionalProps as {}) }, [
           (model.value || evaluateCallback((item.value.additionalProps as Record<string, unknown>).text)) as string
-        ]);
+        ]));
       }
       //提交按钮
       else if (item.value.type === 'base-button') {
-        return h('button', { 
+        vnodes.push(h('button', { 
           type: item.value.name === 'submit' ? 'submit' : (item.value.name === 'reset' ? 'reset' : ''),
           class: 'dynamic-form-base-control base-button',
           ...evaluateCallbackObj(item.value.additionalProps as {}) as {},
-        }, [ ((item.value.additionalProps as Record<string, unknown>)?.text || evaluateCallback(item.value.label)) as string ]);
+        }, [ ((item.value.additionalProps as Record<string, unknown>)?.text || evaluateCallback(item.value.label)) as string ]));
       }
       //库组件
       else {
-        return h(DynamicFormItemRenderer, {
+        vnodes.push(h(DynamicFormItemRenderer, {
           ref: currentFormItem,
           value: model.value,
           rawModel: rawModel.value,
@@ -109,8 +127,14 @@ export default defineComponent({
           name: name.value,
           disabled: disabled.value,
           additionalProps: evaluateCallbackObj(item.value.additionalProps as Record<string, unknown>),
-        });
+        }));
       }
+
+      //后缀渲染
+      if (item.value.additionalSlot?.dynamicFormSuffix) 
+        vnodes.push(...item.value.additionalSlot.dynamicFormSuffix());
+
+      return vnodes;
     }
 
     return () => {
@@ -123,8 +147,8 @@ export default defineComponent({
           colon: noLable.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
-          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol,
-          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol,
+          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol || formLabelColDefault.value,
+          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol || formWrapperColDefault.value,
         }, {
           default: renderChildrenSlot,
         })
@@ -135,8 +159,8 @@ export default defineComponent({
         h(FormItem, {
           colon: noLable.value !== true,
           ...item.value.formProps as {},
-          labelCol: item.value.formLabelCol,
-          wrapperCol: item.value.formWrapperCol,
+          labelCol: item.value.formLabelCol || formLabelColDefault.value,
+          wrapperCol: item.value.formWrapperCol || formWrapperColDefault.value,
           label: noLable.value ? '' : evaluateCallback(item.value.label) as string,
           name: name.value,
         }, {
