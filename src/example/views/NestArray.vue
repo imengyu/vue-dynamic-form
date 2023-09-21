@@ -173,6 +173,36 @@ const formOptions : IDynamicFormOptions = {
     { 
       type: 'base-button', label: '提交', name: 'submit',
     },
+    { type: 'base-divider', name: 'divider2', formProps: { colon: false } },
+    {
+      type: 'simple-flat', name: 'a', label: '网格布局',
+      formLabelCol: { span: 0 },
+      formWrapperCol: { span: 16 },
+      childrenColProps: { span: 12 },
+      children: [
+        { 
+          name: 'orderNo', type: 'base-text', label: '订单号',
+          additionalProps: {
+            placeholder: '输入订单号搜索例如：652412',
+          },
+        },
+        { 
+          name: 'userId', type: 'base-text', label: '用户ID',
+          additionalProps: {
+            placeholder: '输入用户ID搜索例如：100005',
+          },
+        },
+        { 
+          name: 'creation_time', type: 'base-text', label: '创建时间',
+        },
+        { 
+          name: 'payTime', type: 'base-text', label: '支付时间',
+        },
+      ],
+      rowProps: {
+        style: { width: '100%' },
+      },
+    }
   ],
   formRules: {
     stringProp: [

@@ -9,6 +9,9 @@ export interface ColProps {
    * 列元素宽度
    */
   span?: number;
+
+  style?: object;
+  class?: string,
 }
 
 /**
@@ -35,6 +38,14 @@ export default defineComponent({
       type: Number,
       default: 0
     },
+    class: {
+      type: String,
+      default: undefined,
+    },
+    style: {
+      type: Object,
+      default: undefined,
+    }
   },
   setup(props, ctx) {
     const { span, offset } = toRefs(props);
@@ -47,11 +58,12 @@ export default defineComponent({
 
     return () => (
       <div 
-        class="dynamic-form-col"
+        class={"dynamic-form-col" + (props.class ? (' ' + props.class) : '')}
         style={{
           flexBasis: pec.value > 0 ? `${pec.value}%` : undefined,
           marginLeft: offset.value ? `${(offset.value / GRID_SIZE) * 100}%` : undefined,
           maxWidth: pec.value > 0 ? `${pec.value}%` : undefined,
+          ...props.style,
         }}
       >
         { renderSlot(ctx.slots, 'default') }

@@ -3,7 +3,10 @@
   <Col 
     v-if="evaluateCallback(item.hidden) !== true"
     class="dynamic-form-item-wrapper"
-    v-bind="colProps"
+    v-bind="{
+      ...colProps,
+      ...(item.additionalProps as {})
+    }"
   >
     <!--对象组-->
     <template v-if="item.type === 'object'">

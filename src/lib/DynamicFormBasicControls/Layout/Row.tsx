@@ -17,6 +17,9 @@ export interface RowProps {
    * 是否自动换行，默认 true
    */
   wrap?: boolean;
+
+  style?: object;
+  class?: string,
 }
 
 /**
@@ -53,6 +56,15 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+
+    class: {
+      type: String,
+      default: undefined,
+    },
+    style: {
+      type: Object,
+      default: undefined,
+    }
   },
   setup(props, ctx) {
     const { gutter, wrap, align, justify } = toRefs(props);
@@ -85,11 +97,12 @@ export default defineComponent({
 
       return (
         <div
-          class="dynamic-form-row"
+          class={"dynamic-form-row" + (props.class ? (' ' + props.class) : '')}
           style={{
             flexWrap: wrap.value !== false ? 'wrap' : 'nowrap',
             justifyContent: justify.value,
             alignItems: align.value,
+            ...props.style,
           }}
         >
         { children }
