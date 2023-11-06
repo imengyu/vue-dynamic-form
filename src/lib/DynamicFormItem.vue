@@ -16,6 +16,7 @@
       <template v-else>
         <!--标题-->
         <DynamicFormItemNormal 
+          v-if="item.label"
           :item="item"
           :name="''"
           :rawModel="rawModel"
@@ -43,7 +44,7 @@
       </template>
     </template>
     <!--对象组-->
-    <FormGroup v-else-if="item.type === 'group-object'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
+    <FormGroup v-else-if="item.type === 'group-object'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
       <div v-if="model === undefined">
         <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
       </div>
@@ -65,7 +66,7 @@
       </Row>
     </FormGroup>
     <!--扁平组-->
-    <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="item.additionalProps">
+    <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
       <Row v-bind="item.rowProps">
         <!--循环子条目-->
         <DynamicFormItem 
