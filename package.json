@@ -4,7 +4,7 @@
   "main": "dist/vue-dynamic-form.umd.js",
   "types": "types/main.d.ts",
   "name": "@imengyu/vue-dynamic-form",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "A data driven form component for vue3",
   "files": [
     "dist",
