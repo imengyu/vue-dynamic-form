@@ -114,31 +114,35 @@
       v-else-if="item.type === 'custom-tab'"
       :item="item"
     >
-      <DynamicFormTabPage 
+      <template
         v-for="(child, k) in item.children" 
         :key="k"
-        :tab-key="child.name"
-        :item="child"
       >
-        <!--循环子条目-->
-        <DynamicFormItem 
-          v-for="(formRow, k) in child.children" 
-          :colProps="{ ...child.childrenColProps, ...formRow.colProps }"
-          :key="k"
-          :item="formRow"
-          :name="parentName ? `${parentName}.${formRow.name}` : formRow.name"
-          :rawModel="rawModel"
-          :model="((parentModel as IDynamicFormObject)[formRow.name])"
-          :parentModel="parentModel"
-          :parentName="parentName"
-          @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
-          :disabled="disabled || evaluateCallback(formRow.disabled)"
+        <DynamicFormTabPage
+          v-if="evaluateCallback(child.hidden) !== true"
+          :tab-key="child.name"
+          :item="child"
         >
-          <template #formCeil="values">
-            <slot name="formCeil" v-bind="values" />
-          </template>
-        </DynamicFormItem>
-      </DynamicFormTabPage>
+          <!--循环子条目-->
+          <DynamicFormItem 
+            v-for="(formRow, k) in child.children" 
+            :colProps="{ ...child.childrenColProps, ...formRow.colProps }"
+            :key="k"
+            :item="formRow"
+            :name="parentName ? `${parentName}.${formRow.name}` : formRow.name"
+            :rawModel="rawModel"
+            :model="((parentModel as IDynamicFormObject)[formRow.name])"
+            :parentModel="parentModel"
+            :parentName="parentName"
+            @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
+            :disabled="disabled || evaluateCallback(formRow.disabled)"
+          >
+            <template #formCeil="values">
+              <slot name="formCeil" v-bind="values" />
+            </template>
+          </DynamicFormItem>
+        </DynamicFormTabPage>
+      </template>
     </DynamicFormTab>
     <!--扁平普通-->
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
