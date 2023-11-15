@@ -123,7 +123,7 @@
         <!--循环子条目-->
         <DynamicFormItem 
           v-for="(formRow, k) in child.children" 
-          :colProps="{ ...formRow.childrenColProps, ...formRow.colProps }"
+          :colProps="{ ...child.childrenColProps, ...formRow.colProps }"
           :key="k"
           :item="formRow"
           :name="parentName ? `${parentName}.${formRow.name}` : formRow.name"
