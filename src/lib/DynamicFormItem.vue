@@ -11,7 +11,7 @@
     <!--对象组-->
     <template v-if="item.type === 'object'">
       <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [object] 警告：输入字段 {{ name }} 是 undefined</span>
+        <span class="dynamic-form-error-alert"> [object] Warn: Input field {{ name }} is undefined</span>
       </div>
       <template v-else>
         <!--标题-->
@@ -25,7 +25,7 @@
           :disabled="disabled || evaluateCallback(item.disabled)"
         >
           <template #insertion>
-            <span class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
+            <span v-if="item.label" class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
           </template>
         </DynamicFormItemNormal>
         <!--循环子条目-->
@@ -46,7 +46,7 @@
     <!--对象组-->
     <FormGroup v-else-if="item.type === 'group-object'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
       <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [group-object] 警告：输入字段 {{ name }} 是 undefined</span>
+        <span class="dynamic-form-error-alert"> [group-object] Warn: Input field {{ name }} is undefined</span>
       </div>
       <Row v-else v-bind="item.rowProps">
         <!--循环子条目-->
@@ -88,6 +88,58 @@
         </DynamicFormItem>
       </Row>
     </FormGroup>
+    <!--自定义扁平组-->
+    <FormCustomLayout v-else-if="item.type === 'custom-flat'" :item="item">
+      <!--循环子条目-->
+      <DynamicFormItem 
+        v-for="(child, k) in item.children" 
+        :colProps="{ ...item.childrenColProps, ...child.colProps }"
+        :key="k"
+        :item="child"
+        :name="parentName ? `${parentName}.${child.name}` : child.name"
+        :rawModel="rawModel"
+        :model="((parentModel as IDynamicFormObject)[child.name])"
+        :parentModel="parentModel"
+        :parentName="parentName"
+        @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
+        :disabled="disabled || evaluateCallback(item.disabled)"
+      >
+        <template #formCeil="values">
+          <slot name="formCeil" v-bind="values" />
+        </template>
+      </DynamicFormItem>
+    </FormCustomLayout>
+    <!--标签页-->
+    <DynamicFormTab 
+      v-else-if="item.type === 'custom-tab'"
+      :item="item"
+    >
+      <DynamicFormTabPage 
+        v-for="(child, k) in item.children" 
+        :key="k"
+        :tab-key="child.name"
+        :item="child"
+      >
+        <!--循环子条目-->
+        <DynamicFormItem 
+          v-for="(formRow, k) in child.children" 
+          :colProps="{ ...formRow.childrenColProps, ...formRow.colProps }"
+          :key="k"
+          :item="formRow"
+          :name="parentName ? `${parentName}.${formRow.name}` : formRow.name"
+          :rawModel="rawModel"
+          :model="((parentModel as IDynamicFormObject)[formRow.name])"
+          :parentModel="parentModel"
+          :parentName="parentName"
+          @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
+          :disabled="disabled || evaluateCallback(formRow.disabled)"
+        >
+          <template #formCeil="values">
+            <slot name="formCeil" v-bind="values" />
+          </template>
+        </DynamicFormItem>
+      </DynamicFormTabPage>
+    </DynamicFormTab>
     <!--扁平普通-->
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
       :item="item"
@@ -229,9 +281,12 @@ import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject } from '
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
+import DynamicFormTab from './DynamicFormTab/DynamicFormTab.vue';
+import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
+import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
 import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col';
-import { Rule } from 'async-validator';
 import Row from './DynamicFormBasicControls/Layout/Row';
+import { Rule } from 'async-validator';
 
 /**
  * 动态表单条目渲染组件。
@@ -286,7 +341,7 @@ export default defineComponent({
       evaluateCallback,
     }
   },
-  components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col, Row }
+  components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col, Row, DynamicFormTab, DynamicFormTabPage, FormCustomLayout }
 });
 
 </script>

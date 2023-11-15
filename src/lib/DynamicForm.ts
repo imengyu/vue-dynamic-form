@@ -2,7 +2,7 @@ import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
 import { RowProps } from "./DynamicFormBasicControls";
-import { Slot } from "vue";
+import { Ref, Slot, VNode } from "vue";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -220,6 +220,33 @@ export interface IDynamicFormInternalWidgets {
       wrapperCol?: string,
     },
   },
+  Tab: {
+    /**
+     * 组件实例
+     */
+    component: unknown,
+    /**
+     * 属性的名称修改
+     */
+    propsMap: {
+      activeKey?: string,
+      defaultActiveKey?: string,
+    },
+  },
+  TabPage: {
+    /**
+     * 组件实例
+     */
+    component: unknown,
+    /**
+     * 属性的名称修改
+     */
+    propsMap: {
+      key?: string,
+      title?: string,
+      disabled?: string,
+    },
+  },
 }
 
 export interface IDynamicFormOptions {
@@ -265,6 +292,10 @@ export interface IDynamicFormOptions {
    * 表单是否禁用。默认否
    */
   disabled?: boolean,
+  /**
+   * 当表单中无可用编辑条目时，显示的提示，为空则不显示提示。默认为空
+   */
+  emptyText?: string,
 }
 
 /**
@@ -281,4 +312,23 @@ export function configDefaultDynamicFormOptions(options: IDynamicFormOptions) {
     ...defaultDynamicFormOptions,
     ...options,
   };
+}
+
+export interface FormCustomLayoutProps {
+  render: (item: IDynamicFormItem, defaultSlot: Slot) => VNode[];
+}
+export interface IDynamicFormTabProps {
+  defaultActiveKey?: string,
+  tabProps?: any,
+  renderTab?: (item: IDynamicFormItem, props: {
+    activeKey: string,
+    defaultActiveKey: string|undefined,
+    'onUpdate:activeKey': (newValue: string) => void,
+  }, defaultSlot: Slot) => VNode[];
+}
+export interface IDynamicFormTabPageProps {
+  renderTabPage?: (item: IDynamicFormItem, props: {
+    key: string,
+    title: string,
+  }, defaultSlot: Slot) => VNode[];
 }

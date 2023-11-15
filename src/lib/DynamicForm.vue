@@ -5,8 +5,6 @@ import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
 import { defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD } from './DynamicForm';
 import { IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback } from './DynamicFormInternal';
 
-
-
 /**
  * 动态表单组件。
  */

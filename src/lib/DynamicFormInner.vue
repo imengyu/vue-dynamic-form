@@ -2,10 +2,10 @@
 <template>
   <!--空显示-->
   <slot name="empty" v-if="options.formItems.length == 0 || !model">
-    <div class="dynamic-form-item-empty">暂无可供您编辑的数据</div>
+    <div v-if="options.emptyText" class="dynamic-form-item-empty">{{ options.emptyText }}</div>
   </slot>
   <div class="dynamic-form-item-empty" v-else-if="(typeof model !== 'object')">
-    DynamicForm 警告：model 不是 object 类型！
+    DynamicForm Warn model is not a object!
   </div>
   <template v-else>
     <!--表单条目渲染核心-->

@@ -15,6 +15,7 @@ export default defineConfig({
   },
   base: '/pages/vue-dynamic-form-demo/',
   build: {
+    sourcemap: true,
     lib: {
       // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/lib/main.ts'),
