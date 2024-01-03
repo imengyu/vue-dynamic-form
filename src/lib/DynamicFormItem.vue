@@ -213,7 +213,7 @@
               :parentModel="model"
               :parentName="name"
               :disabled="disabled || evaluateCallback(item.disabled)"
-              @update:value="(v: unknown) => onUpdateValue(v)"
+              @update:model="(v: unknown) => onUpdateValue(v)"
             />
           </template>
         </FormArrayGroup>
@@ -255,7 +255,7 @@
               :parentModel="model"
               :parentName="name"
               :disabled="disabled || evaluateCallback(item.disabled)"
-              @update:value="(v: unknown) => onUpdateValue(v)"
+              @update:model="(v: unknown) => onUpdateValue(v)"
             />
           </template>
         </FormArrayGroup>
