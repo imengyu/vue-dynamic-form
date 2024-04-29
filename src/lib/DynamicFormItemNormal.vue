@@ -1,10 +1,10 @@
 <script lang="ts">
-import { defineComponent, h, inject, PropType, ref, renderSlot, toRefs } from 'vue';
-import { IDynamicFormInternalWidgets, IDynamicFormItem, IDynamicFormItemCallback } from './DynamicForm';
+import { defineComponent, h, inject, PropType, Ref, ref, renderSlot, toRefs } from 'vue';
+import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormOptions } from './DynamicForm';
+import { Rules } from 'async-validator';
+import { VNode } from 'vue';
 import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem';
-import { Rule } from 'async-validator';
-import { VNode } from 'vue';
 
 /**
  * 动态表单条目渲染组件。
@@ -54,14 +54,19 @@ export default defineComponent({
       ctx.emit('update:model', newVal);
     }
 
-    const formRules = inject<Record<string, Rule>>('formRules'); 
-    const internalWidgets = inject<IDynamicFormInternalWidgets>('internalWidgets'); 
+    const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
     const widgetsRefMap = inject<Record<string,() => unknown>>('widgetsRefMap'); 
     const currentFormItem = ref<DynamicFormItemRendererInterface>(); 
 
     function evaluateCallback(val: unknown|IDynamicFormItemCallback<unknown>) {
       if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<unknown>).callback === 'function')
-        return (val as IDynamicFormItemCallback<unknown>).callback(model.value, rawModel.value, parentModel.value, item.value, formRules);
+        return (val as IDynamicFormItemCallback<unknown>).callback(
+          model.value, 
+          rawModel.value, 
+          parentModel.value, 
+          item.value, 
+          (finalOptions?.value.formRules ?? {}) as Record<string, Rules>
+        );
       return val as unknown;
     }
     function evaluateCallbackObj(val: Record<string, unknown|IDynamicFormItemCallback<unknown>>) {
@@ -79,6 +84,7 @@ export default defineComponent({
       };
 
     function renderChildrenSlot() {
+      const formRules = finalOptions?.value.formRules;
       const vnodes = [] as VNode[];
       //前缀渲染
       if (item.value.additionalSlot?.dynamicFormPrefix)
@@ -138,7 +144,7 @@ export default defineComponent({
     }
 
     return () => {
-      const internalWidgetsFormItem = internalWidgets?.FormItem;
+      const internalWidgetsFormItem = finalOptions?.value.internalWidgets?.FormItem;
 
       //自定义渲染Form
       if (internalWidgetsFormItem) {
@@ -147,8 +153,8 @@ export default defineComponent({
           colon: noLable.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
-          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol || formLabelColDefault.value,
-          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol || formWrapperColDefault.value,
+          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
+          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
         }, {
           default: renderChildrenSlot,
         })
@@ -159,8 +165,8 @@ export default defineComponent({
         h(FormItem, {
           colon: noLable.value !== true,
           ...item.value.formProps as {},
-          labelCol: item.value.formLabelCol || formLabelColDefault.value,
-          wrapperCol: item.value.formWrapperCol || formWrapperColDefault.value,
+          labelCol: item.value.formLabelCol ?? formLabelColDefault.value as any,
+          wrapperCol: item.value.formWrapperCol ?? formWrapperColDefault.value as any,
           label: noLable.value ? '' : evaluateCallback(item.value.label) as string,
           name: name.value,
         }, {

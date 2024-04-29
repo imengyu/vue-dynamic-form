@@ -2,10 +2,13 @@
 <template>
   <Col 
     v-if="evaluateCallback(item.hidden) !== true"
-    class="dynamic-form-item-wrapper"
+    :class="[
+      'dynamic-form-item-wrapper',
+      finalOptions?.nestObjectMargin !== false && item.nestObjectMargin !== false ? 'nest-with-margin' : '',
+    ]"
     v-bind="{
       ...colProps,
-      ...(item.additionalProps as {})
+      ...(item.colProps as {})
     }"
   >
     <!--对象组-->
@@ -22,7 +25,7 @@
           :rawModel="rawModel"
           :model="null"
           :noLable="true"
-          :disabled="disabled || evaluateCallback(item.disabled)"
+          :disabled="disabled ?? evaluateCallback(item.disabled)"
         >
           <template #insertion>
             <span v-if="item.label" class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
@@ -39,7 +42,7 @@
           :parentModel="model"
           :parentName="name"
           @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled || evaluateCallback(item.disabled)"
+          :disabled="disabled ?? evaluateCallback(item.disabled)"
         />
       </template>
     </template>
@@ -61,7 +64,7 @@
           :parentModel="model"
           :parentName="name"
           @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled || evaluateCallback(item.disabled)"
+          :disabled="disabled ?? evaluateCallback(item.disabled)"
         />
       </Row>
     </FormGroup>
@@ -80,7 +83,7 @@
           :parentModel="parentModel"
           :parentName="parentName"
           @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled || evaluateCallback(item.disabled)"
+          :disabled="disabled ?? evaluateCallback(item.disabled)"
         >
           <template #formCeil="values">
             <slot name="formCeil" v-bind="values" />
@@ -102,7 +105,7 @@
         :parentModel="parentModel"
         :parentName="parentName"
         @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-        :disabled="disabled || evaluateCallback(item.disabled)"
+        :disabled="disabled ?? evaluateCallback(item.disabled)"
       >
         <template #formCeil="values">
           <slot name="formCeil" v-bind="values" />
@@ -135,7 +138,7 @@
             :parentModel="parentModel"
             :parentName="parentName"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
-            :disabled="disabled || evaluateCallback(formRow.disabled)"
+            :disabled="disabled ?? evaluateCallback(formRow.disabled)"
           >
             <template #formCeil="values">
               <slot name="formCeil" v-bind="values" />
@@ -148,7 +151,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
       :item="item"
       :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
+      :disabled="disabled ?? evaluateCallback(item.disabled)"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -168,7 +171,7 @@
             :parentModel="parentModel"
             :parentName="parentName"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
-            :disabled="disabled || evaluateCallback(item.disabled)"
+            :disabled="disabled ?? evaluateCallback(item.disabled)"
           >
             <template #formCeil="values">
               <slot name="formCeil" v-bind="values" />
@@ -181,7 +184,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'array-single'" 
       :item="item"
       :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
+      :disabled="disabled ?? evaluateCallback(item.disabled)"
       :model="(model as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -212,7 +215,7 @@
               :model="child"
               :parentModel="model"
               :parentName="name"
-              :disabled="disabled || evaluateCallback(item.disabled)"
+              :disabled="disabled ?? evaluateCallback(item.disabled)"
               @update:model="(v: unknown) => onUpdateValue(v)"
             />
           </template>
@@ -223,7 +226,7 @@
     <DynamicFormItemNormal v-else-if="item.type === 'array-object'" 
       :item="item"
       :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
+      :disabled="disabled ?? evaluateCallback(item.disabled)"
       :model="model"
       :rawModel="rawModel"
       :parentModel="parentModel"
@@ -254,7 +257,7 @@
               :model="child"
               :parentModel="model"
               :parentName="name"
-              :disabled="disabled || evaluateCallback(item.disabled)"
+              :disabled="disabled ?? evaluateCallback(item.disabled)"
               @update:model="(v: unknown) => onUpdateValue(v)"
             />
           </template>
@@ -266,7 +269,7 @@
       v-else
       :item="item"
       :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
+      :disabled="disabled ?? evaluateCallback(item.disabled)"
       :rawModel="rawModel"
       :parentModel="parentModel"
       :model="model"
@@ -279,9 +282,10 @@
   </Col>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject, PropType, toRefs } from 'vue';
-import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject } from './DynamicForm';
+<script lang="ts" setup>
+import { inject, PropType, Ref, toRefs } from 'vue';
+import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions } from './DynamicForm';
+import { Rules } from 'async-validator';
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
@@ -290,62 +294,58 @@ import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
 import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
 import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col';
 import Row from './DynamicFormBasicControls/Layout/Row';
-import { Rule } from 'async-validator';
 
 /**
  * 动态表单条目渲染组件。
  */
-export default defineComponent({
-  name: 'DynamicFormItem',
-  props: {
-    item: {
-      type: Object as PropType<IDynamicFormItem>,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    disabled: {
-      type: Boolean,
-      defalut: false,
-    },
-    model: {
-      required: true,
-    },
-    parentModel: {
-      required: true,
-    },
-    parentName: {
-      type: String,
-      default: null,
-    },
-    rawModel: {
-      type: Object as PropType<IDynamicFormObject>,
-      required: true,
-    },
-    colProps: {
-      type: Object as PropType<ColProps>,
-      default: null,
-    }
-  },
-  emits: [ 'update:model' ],
-  setup(props) {
-    const propsP = toRefs(props);
-    const formRules = inject<Record<string, Rule>>('formRules'); 
 
-    function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
-      if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<T>).callback === 'function')
-        return (val as IDynamicFormItemCallback<T>).callback(propsP.model.value, propsP.rawModel.value, propsP.parentModel.value, propsP.item.value, formRules);
-      return val as T;
-    }
-
-    return {
-      formRules,
-      evaluateCallback,
-    }
+const props = defineProps({
+  item: {
+    type: Object as PropType<IDynamicFormItem>,
+    required: true,
   },
-  components: { DynamicFormItemNormal, FormGroup, FormArrayGroup, Col, Row, DynamicFormTab, DynamicFormTabPage, FormCustomLayout }
+  name: {
+    type: String,
+    required: true,
+  },
+  disabled: {
+    type: Boolean,
+    defalut: false,
+  },
+  model: {
+    required: true,
+  },
+  parentModel: {
+    required: true,
+  },
+  parentName: {
+    type: String,
+    default: null,
+  },
+  rawModel: {
+    type: Object as PropType<IDynamicFormObject>,
+    required: true,
+  },
+  colProps: {
+    type: Object as PropType<ColProps>,
+    default: null,
+  }
 });
 
+defineEmits([	'update:model' ]);
+
+const propsP = toRefs(props);
+const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
+
+function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
+  if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<T>).callback === 'function')
+    return (val as IDynamicFormItemCallback<T>).callback(
+      propsP.model.value, 
+      propsP.rawModel.value,
+      propsP.parentModel.value,
+      propsP.item.value,
+      (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+    );
+  return val as T;
+}
 </script>

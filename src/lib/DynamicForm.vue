@@ -56,10 +56,8 @@ export default defineComponent({
       };
     });
 
-    provide('widgetOvrride', finalOptions.value.widgets || {});
-    provide('internalWidgets', finalOptions.value.internalWidgets);
-    provide('formRules', finalOptions.value.formRules);
-    provide('rawModel', model.value);
+    provide('finalOptions', finalOptions);
+    provide('rawModel', model);
 
     const formEditor = ref();
     const widgetsRefMap = ref<Record<string,() => unknown>>({});
@@ -230,6 +228,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import './Scss/Color.scss';
 @import './Scss/BaseControl.scss';
 @import './Scss/Form.scss';
 

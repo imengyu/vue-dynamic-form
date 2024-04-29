@@ -5,12 +5,16 @@ export interface DynamicFormItemRegistryItem {
   additionalProps: Record<string, unknown>;
 }
 
+export function makeWidget(componentInstance: unknown, additionalProps?: Record<string, unknown>, valueName?: string) : DynamicFormItemRegistryItem {
+  return { componentInstance, additionalProps: additionalProps ?? {}, valueName: valueName || 'valueName' };
+}
+
 const DynamicFormItemRegistryData = new Map<string, DynamicFormItemRegistryItem>();
 
 /**
  * 动态表单组件注册器。
  * 
- * 您可以在这里调用 registerDynamicFormItemControl 注册自定义表单控件
+ * 您可以在这里调用 register 注册自定义表单控件
  */
 export const DynamicFormItemRegistry = {
   /**
@@ -27,22 +31,31 @@ export const DynamicFormItemRegistry = {
    * @param additionalProps 组件的附加属性，将会设置到渲染函数上
    * @param valueName 用于指定表单子组件的双向绑定值属性名称，默认是 value
    */
-  registerDynamicFormItemControl(type: string, componentInstance: unknown, additionalProps: Record<string, unknown> = {}, valueName = 'value') : void {
+  register(type: string, componentInstance: unknown, additionalProps: Record<string, unknown> = {}, valueName = 'value') {
     if (DynamicFormItemRegistryData.has(type)) {
       console.warn('[DynamicFormItemRegistry] Type ' + type + ' already exists and cannot be registered twice.');
-      return;
+      return this;
     }
     DynamicFormItemRegistryData.set(type, { componentInstance, additionalProps, valueName });
+    return this;
   },
   /**
    * 取消注册自定义表单控件
    * @param type 唯一类型名称
    */
-  unregisterDynamicFormItemControl(type: string) : void {
+  unregister(type: string) {
     if (!DynamicFormItemRegistryData.has(type)) {
       console.warn('[DynamicFormItemRegistry] Can not unregister nonexistent type ' + type + ' .');
-      return;
+      return this;
     }
     DynamicFormItemRegistryData.delete(type);
+    return this;
   },
+  /**
+   * 清空所有已注册的自定义表单控件
+   */
+  clearAll() {
+    DynamicFormItemRegistryData.clear();
+    return this;
+  }
 };

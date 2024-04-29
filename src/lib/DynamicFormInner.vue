@@ -5,7 +5,7 @@
     <div v-if="options.emptyText" class="dynamic-form-item-empty">{{ options.emptyText }}</div>
   </slot>
   <div class="dynamic-form-item-empty" v-else-if="(typeof model !== 'object')">
-    DynamicForm Warn model is not a object!
+    DynamicForm Warn: model is not a object!
   </div>
   <template v-else>
     <!--表单条目渲染核心-->
@@ -34,27 +34,23 @@
   </template>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
+<script lang="ts" setup>
+import { PropType } from 'vue';
 import { IDynamicFormOptions, IDynamicFormObject } from './DynamicForm';
 import DynamicFormItem from './DynamicFormItem.vue';
 
 /**
  * 动态表单组件。
  */
-export default defineComponent({
-  components: {
-    DynamicFormItem,
+
+defineProps({
+  model: {
+    type: Object as PropType<IDynamicFormObject>,
+    default: null
   },
-  props: {
-    model: {
-      type: Object as PropType<IDynamicFormObject>,
-      default: null
-    },
-    options: {
-      type: Object as PropType<IDynamicFormOptions>,
-      default: null
-    },
+  options: {
+    type: Object as PropType<IDynamicFormOptions>,
+    default: null
   },
 });
 </script>

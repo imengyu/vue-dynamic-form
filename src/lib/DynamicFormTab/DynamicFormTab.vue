@@ -1,6 +1,6 @@
 <script lang="ts">
-import { PropType, defineComponent, h, inject, ref } from 'vue';
-import type { IDynamicFormInternalWidgets, IDynamicFormItem, IDynamicFormTabProps } from '../DynamicForm';
+import { PropType, Ref, defineComponent, h, inject, ref } from 'vue';
+import type { IDynamicFormItem, IDynamicFormOptions, IDynamicFormTabProps } from '../DynamicForm';
 
 export default defineComponent({
   props: {
@@ -10,11 +10,12 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const internalWidgets = inject<IDynamicFormInternalWidgets>('internalWidgets');
+    const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
     const additionalProps = props.item.additionalProps as IDynamicFormTabProps;
     const activeKey = ref(additionalProps?.defaultActiveKey || '');
 
     return () => {
+      const internalWidgets = finalOptions?.value.internalWidgets;
       if (additionalProps?.renderTab) {
         return additionalProps.renderTab(props.item, {
           activeKey: activeKey.value,

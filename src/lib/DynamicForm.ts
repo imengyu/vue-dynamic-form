@@ -1,8 +1,8 @@
 import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
-import { RowProps } from "./DynamicFormBasicControls";
-import { Ref, Slot, VNode } from "vue";
+import { Form, FormItem, RowProps } from "./DynamicFormBasicControls";
+import { Slot, VNode, h, markRaw } from "vue";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -97,11 +97,11 @@ export interface IDynamicFormItem {
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formLabelCol?: { span: number, offset?: number },
+  formLabelCol?: { span: number, offset?: number }|string|number,
   /**
    * 表单组件栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formWrapperCol?: { span: number, offset?: number },
+  formWrapperCol?: { span: number, offset?: number }|string|number,
   /**
    * 当前表单项名称。
    */
@@ -134,6 +134,10 @@ export interface IDynamicFormItem {
    * 当前条目的 Row 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
   rowProps?: RowProps,
+  /**
+   * 当显示嵌套的表单对象条目时是否在前部显示缩进。默认是
+   */
+  nestObjectMargin?: boolean,
 }
 
 //DynamicForm 实例方法接口
@@ -185,8 +189,19 @@ export interface IDynamicFormRef {
   getVisibleFormNames: () => string[];
 }
 
-export interface IDynamicFormInternalWidgets {
+export const defaultDynamicFormInternalWidgets = {
   Form: {
+    component: markRaw(Form),
+    propsMap: {},
+  },
+  FormItem: {
+    component: markRaw(FormItem),
+    propsMap: {},
+  }
+} as IDynamicFormInternalWidgets
+
+export interface IDynamicFormInternalWidgets {
+  Form?: {
     /**
      * 组件实例
      */
@@ -205,7 +220,7 @@ export interface IDynamicFormInternalWidgets {
       onSubmit?: string,
     },
   },
-  FormItem: {
+  FormItem?: {
     /**
      * 组件实例
      */
@@ -220,7 +235,7 @@ export interface IDynamicFormInternalWidgets {
       wrapperCol?: string,
     },
   },
-  Tab: {
+  Tab?: {
     /**
      * 组件实例
      */
@@ -233,7 +248,7 @@ export interface IDynamicFormInternalWidgets {
       defaultActiveKey?: string,
     },
   },
-  TabPage: {
+  TabPage?: {
     /**
      * 组件实例
      */
@@ -261,11 +276,11 @@ export interface IDynamicFormOptions {
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formLabelCol?: { span: number, offset?: number },
+  formLabelCol?: { span: number, offset?: number }|string|number,
   /**
    * 表单组件栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formWrapperCol?: { span: number, offset?: number },
+  formWrapperCol?: { span: number, offset?: number }|string|number,
   /**
    * 表单label宽度。部分UI库的Form组件可能不支持这个属性。
    */
@@ -296,6 +311,10 @@ export interface IDynamicFormOptions {
    * 当表单中无可用编辑条目时，显示的提示，为空则不显示提示。默认为空
    */
   emptyText?: string,
+  /**
+   * 当显示嵌套的表单对象条目时是否在前部显示缩进。默认是
+   */
+  nestObjectMargin?: boolean,
 }
 
 /**
@@ -332,3 +351,9 @@ export interface IDynamicFormTabPageProps {
     title: string,
   }, defaultSlot: Slot) => VNode[];
 }
+
+export function renderTextDefaultSlot(text: string) {
+  return {
+    default: () => [ h('span', text) ],
+  }
+} 

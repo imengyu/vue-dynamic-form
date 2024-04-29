@@ -93,7 +93,7 @@ export default defineComponent({
     },
     center: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     colon: {
       type: Boolean,
@@ -197,24 +197,25 @@ export default defineComponent({
     }
 
     return () => {
+      const labelColValue = labelCol.value?.span ?? formContextProps?.labelCol.value?.span;
       return (
         <Row
           class={"dynamic-form-control-item" + (noBottomMargin.value ? ' no-bottom-margin' : '')}
           align={center.value ? 'center' : 'flex-start'}
         >
           { 
-            (showLabel.value && formContextProps?.showLabel.value && label) ? 
+            (labelColValue > 0 && showLabel.value && formContextProps?.showLabel.value && label) ? 
               <Col
                 class="label-container"
-                span={labelCol.value?.span || formContextProps?.labelCol.value?.span}
-                offset={labelCol.value?.offset || formContextProps?.labelCol.value?.offset}
-                style={{ width: labelWidth.value || formContextProps?.labelWidth.value }}
+                span={labelColValue}
+                offset={labelCol.value?.offset ?? formContextProps?.labelCol.value?.offset}
+                style={{ width: labelWidth.value ?? formContextProps?.labelWidth.value }}
               >
                 <label
                   for={uniqueId}
                   style={{
                     color: disabled.value ? labelDisableColor.value : labelColor.value,
-                    textAlign: labelAlign.value || formContextProps?.labelAlign.value,
+                    textAlign: labelAlign.value ?? formContextProps?.labelAlign.value,
                     ...labelStyle.value,
                   }}
                 >
@@ -229,8 +230,8 @@ export default defineComponent({
           }
           <Col 
             class="wrapper-container"
-            span={wrapperCol.value?.span || formContextProps?.wrapperCol.value?.span}
-            offset={wrapperCol.value?.offset || formContextProps?.wrapperCol.value?.offset}
+            span={wrapperCol.value?.span ?? formContextProps?.wrapperCol.value?.span}
+            offset={wrapperCol.value?.offset ?? formContextProps?.wrapperCol.value?.offset}
           >
             <div id={uniqueId}>
               { renderSlot(ctx.slots, 'default') }

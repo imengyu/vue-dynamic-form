@@ -1,8 +1,8 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <!-- eslint-disable vue/no-mutating-props -->
 <script lang="ts">
-import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, ref, toRefs, watch } from "vue";
-import { IDynamicFormItem, MESSAGE_RELOAD } from "../DynamicForm";
+import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, Ref, ref, toRefs, watch } from "vue";
+import { IDynamicFormItem, IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
 import { IDynamicFormMessageCenter } from "../DynamicFormInternal";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
@@ -71,12 +71,12 @@ export default defineComponent({
       //注册所有内置表单组件类型
       if (!registeredInternal) {
         registeredInternal = true;
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-text', markRaw(BaseInputVue));
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-select', markRaw(BaseSelectVue));
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-textarea', markRaw(BaseTextAreaVue));
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-check', markRaw(BaseCheckVue));
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-radio', markRaw(BaseRadio));
-        DynamicFormItemRegistry.registerDynamicFormItemControl('base-divider', markRaw(BaseDivider));
+        DynamicFormItemRegistry.register('base-text', markRaw(BaseInputVue));
+        DynamicFormItemRegistry.register('base-select', markRaw(BaseSelectVue));
+        DynamicFormItemRegistry.register('base-textarea', markRaw(BaseTextAreaVue));
+        DynamicFormItemRegistry.register('base-check', markRaw(BaseCheckVue));
+        DynamicFormItemRegistry.register('base-radio', markRaw(BaseRadio));
+        DynamicFormItemRegistry.register('base-divider', markRaw(BaseDivider));
       }
     }
     function findComponent() {
@@ -88,8 +88,8 @@ export default defineComponent({
       }
 
       let type : DynamicFormItemRegistryItem|null = null;
-      if (widgetOvrride)
-        type = (widgetOvrride as Record<string, DynamicFormItemRegistryItem>)[itemValue.type];
+      if (finalOptions?.value.widgets)
+        type = (finalOptions.value.widgets as Record<string, DynamicFormItemRegistryItem>)[itemValue.type];
 
       if (type == null)
         type = DynamicFormItemRegistry.findDynamicFormItemByType(itemValue.type);
@@ -105,8 +105,8 @@ export default defineComponent({
       componentOnUpdateValueName.value = 'onUpdate:'+ type.valueName;
     }
 
-    const rawModel = inject<Record<string, unknown>>('rawModel'); 
-    const widgetOvrride = inject<Record<string, DynamicFormItemRegistryItem>>('widgetOvrride'); 
+    const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
+    const rawModel = inject<Ref<Record<string, unknown>>>('rawModel', ref({})); 
     const messageCenter = inject<IDynamicFormMessageCenter>('messageCenter'); 
     
     watch(item, () => {
@@ -148,7 +148,6 @@ export default defineComponent({
       findComponent,
       getRef,
       rawModel,
-      widgetOvrride,
       componentRef,
       componentInstance,
       componentAdditionalProps,
@@ -164,7 +163,7 @@ export default defineComponent({
           ...(additionalProps.value as Record<string, unknown>),
           disabled: disabled.value,
           item: item.value,
-          rawModel: rawModel,
+          rawModel: rawModel.value,
           parentModel: parentModel.value,
           name: name.value,
           //双向数据绑定属性
@@ -192,7 +191,7 @@ export default defineComponent({
       } else {
         return h('span', {
           class: 'dynamic-form-error-alert'
-        }, `警告：未找到表单组件实例 ${(item.value as IDynamicFormItem)?.type || '未知'} ${JSON.stringify(widgetOvrride || {})}`);
+        }, `警告：未找到表单组件实例 ${(item.value as IDynamicFormItem)?.type || '未知'}`);
       }
     }
   },

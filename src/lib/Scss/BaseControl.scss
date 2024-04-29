@@ -1,32 +1,29 @@
-$primary-color: #1a91f3;
-$border-color: #dcdfe6;
-$base-color: #fff;
-
 input[type="text"].dynamic-form-base-control,
 input[type="password"].dynamic-form-base-control, 
 textarea.dynamic-form-base-control, 
 select.dynamic-form-base-control {
+  max-width: 100%;
   padding: 1px 11px;
-  background-color: $base-color;
+  background-color: var(--dynamic-form-base-color);
   background-image: none;
   border-radius: 5px;
-  border: 1px solid $border-color;
-  font-size: 14px;
+  border: 1px solid var(--dynamic-form-border-color);
+  font-size: var(--dynamic-form-font-size);
   line-height: 30px;
   height: 30px;
   outline: none;
 
   &::-webkit-input-placeholder {
-    color: #bbbbbb;
+    color: var(--dynamic-form-placeholder-color);
   }
 
   &:disabled {
-    background-color: rgba(75, 75, 75, 0.514);
-    color: #919191;
+    opacity: 0.8;
+    color: var(--dynamic-form-secondary-color);
   }
 
   &:hover, &:active, &:focus {
-    border-color: $primary-color;
+    border-color: var(--dynamic-form-primary-color);
   }
 }
 
@@ -46,8 +43,8 @@ select.dynamic-form-base-control {
     width: 22px;
     height: 22px;
     border-radius: 22px;
-    background-color: $base-color;
-    border: 1px solid $border-color;
+    background-color: var(--dynamic-form-base-color);
+    border: 1px solid var(--dynamic-form-border-color);
     margin: 0;
     margin-right: 5px;
     
@@ -66,7 +63,7 @@ select.dynamic-form-base-control {
 
     &:checked {
       &:after {
-        background-color: $primary-color;
+        background-color: var(--dynamic-form-primary-color);
       }
     }
 
@@ -97,7 +94,7 @@ textarea.dynamic-form-base-control {
   min-width: 60px;
   height: 30px;
   padding: 0 14px;
-  font-size: 14px;
+  font-size: var(--dynamic-form-font-size);
 
   background: #f0f0f0;
   color: #333;
@@ -121,11 +118,11 @@ textarea.dynamic-form-base-control {
   height: 22px;
   width: 22px;
   overflow: hidden;
-  background-color: $base-color;
+  background-color: var(--dynamic-form-base-color);
   background-image: none;
   border-radius: 5px;
-  border: 1px solid $border-color;
-  color: $primary-color;
+  border: 1px solid var(--dynamic-form-border-color);
+  color: var(--dynamic-form-primary-color);
   margin: 0;
   margin-right: 10px;
 
@@ -135,7 +132,7 @@ textarea.dynamic-form-base-control {
     line-height: 22px;
     top: 0px;
     content: "";
-    color: $primary-color;
+    color: var(--dynamic-form-primary-color);
     border: none;
     text-align: center;
     font-size: 12px;
@@ -143,7 +140,7 @@ textarea.dynamic-form-base-control {
 
   &:checked:after {
     content: "✔️";
-    color: $primary-color;
+    color: var(--dynamic-form-primary-color);
   }
 }
 
@@ -151,10 +148,10 @@ textarea.dynamic-form-base-control {
   display: flex;
   flex-direction: row;
   flex: 1;
-  flex-direction: 'row';
 }
 .dynamic-form-col {
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
   flex-grow: 0;
   flex-shrink: 0;
