@@ -1,12 +1,12 @@
 # vue-dynamic-form
 
-A data driven form component for vue3.
+[English](./README.EN.md) | 中文
 
 vue-dynamic-form 一个用数据驱动的 Vue3 动态表单组件。
 
 ## 文档
 
-[查看文档](https://imengyu.top/pages/vue-dynamic-form-docs)。
+[查看文档](https://docs.imengyu.top//vue-dynamic-form-docs)。
 
 ![demo](./demo.jpg)
 
@@ -41,7 +41,7 @@ vue-dynamic-form 并不是开发中所必须的，它只是一个帮助你加快
 ## 作者的其他项目
 
 * [vue3-context-menu 一个简洁美观简单的Vue3右键菜单组件](https://github.com/imengyu/vue3-context-menu/)
-* [naeasy-ui-react-native 一款简单的 React Native 移动端UI组件库](https://github.com/imengyu/naeasy-ui-react-native)
+* [vue-code-layout A Vue editor layout component that like VSCode](https://github.com/imengyu/vue-code-layout)
 
 ## License
 
