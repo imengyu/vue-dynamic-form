@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseRadioProps, BaseSelectProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
+import { BaseRadioProps, BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { ref, reactive, watch } from 'vue'
 
 const formModel = ref({
@@ -16,6 +16,7 @@ const formModel = ref({
   item_id: 0 as number|null,
 });
 const formOptions = reactive<IDynamicFormOptions>({
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formRules: {},
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },

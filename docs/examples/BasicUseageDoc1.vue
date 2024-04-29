@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormOptions } from '../../lib/main';
+import { DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import { reactive, ref, } from 'vue'
 
 const formModel = reactive({
@@ -19,8 +19,8 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
-  formLabelCol: { span: 12 },
-  formWrapperCol: { span: 12 },
+  formLabelCol: { span: 6 },
+  formWrapperCol: { span: 18 },
   formItems: [
     { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
   ],

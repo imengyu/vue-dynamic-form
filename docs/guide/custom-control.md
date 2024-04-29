@@ -24,14 +24,14 @@ title: 自定义组件
 |disabled|boolean|当前表单项是否禁用|
 |rawModel|IDynamicFormObject|整个表单的值|
 |parentModel|IDynamicFormObject|父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）|
-|`[主属性名称]`|unknown|当前表单的值，“主属性名称” 是 `registerDynamicFormItemControl` 注册时指定的 |
+|`[双向绑定主属性名称]`|unknown|当前双向绑定变量的值，“双向绑定主属性名称” 是 `DynamicFormItemRegistry.register` 注册时指定的 |
 |name|string|当前表单项的数据键值名称|
 
 另外，用户可以指定 additionalProps、additionalEvents 和 additionalDirectProps, 这些属性与事件都会被绑定到你的组件上。
 
 事件:
 
-为了实现数据双向绑定，发出 `'update:[主属性名称]'` 事件用于数据更改事件。（“主属性名称” 是 `registerDynamicFormItemControl` 注册时指定的）。
+为了实现数据双向绑定，发出 `'update:[双向绑定主属性名称]'` 事件用于数据更改事件。（“双向绑定主属性名称” 是 `DynamicFormItemRegistry.register` 注册时指定的）。
 
 如下，这是一个自定义 check-box 的示例：
 
@@ -92,21 +92,20 @@ function onValueUpdate(v: boolean) {
 ```js
 import BaseCheck from 'BaseCheck.vue';
 
-DynamicFormItemRegistry.registerDynamicFormItemControl('base-check', markRaw(BaseCheck), {}, 'value');//指定传入主属性是 “value”
+DynamicFormItemRegistry.register('base-check', markRaw(BaseCheck), {}, 'value');//指定传入主属性是 “value”
 ```
 
 ## 局部注册
 
-在表单属性的 widgets 中注册，这个组件可以在整个表单中使用，参数与 registerDynamicFormItemControl 一致：
+在表单属性的 widgets 中注册，这个组件可以在当前表单中使用，参数与 DynamicFormItemRegistry.register 一致：
 
-```js
+```ts
+import BaseCheck from 'BaseCheck.vue';
+import { type IDynamicFormOptions, makeWidget } from "@imengyu/vue-dynamic-form";
+
 const formOptions = ref<IDynamicFormOptions>({
   widgets: {
-    'base-check': {
-      componentInstance: markRaw(BaseCheck),
-      valueName: 'value',
-      additionalProps: {},
-    }
+    'base-check': makeWidget(markRaw(BaseCheck), {}, 'value'),
   },
   formItems: [
     ...
@@ -114,7 +113,7 @@ const formOptions = ref<IDynamicFormOptions>({
 });
 ```
 
-## 一些情况下不需要自己手写自定义组件哦
+## 一些情况下不需要包装自定义组件
 
 自定义组件就是普通的 Vue 组件，唯一的要求是要有一个双向绑定值。所以如果现成的组件已经有了双向绑定的主属性，就可以直接拿来用，只需要在注册时指定主属性的名称。
 
@@ -123,12 +122,12 @@ const formOptions = ref<IDynamicFormOptions>({
 ```ts
 import { Cascader } from "@arco-design/web-vue";
   
-DynamicFormItemRegistry.registerDynamicFormItemControl('cascader', markRaw(Cascader), {}, 'modelValue'); //指定传入主属性是 “modelValue”
+DynamicFormItemRegistry.register('cascader', markRaw(Cascader), {}, 'modelValue'); //指定传入主属性是 “modelValue”
 ```
 
 注册后即可使用：
 
-传入的 additionalProps 就是这个组件的属性，具体 arco 为我们写好了定义，也可以直接导入，这样就有有类型定义了。
+传入的 additionalProps 就是这个组件的属性，如果你使用TypeScript，具体 arco 为我们写好了定义，也可以直接导入，这样就有有类型定义了。
 
 ```ts
 import { CascaderInstance } from "@arco-design/web-vue";

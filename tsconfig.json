@@ -1,5 +1,12 @@
 {
-  "include": ["src/env.d.ts", "src/**/*", "src/**/*.tsx", "src/**/*.vue"],
+  "include": [
+    "src/env.d.ts",
+    "src/**/*",
+    "src/**/*.tsx",
+    "docs/**/*.vue",
+    "docs/**/*.tsx",
+    "docs/**/*"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "target": "esnext",
@@ -18,19 +25,15 @@
     "strictFunctionTypes": false,
     "composite": true,
     "baseUrl": ".",
-    "importsNotUsedAsValues": "preserve",
     "isolatedModules": false,
     "declaration": true,
     "declarationDir": "./types/",
     "outDir": "./temp",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "vue-dynamic-form": [ "./src/lib/main" ],
+      "@imengyu/vue-dynamic-form": [ "./src/lib/main" ]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   }
 }

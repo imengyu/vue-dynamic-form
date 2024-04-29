@@ -91,7 +91,7 @@ const formOptions : IDynamicFormOptions = {
       } as BaseRadioProps,
     },
     {
-      //my-select 是一个自定义的组件。源代码可以在 src\example\views\MySelect.vue 查看
+      //my-select 是一个自定义的组件
       type: 'my-select', label: '选择套餐', name: 'item_id', 
       additionalProps: { placeholder: '请选择套餐' },
     },

@@ -1,16 +1,9 @@
----
-title: 表单嵌套
----
-
-<script setup>
-import DynamicFormBasicUseage6 from '../../src/example/views/BasicUseageDoc6.vue'
-import DynamicFormBasicUseage7 from '../../src/example/views/BasicUseageDoc7.vue'
-import DynamicFormBasicUseage8 from '../../src/example/views/BasicUseageDoc8.vue'
-import DynamicFormBasicUseage9 from '../../src/example/views/BasicUseageDoc9.vue'
-import DynamicFormBasicUseage10 from '../../src/example/views/BasicUseageDoc10.vue'
-</script>
-
 # 表单嵌套
+
+<script>
+import DynamicFormBasicUseage6 from '../examples/BasicUseageDoc6.vue'
+import DynamicFormBasicUseage7 from '../examples/BasicUseageDoc7.vue'
+</script>
 
 在表单中经常会遇到对象与数组这种嵌套的结构，在之前的手动表单写法中，经常需要自己处理，当数据结构特别复杂的时候，这真的是一个非常麻烦的事情。所以，vue-dynamic-form 支持为你处理对象与数组的嵌套表单。
 
@@ -84,8 +77,8 @@ const formModel = ref({
   },
 });
 const formOptions : IDynamicFormOptions = {
-  formLabelCol: { span: 6 },
-  formWrapperCol: { span: 18 },
+  formLabelCol: { span: 8 },
+  formWrapperCol: { span: 16 },
   formItems: [
     { 
       type: 'object', label: '对象嵌套对象条目(这是一级对象)', name: 'nestedObjectProp', 
@@ -142,13 +135,28 @@ const formOptions : IDynamicFormOptions = {
 
 数组类型必须提供一个 newChildrenObject 回调，用于添加按钮添加数据，如果不提供，则没有添加按钮。
 
-```ts
+```vue preview
+<template>
+  <div>
+    <DynamicForm
+      :options="formOptions"
+      :model="formModel"
+    />
+    <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 200px;" readonly></textarea>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { computed, ref } from 'vue'
+
 const formModel = ref({
   arrayProp: [
     '我是简单数组数据'
   ],
 });
 const formOptions : IDynamicFormOptions = {
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [
@@ -165,11 +173,12 @@ const formOptions : IDynamicFormOptions = {
   ],
   formRules: {},
 };
+
+const resultJson = computed(() => {
+  return JSON.stringify(formModel.value, undefined, 2);
+});
+</script>
 ```
-
-效果:
-
-<DynamicFormBasicUseage8 />
 
 你可以指定 additionalProps 控制 添加、删除、上移/下移 按钮是否显示：
 
@@ -193,7 +202,21 @@ import { FormArrayGroupProps } from '@imengyu/vue-dynamic-form';
 
 children 数组可以提供一个或者多个组件，每个 children 都会自动按照 name 编辑对应对象的属性。
 
-```ts
+```vue preview
+<template>
+  <div>
+    <DynamicForm
+      :options="formOptions"
+      :model="formModel"
+    />
+    <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 300px;" readonly></textarea>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { BaseCheckProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { computed, ref } from 'vue'
+
 const formModel = ref({
   arrayObjectProp: [
     {
@@ -204,8 +227,9 @@ const formModel = ref({
   ],
 });
 const formOptions : IDynamicFormOptions = {
-  formLabelCol: { span: 6 },
-  formWrapperCol: { span: 18 },
+  internalWidgets: defaultDynamicFormInternalWidgets,
+  formLabelCol: { span: 8 },
+  formWrapperCol: { span: 16 },
   formItems: [
     { 
       type: 'array-object', label: '数组嵌套对象条目', name: 'arrayObjectProp', 
@@ -231,11 +255,12 @@ const formOptions : IDynamicFormOptions = {
   ],
   formRules: {},
 };
+
+const resultJson = computed(() => {
+  return JSON.stringify(formModel.value, undefined, 2);
+});
+</script>
 ```
-
-效果：
-
-<DynamicFormBasicUseage9 />
 
 ## 其他嵌套模式
 
@@ -245,8 +270,19 @@ const formOptions : IDynamicFormOptions = {
 
 你还可以指定子表单的布局模式，把它当作一个容器使用，例如，下面的例子把两个属性横向显示：
 
-```ts
-import { DynamicForm, FormItemProps, IDynamicFormOptions } from '@imengyu/vue-dynamic-form;
+```vue preview
+<template>
+  <div>
+    <DynamicForm
+      :options="formOptions"
+      :model="formModel"
+    />
+    <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 150px;" readonly></textarea>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { DynamicForm, FormItemProps, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -256,6 +292,7 @@ const formModel = ref({
   stringProp3: '',
 });
 const formOptions : IDynamicFormOptions = {
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 4 },
   formWrapperCol: { span: 20 },
   formItems: [
@@ -270,9 +307,9 @@ const formOptions : IDynamicFormOptions = {
           label: '文本',
           name: 'stringProp2',
           additionalProps: { placeholder: '请输入文本' },
+          formLabelCol: { span: 8 },
+          formWrapperCol: { span: 12 },
           formProps: {
-            labelCol: { span: 6 },
-            wrapperCol: { span: 18 },
             noBottomMargin: true,
           } as FormItemProps,
         },
@@ -281,9 +318,9 @@ const formOptions : IDynamicFormOptions = {
           label: '文本',
           name: 'stringProp3',
           additionalProps: { placeholder: '请输入文本' },
+          formLabelCol: { span: 8 },
+          formWrapperCol: { span: 12 },
           formProps: {
-            labelCol: { span: 6 },
-            wrapperCol: { span: 18 },
             noBottomMargin: true,
           } as FormItemProps,
         },
@@ -292,11 +329,12 @@ const formOptions : IDynamicFormOptions = {
   ],
   formRules: {},
 };
+
+const resultJson = computed(() => {
+  return JSON.stringify(formModel.value, undefined, 2);
+});
+</script>
 ```
-
-效果：
-
-<DynamicFormBasicUseage10 />
 
 ### group-object
 

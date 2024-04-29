@@ -1,34 +1,37 @@
 <template>
-  <div>
+  <div class="demo-index">
     <div class="demo-row">
-      <div class="demo-col" style="width:50%;">
-        <DynamicForm
-          :options="formOptions"
-          :model="formModel"
-          @submit="onSubmit"
-        />
-        <div class="demo-result">{{resultJson}}</div>
-      </div>
-      <div class="demo-col" style="width:50%;">
+      <div class="demo-col">
         <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '你可以动态修改JSON，看看表单会发生什么变化' }}</div>
         <codemirror
           v-model="editorJson"
           placeholder="源代码"
-          :style="{ height: '600px', width: '100%' }"
+          :style="{ height: '700px', width: '100%' }"
           :autofocus="true"
           :indent-with-tab="true"
           :tab-size="2"
           :extensions="editorExtensions"
         />
       </div>
+      <div class="demo-col padding">
+        <DynamicForm
+          :options="formOptions"
+          :model="formModel"
+          @submit="onSubmit"
+        />
+        <div class="demo-result">
+          <h5>表单双向绑定数据</h5>
+          {{resultJson}}
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
+import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { Codemirror } from 'vue-codemirror/dist/vue-codemirror.cjs.js'
+import { Codemirror } from 'vue-codemirror'
 import { json } from '@codemirror/lang-json';
 
 const editorExtensions = [json()];
@@ -60,7 +63,7 @@ const formOptions = ref<IDynamicFormOptions>({
         placeholder: '请输入文本域',
         rows: 6,
         cols: 100,
-        style: { width: '400px' }
+        style: { width: '300px' }
       } as BaseTextAreaProps
     },
     { 

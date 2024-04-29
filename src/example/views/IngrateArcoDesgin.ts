@@ -23,19 +23,19 @@ export const defaultConfig = {
 } as IDynamicFormOptions
 
 export function registerAllFormComponents() {
-  DynamicFormItemRegistry.registerDynamicFormItemControl('text', markRaw(Input), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('password', markRaw(Input.Password), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('number', markRaw(InputNumber), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('text-area', markRaw(Textarea), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('switch', markRaw(Switch), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('check-box', markRaw(Checkbox), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('rate', markRaw(Rate));
-  DynamicFormItemRegistry.registerDynamicFormItemControl('date', markRaw(DatePicker), {}, 'pickerValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('time', markRaw(TimePicker), {}, 'modelValue');
-  DynamicFormItemRegistry.registerDynamicFormItemControl('date-time', markRaw(DatePicker), { showTime: true });
-  DynamicFormItemRegistry.registerDynamicFormItemControl('alert', markRaw(Alert));
-  DynamicFormItemRegistry.registerDynamicFormItemControl('static-image', markRaw(Image), {}, "src");
+  DynamicFormItemRegistry.register('text', markRaw(Input), {}, 'modelValue');
+  DynamicFormItemRegistry.register('password', markRaw(Input.Password), {}, 'modelValue');
+  DynamicFormItemRegistry.register('number', markRaw(InputNumber), {}, 'modelValue');
+  DynamicFormItemRegistry.register('text-area', markRaw(Textarea), {}, 'modelValue');
+  DynamicFormItemRegistry.register('switch', markRaw(Switch), {}, 'modelValue');
+  DynamicFormItemRegistry.register('check-box', markRaw(Checkbox), {}, 'modelValue');
+  DynamicFormItemRegistry.register('rate', markRaw(Rate));
+  DynamicFormItemRegistry.register('date', markRaw(DatePicker), {}, 'pickerValue');
+  DynamicFormItemRegistry.register('time', markRaw(TimePicker), {}, 'modelValue');
+  DynamicFormItemRegistry.register('date-time', markRaw(DatePicker), { showTime: true });
+  DynamicFormItemRegistry.register('alert', markRaw(Alert));
+  DynamicFormItemRegistry.register('static-image', markRaw(Image), {}, "src");
 
   //这是注册自己的组件
-  DynamicFormItemRegistry.registerDynamicFormItemControl('my-check', markRaw(MyCheckBox), {}, "value");
+  DynamicFormItemRegistry.register('my-check', markRaw(MyCheckBox), {}, "value");
 }

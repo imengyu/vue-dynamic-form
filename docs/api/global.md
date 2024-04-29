@@ -16,7 +16,7 @@ title: API 参考 - 全局函数
 
 用于管理注册动态表单的条目组件。
 
-### DynamicFormItemRegistry.registerDynamicFormItemControl(type, componentInstance, additionalProps, valueName)
+### DynamicFormItemRegistry.register(type, componentInstance, additionalProps, valueName)
 
 注册自定义表单控件
 
@@ -27,7 +27,7 @@ title: API 参考 - 全局函数
 |additionalProps|是|`Record<string, unknown>`|组件的附加属性，将会设置到渲染函数上|
 |valueName|是|string|用于指定表单子组件的双向绑定值属性名称，默认是 value, 当你的组件主 modelValue 名称不一致时，可以重新指定。|
 
-### DynamicFormItemRegistry.unregisterDynamicFormItemControl(type)
+### DynamicFormItemRegistry.unregister(type)
 
 取消注册自定义表单控件
 

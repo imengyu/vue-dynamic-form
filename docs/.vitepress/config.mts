@@ -1,7 +1,7 @@
-/**
- * @type {import('vitepress').UserConfig}
- */
-const config = {
+import { defineConfig } from "vitepress";
+import MarkdownPreview from 'vite-plugin-markdown-preview'
+
+export default defineConfig({
   title: 'vue-dynamic-form',
   description: 'A data driven form component for vue3.',
   base: '/pages/vue-dynamic-form-docs/',
@@ -17,7 +17,7 @@ const config = {
     ],
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2022 imengyu.top'
+      copyright: 'Copyright © 2024 imengyu.top'
     },
     nav: [
       { text: '教程', link: '/guide/about' },
@@ -32,6 +32,7 @@ const config = {
             { text: '介绍', link: '/guide/about' },
             { text: '开始使用', link: '/guide/getting-started' },
             { text: '绑定组件', link: '/guide/register-controls' },
+            { text: '基础用法', link: '/guide/basic-useage' },
           ]
         },
         {
@@ -42,6 +43,7 @@ const config = {
             { text: '表单联动', link: '/guide/form-linkage' },
             { text: '表单方法', link: '/guide/form-funs' },
             { text: '表单嵌套', link: '/guide/form-nest' },
+            { text: '表单标签页', link: '/guide/tab' },
           ]
         },
       ],
@@ -58,7 +60,8 @@ const config = {
         },
       ]
     }
-  }
-}
-
-export default config
+  },
+  vite: {
+    plugins: [ MarkdownPreview() as any ],
+  },
+});

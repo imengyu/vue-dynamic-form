@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseSelectProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
+import { BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -21,6 +21,7 @@ const formModel = ref({
   otherProp: '这是正常条目',
 });
 const formOptions : IDynamicFormOptions = {
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [

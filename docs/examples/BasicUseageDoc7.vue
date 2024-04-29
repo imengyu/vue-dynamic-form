@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseSelectProps, DynamicForm, IDynamicFormOptions } from '../../lib/main';
+import { BaseCheckProps, BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -23,8 +23,9 @@ const formModel = ref({
   },
 });
 const formOptions : IDynamicFormOptions = {
-  formLabelCol: { span: 6 },
-  formWrapperCol: { span: 18 },
+  internalWidgets: defaultDynamicFormInternalWidgets,
+  formLabelCol: { span: 8 },
+  formWrapperCol: { span: 16 },
   formItems: [
     { 
       type: 'object', label: '对象嵌套对象条目(这是一级对象)', name: 'nestedObjectProp', 

@@ -1,14 +1,10 @@
----
-title: 表单联动
----
+# 表单联动
 
 <script setup>
-import DynamicFormBasicUseage3 from '../../src/example/views/BasicUseageDoc3.vue'
-import DynamicFormBasicUseage4 from '../../src/example/views/BasicUseageDoc4.vue'
-import DynamicFormBasicUseage5 from '../../src/example/views/BasicUseageDoc5.vue'
+import DynamicFormBasicUseage3 from '../examples/BasicUseageDoc3.vue'
+import DynamicFormBasicUseage4 from '../examples/BasicUseageDoc4.vue'
+import DynamicFormBasicUseage5 from '../examples/BasicUseageDoc5.vue'
 </script>
-
-# 表单联动
 
 表单组件间的联动是开发中普遍的问题，希望能保持简洁易用的同时支持联动。
 
@@ -112,14 +108,14 @@ const formOptions : IDynamicFormOptions = {
       label: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '企业授权ID' : '授权密码' },
       name: 'authorization_code',
       additionalProps: {
-        placeholder: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码',
+        placeholder: { callback: (_, rawModel) => (rawModel as IDynamicFormObject).isEnterprise === true ? '请输入企业授权ID，授权ID请咨询客服电话' : '请输入授权密码' },
       } as IDynamicFormItemCallbackAdditionalProps<BaseInputProps>
     },
   ],
 };
 ```
 
-完整源代码可以参考 [这里](https://github.com/imengyu/vue-dynamic-form/blob/master/src/example/views/FormLinkage.vue)。
+完整源代码可以参考 [这里](https://github.com/imengyu/vue-dynamic-form/blob/master/src/examples/FormLinkage.vue)。
 
 效果：
 

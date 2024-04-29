@@ -1,12 +1,6 @@
----
-title: 自定义渲染
----
-
 # 自定义渲染
 
 如果你需要在某个表单中插入高度自定义，不通用的内容，例如一个按钮，一个表格，一张图片等等，你可以使用动态表单提供的插槽 formCeil 进行某个条目的自定义渲染。
-
-[在线预览 Demo](https://imengyu.top/pages/vue-dynamic-form-demo/#CustomRender)。
 
 ## 自定义渲染只读条目
 
@@ -14,35 +8,49 @@ title: 自定义渲染
 
 你需要实现 formCeil 插槽，根据 name (完整路径) 或者 item.name (名称) 判断当前是不是需要渲染的条目，如果是，则渲染自定内容。
 
-```vue
+```vue preview
 <template>
   <DynamicForm
     ref="formRef"
     :options="formOptions"
     :model="formModel"
-    @submit="onSubmit"
   >
     <template #formCeil="{ name, item, model, onModelUpdate }">
       <template v-if="item.name == 'test_custom_render'">
-        <div class="demo-row">
-          <a-avatar :imageUrl="model.avata" />
-          <div class="demo-col" style="text-align: left;margin-left: 10px;">
+        <Row>
+          <Col>
+            <Avatar :imageUrl="model.avata" />
+          </Col>
+          <Col style="text-align: left;margin-left: 10px;">
             <span style="font-size: 18px; margin-bottom: 4px;">{{ model.name }} (自定义渲染+仅展示)</span>
             <span>这在展示的表单中非常有用，你可以在这里面嵌入表格等等其他组件</span>
-          </div>
-        </div>
+          </Col>
+        </Row>
         <br>
       </template>
     </template>
   </DynamicForm>
+  <h5>表单数据：</h5>
+  {{ JSON.stringify(toRaw(formModel)) }}
 </template>
 
-<script setup lang="js">
-const formOptions = {
+<script setup lang="ts">
+import { reactive, ref, toRaw } from 'vue'
+import { DynamicForm, type IDynamicFormOptions, Row, Col } from '@imengyu/vue-dynamic-form';
+import { Avatar } from '@arco-design/web-vue';
+
+const formModel = reactive({
+  test_custom_render: {
+    name: '测试用户',
+    avatar: 'https://imengyu.top/assets/images/test/2.jpg',
+  },
+});
+const formOptions : IDynamicFormOptions = {
   formItems: [
-    { type: 'custom', label: '', name: 'test_custom_check' },
+    { type: 'custom', label: '', name: 'test_custom_render' },
   ],
 };
+
 </script>
 ```
 
@@ -50,34 +58,42 @@ const formOptions = {
 
 同样，自定义渲染插槽也支持数据双向绑定。
 
-```vue
+```vue preview
 <template>
   <DynamicForm
     ref="formRef"
     :options="formOptions"
     :model="formModel"
-    @submit="onSubmit"
   >
     <template #formCeil="{ item, model, onModelUpdate }">
       <template v-if="item.name == 'test_custom_check'">
-        <a-checkbox :modelValue="model" @update:modelValue="onModelUpdate">
+        <Checkbox :modelValue="model" @update:modelValue="onModelUpdate">
           我已阅读并同意
           <a href="/" target="_blank">《用户服务协议》</a>
           (自定义渲染+数据绑定)
-        </a-checkbox>
+        </Checkbox>
       </template>
       <template v-else>
         {{item.name}}
       </template>
     </template>
   </DynamicForm>
+  <h5>表单数据：</h5>
+  {{ JSON.stringify(formModel) }}
 </template>
 
-<script setup lang="js">
+<script setup lang="ts">
+import { reactive, ref, toRaw } from 'vue'
+import { DynamicForm, type IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
+import { Checkbox } from '@arco-design/web-vue';
+
 const formOptions = {
   formItems: [
     { type: 'custom', label: '', name: 'test_custom_check' },
   ],
 };
+const formModel = reactive({
+  test_custom_check: false,
+});
 </script>
 ```
