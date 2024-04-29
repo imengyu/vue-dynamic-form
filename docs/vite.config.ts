@@ -7,7 +7,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@imengyu/vue-dynamic-form': resolve(__dirname, '../src/lib/main')
+      '@imengyu/vue-dynamic-form': resolve(__dirname, '../src/main')
     },
   },
 })
