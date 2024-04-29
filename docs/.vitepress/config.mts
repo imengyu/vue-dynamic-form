@@ -4,7 +4,7 @@ import MarkdownPreview from 'vite-plugin-markdown-preview'
 export default defineConfig({
   title: 'vue-dynamic-form',
   description: 'A data driven form component for vue3.',
-  base: '/pages/vue-dynamic-form-docs/',
+  base: '/vue-dynamic-form-docs/',
   themeConfig: {
     socialLinks: [
       { 
@@ -31,7 +31,12 @@ export default defineConfig({
           items: [
             { text: '介绍', link: '/guide/about' },
             { text: '开始使用', link: '/guide/getting-started' },
-            { text: '绑定组件', link: '/guide/register-controls' },
+            { text: '绑定组件', link: '/guide/register-controls', items: [
+              { text: 'Ant Design Vue', link: '/guide/ingrate-ant-design' },
+              { text: 'Arco Design Vue', link: '/guide/ingrate-arco-design' },
+              { text: 'Element Plus', link: '/guide/ingrate-element' },
+            ] },
+            
             { text: '基础用法', link: '/guide/basic-useage' },
           ]
         },

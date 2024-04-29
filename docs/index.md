@@ -25,7 +25,9 @@ features:
     details: 加快开发速度，解放双手！
 ---
 
-<DocHome />
+<ClientOnly>
+  <DocHome />
+</ClientOnly>
 
 <script setup>
 import DocHome from './examples/DocHome.vue';

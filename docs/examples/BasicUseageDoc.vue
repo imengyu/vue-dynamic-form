@@ -1,41 +1,17 @@
 <template>
-  <div class="demo-index">
-    <div class="demo-row">
-      <div class="demo-col">
-        <div :class="'demo-alert '+(editorHasError?'error':'success')">{{  editorHasError || '你可以动态修改JSON，看看表单会发生什么变化' }}</div>
-        <codemirror
-          v-model="editorJson"
-          placeholder="源代码"
-          :style="{ height: '700px', width: '100%' }"
-          :autofocus="true"
-          :indent-with-tab="true"
-          :tab-size="2"
-          :extensions="editorExtensions"
-        />
-      </div>
-      <div class="demo-col padding">
-        <DynamicForm
-          :options="formOptions"
-          :model="formModel"
-          @submit="onSubmit"
-        />
-        <div class="demo-result">
-          <h5>表单双向绑定数据</h5>
-          {{resultJson}}
-        </div>
-      </div>
-    </div>
+  <div>
+    <DynamicForm
+      :options="formOptions"
+      :model="formModel"
+      @submit="onSubmit"
+    />
+    <textarea v-model="resultJson" class="demo-result" style="width: 100%;height: 200px;" readonly></textarea>
   </div>
 </template>
 
 <script setup lang="ts">
 import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
-import { computed, onMounted, reactive, ref, watch } from 'vue'
-import { json } from '@codemirror/lang-json';
-
-const editorExtensions = [json()];
-const editorJson = ref('');
-const editorHasError = ref('');
+import { computed, reactive, ref, } from 'vue'
 
 const resultJson = computed(() => {
   return JSON.stringify(formModel, undefined, 2);
@@ -49,20 +25,20 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
-  formLabelCol: { span: 4 },
-  formWrapperCol: { span: 20 },
+  formLabelCol: { span: 6 },
+  formWrapperCol: { span: 18 },
   formItems: [
     { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
     { 
       type: 'base-textarea', label: '文本域', name: 'stringProp2', 
-      formProps: { 
+      formProps: {
         center: false,
       },
       additionalProps: { 
         placeholder: '请输入文本域',
         rows: 6,
         cols: 100,
-        style: { width: '300px' }
+        style: { width: '400px' }
       } as BaseTextAreaProps
     },
     { 
@@ -110,18 +86,5 @@ const formOptions = ref<IDynamicFormOptions>({
 function onSubmit() {
   alert('你提交的数据：' + JSON.stringify(formModel, undefined, 2));
 }
-
-onMounted(() => {
-  editorJson.value = JSON.stringify(formOptions.value, undefined, 2);
-});
-watch(editorJson, () => {
-  try {
-    const newObj = JSON.parse(editorJson.value);
-    formOptions.value = newObj;
-    editorHasError.value = '';
-  } catch (e) {
-    editorHasError.value = '' + e;
-  }
-});
 
 </script>

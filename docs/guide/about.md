@@ -31,7 +31,7 @@ vue-dynamic-form 支持你使用 JSON 数据动态生成表单，只需要传入
 <DynamicFormBasicUseage />
 
 上面的效果是使用了默认的组件，功能比较简陋，仅用于测试和展示。
-实际你可以在表单中嵌入使用你喜欢的 UI 组件库，例如 [Ant Design Vue](https://www.antdv.com/docs/vue/getting-started-cn)、[arco.design Vue](https://arco.design/vue/docs/start)、[Element plus](https://element-plus.gitee.io/zh-CN/guide/installation.html) 等等，嵌入其他UI组件库的最终效果你可以[查看这里](ingrate-ui.md)。
+实际你可以在表单中嵌入使用你喜欢的 UI 组件库，例如 [Ant Design Vue](https://www.antdv.com/docs/vue/getting-started-cn)、[arco.design Vue](https://arco.design/vue/docs/start)、[Element plus](https://element-plus.gitee.io/zh-CN/guide/installation.html) 等等，嵌入其他UI组件库的最终效果你可以[查看这里](./register-controls.md#案例)。
 
 ## 开始之前
 

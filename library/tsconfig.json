@@ -1,13 +1,10 @@
 {
   "include": [
-    "library/env.d.ts",
-    "library/**/*",
-    "library/**/*.tsx",
-    "docs/**/*.vue",
-    "docs/**/*.tsx",
-    "docs/**/*"
+    "env.d.ts",
+    "./**/*",
+    "./**/*.tsx",
   ],
-  "exclude": ["library/**/__tests__/*"],
+  "exclude": ["./**/__tests__/*"],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -26,12 +23,6 @@
     "composite": true,
     "baseUrl": ".",
     "isolatedModules": false,
-    "outDir": "./temp",
-    "paths": {
-      "@/*": ["./library/*"],
-      "vue-dynamic-form": [ "./library/main" ],
-      "@imengyu/vue-dynamic-form": [ "./library/main" ]
-    },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   }
 }

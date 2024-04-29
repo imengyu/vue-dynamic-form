@@ -1,9 +1,5 @@
 # 绑定组件
 
-<script>
-import IngrateDemo from '../examples/ingrate/IngrateDemo.vue'
-</script>
-
 vue-dynamic-form 不带复杂的表单组件，不与任何UI库耦合。因此您可以选择安装自己喜欢的UI框架或其他库，
 使用UI库的表单组件，需要将其绑定后即可在动态表单中使用。
 
@@ -182,11 +178,9 @@ function onSubmit() {
 有些库可能不支持某些字段，例如Element plus不支持表单的内容宽度占比调整。
 :::
 
-* Ant Design Vue
-* arco.design Vue
-* Element plus
-
-<IngrateDemo />
+* [Ant Design Vue](./ingrate-ant-design.md)
+* [arco.design Vue](./ingrate-arco-design.md)
+* [Element plus](./ingrate-element.md)
 
 ## 注册自定义组件
 
