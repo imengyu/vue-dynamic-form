@@ -160,12 +160,12 @@ export default defineComponent({
         const props = {
           ref: componentRef,
           ...(componentAdditionalProps.value as Record<string, unknown>),
-          ...(additionalProps.value as Record<string, unknown>),
           disabled: disabled.value,
           item: item.value,
           rawModel: rawModel.value,
           parentModel: parentModel.value,
           name: name.value,
+          ...(additionalProps.value as Record<string, unknown>),
           //双向数据绑定属性
           [componentValueName.value]: value.value,
           [componentOnUpdateValueName.value]: (v: unknown) => onUpdateValue(v),

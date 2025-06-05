@@ -110,7 +110,7 @@ export default defineComponent({
       //静态文字
       else if (item.value.type === 'static-text') {
         vnodes.push(h('span', { ...evaluateCallbackObj(item.value.additionalProps as {}) }, [
-          (model.value || evaluateCallback((item.value.additionalProps as Record<string, unknown>).text)) as string
+          (model.value || evaluateCallback((item.value.additionalProps as Record<string, unknown>)?.text)) as string
         ]));
       }
       //提交按钮
