@@ -24,7 +24,7 @@
           :name="''"
           :rawModel="rawModel"
           :model="null"
-          :noLable="true"
+          :noLabel="true"
           :disabled="disabled || evaluateCallback(item.disabled)"
         >
           <template #insertion>

@@ -29,7 +29,7 @@ export default defineComponent({
     rawModel: {
       type: Object as PropType<Record<string, unknown>>,
     },
-    noLable: {
+    noLabel: {
       type: Boolean,
       default: false
     },
@@ -46,7 +46,7 @@ export default defineComponent({
   setup(props, ctx) {
     const {
        model, rawModel, parentModel, 
-       name, item, disabled, noLable,
+       name, item, disabled, noLabel, extra,
        formWrapperColDefault, formLabelColDefault
     } = toRefs(props);
 
@@ -150,8 +150,8 @@ export default defineComponent({
       if (internalWidgetsFormItem) {
         return h(internalWidgetsFormItem.component as any, {
           ...item.value.formProps as {},
-          colon: noLable.value !== true,
-          [internalWidgetsFormItem.propsMap.label || 'label']: noLable.value ? '' : evaluateCallback(item.value.label),
+          colon: noLabel.value !== true,
+          [internalWidgetsFormItem.propsMap.label || 'label']: noLabel.value ? '' : evaluateCallback(item.value.label),
           [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
           [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
           [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
@@ -163,11 +163,11 @@ export default defineComponent({
       //默认Form
       return (
         h(FormItem, {
-          colon: noLable.value !== true,
+          colon: noLabel.value !== true,
           ...item.value.formProps as {},
           labelCol: item.value.formLabelCol ?? formLabelColDefault.value as any,
           wrapperCol: item.value.formWrapperCol ?? formWrapperColDefault.value as any,
-          label: noLable.value ? '' : evaluateCallback(item.value.label) as string,
+          label: noLabel.value ? '' : evaluateCallback(item.value.label) as string,
           name: name.value,
         }, {
           default: renderChildrenSlot,
