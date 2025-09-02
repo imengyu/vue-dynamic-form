@@ -145,6 +145,9 @@ export default defineComponent({
 
     return () => {
       const internalWidgetsFormItem = finalOptions?.value.internalWidgets?.FormItem;
+      let finalName : string|string[] = name.value || '';
+      if (finalOptions?.value.formNestNameGenerateType === 'array')
+        finalName = finalName.split('.');
 
       //自定义渲染Form
       if (internalWidgetsFormItem) {
@@ -152,7 +155,7 @@ export default defineComponent({
           ...item.value.formProps as {},
           colon: noLabel.value !== true,
           [internalWidgetsFormItem.propsMap.label || 'label']: noLabel.value ? '' : evaluateCallback(item.value.label),
-          [internalWidgetsFormItem.propsMap.name || 'name']: name.value,
+          [internalWidgetsFormItem.propsMap.name || 'name']: finalName,
           [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
           [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
         }, {
@@ -168,7 +171,7 @@ export default defineComponent({
           labelCol: item.value.formLabelCol ?? formLabelColDefault.value as any,
           wrapperCol: item.value.formWrapperCol ?? formWrapperColDefault.value as any,
           label: noLabel.value ? '' : evaluateCallback(item.value.label) as string,
-          name: name.value,
+          name: finalName,
         }, {
           default: renderChildrenSlot,
         })

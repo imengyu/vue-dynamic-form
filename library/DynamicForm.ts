@@ -264,6 +264,8 @@ export interface IDynamicFormInternalWidgets {
   },
 }
 
+export type DynamicFormNestNameGenerateType = 'dot'|'array'
+
 export interface IDynamicFormOptions {
   /**
    * 表单条目数据
@@ -294,6 +296,10 @@ export interface IDynamicFormOptions {
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
   formAdditionalEvents?: Record<string, Function>;
+  /**
+   * 表单嵌套名称生成类型。默认是 dot 。
+   */
+  formNestNameGenerateType?: DynamicFormNestNameGenerateType,
 
   /**
    * 自定义重写表单控件。你可以重写内置控件，在这个表单中会以此重写列表为先查找表单组件。

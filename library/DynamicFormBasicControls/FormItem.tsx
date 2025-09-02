@@ -84,7 +84,7 @@ export default defineComponent({
       default: "",
     },
     name: {
-      type: String,
+      type: [String,Array],
       default: "",
     },
     disabled: {
@@ -174,7 +174,7 @@ export default defineComponent({
 
     //Context for custom children
     provide(FormItemContextContextKey, {
-      getFieldName: () => name.value,
+      getFieldName: () => typeof name.value === 'string' ? name.value : name.value.join('.'),
       onFieldBlur: () => {  formContextProps?.onFieldBlur(formItemInternalContext); },
       onFieldChange: (newValue: unknown) => { formContextProps?.onFieldChange(formItemInternalContext, newValue); },
       clearValidate: () => { formContextProps?.clearValidate(formItemInternalContext); },
