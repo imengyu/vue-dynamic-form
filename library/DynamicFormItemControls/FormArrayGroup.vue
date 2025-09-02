@@ -178,6 +178,18 @@ function handleDown(data: unknown) {
     flex: 1;
   }
 
+  .nav-button-conntainer {
+    display: flex;
+    flex-direction: column;
+
+    .base-button {
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+
   .base-button {
     cursor: pointer;
     min-width: 20px !important;
