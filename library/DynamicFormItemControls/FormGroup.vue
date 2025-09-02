@@ -7,42 +7,38 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import Row from "../DynamicFormBasicControls/Layout/Row";
 
-export default defineComponent({
-  props: {
-    /**
-     * 标题
-     */
-    title: {
-      type: String,
-      default: "",
-    },
-    /**
-     * 栅格间隔 px
-     */
-    gutter: {
-      type: Number,
-      default: null,
-    },
-    /**
-     * flex 布局下的水平排列方式：start end center space-around space-between
-     */
-    justify: {
-      type: String,
-      default: "start",
-    },
+defineProps({
+  /**
+   * 标题
+   */
+  title: {
+    type: String,
+    default: "",
   },
-  components: { Row }
-});
+  /**
+   * 栅格间隔 px
+   */
+  gutter: {
+    type: Number,
+    default: null,
+  },
+  /**
+   * flex 布局下的水平排列方式：start end center space-around space-between
+   */
+  justify: {
+    type: String,
+    default: "start",
+  },
+})
 </script>
 
 <style lang="scss">
 .dynamic-form-group {
   padding: 10px;
-  background-color: #f7f7f7;
+  background-color: var(--dynamic-form-background-color);
 
   h3 {
     padding: 12px 16px;

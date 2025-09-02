@@ -46,7 +46,7 @@ export default defineComponent({
   setup(props, ctx) {
     const {
        model, rawModel, parentModel, 
-       name, item, disabled, noLabel, extra,
+       name, item, disabled, noLabel,
        formWrapperColDefault, formLabelColDefault
     } = toRefs(props);
 

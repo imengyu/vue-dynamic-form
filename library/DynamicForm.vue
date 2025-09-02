@@ -243,6 +243,6 @@ export default defineComponent({
 .dynamic-form-item-empty {
   padding: 140px 20px;
   text-align: center;
-  color: #5f5f5f;
+  color: var(--dynamic-form-text-color);
 }
 </style>
