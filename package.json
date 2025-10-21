@@ -2,9 +2,10 @@
   "deprecated": false,
   "license": "MIT",
   "main": "dist/vue-dynamic-form.umd.js",
+  "module": "dist/vue-dynamic-form.es.js",
   "types": "dist/main.d.ts",
   "name": "@imengyu/vue-dynamic-form",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A data driven form component for vue3",
   "files": [
     "dist"
