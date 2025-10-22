@@ -4,14 +4,15 @@
 import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, Ref, ref, toRefs, watch } from "vue";
 import { IDynamicFormItem, IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
 import { IDynamicFormMessageCenter } from "../DynamicForm";
+import { DynamicFormItemRegistry, DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
 import BaseInputVue from "../DynamicFormItemControls/BaseInput.vue";
 import BaseRadio from "../DynamicFormItemControls/BaseRadio.vue";
 import BaseSelectVue from "../DynamicFormItemControls/BaseSelect.vue";
 import BaseTextAreaVue from "../DynamicFormItemControls/BaseTextArea.vue";
-import { DynamicFormItemRegistry, DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
 import Alert from "../DynamicFormBasicControls/Blocks/Alert.vue";
+import NextTabButton from "../DynamicFormBasicControls/Blocks/NextTabButton.vue";
 
 let registeredInternal = false;
 
@@ -88,6 +89,7 @@ export default defineComponent({
         DynamicFormItemRegistry.register('base-check', markRaw(BaseCheckVue));
         DynamicFormItemRegistry.register('base-radio', markRaw(BaseRadio));
         DynamicFormItemRegistry.register('base-divider', markRaw(BaseDivider));
+        DynamicFormItemRegistry.register('base-next-tab-button', markRaw(NextTabButton));
       }
     }
     function findComponent() {

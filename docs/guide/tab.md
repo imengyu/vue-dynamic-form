@@ -57,6 +57,7 @@ const formOptions : IDynamicFormOptions = {
             { type: 'text', label: '提交信息2', name: 'text2', additionalProps: { placeholder: '请输入文本' } },
             { type: 'text', label: '提交信息3', name: 'text3', additionalProps: { placeholder: '请输入文本' } },
             { type: 'text', label: '提交信息4', name: 'text4', additionalProps: { placeholder: '请输入文本' } },
+            { type: 'base-next-tab-button', label: ' ', name: 'nextTabButton1' },
           ],
         },
         {
@@ -65,6 +66,7 @@ const formOptions : IDynamicFormOptions = {
             { type: 'check-box', label: '提交信息5', name: 'check1' },
             { type: 'check-box', label: '提交信息6', name: 'check2' },
             { type: 'check-box', label: '提交信息7', name: 'check3' },
+            { type: 'base-next-tab-button', label: ' ', name: 'nextTabButton2' },
           ],
         },
         {

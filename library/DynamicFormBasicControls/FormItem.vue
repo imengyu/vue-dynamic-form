@@ -21,7 +21,7 @@
         >
           <span v-if="showRequiredBadge && (required || formContextProps.getItemRequieed(formItemInternalContext)) && formContextProps?.hideRequiredMark.value !== true" class="required">*</span>
           {{ label }}
-          <span v-if="colon || (colon !== false && formContextProps?.colon.value === true)" class="colon">:</span>
+          <span v-if="(colon || (colon !== false && formContextProps?.colon.value === true)) && label.trim().length > 0" class="colon">:</span>
         </label>
       </Col>
     </template>
@@ -162,7 +162,7 @@ provide(FormItemContextContextKey, {
 
 // Add ref in form
 const addNumber = formContextProps?.addFormItemField(formItemInternalContext);
-const uniqueId = (formContextProps?.name || 'form') + 'Item' + (props.name || `unknowProperity${addNumber}`);
+const uniqueId = (formContextProps?.name.value || 'form') + 'Item' + (props.name || `unknowProperity${addNumber}`);
 
 // 清理函数
 onBeforeUnmount(() => {
