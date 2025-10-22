@@ -82,6 +82,7 @@ textarea.dynamic-form-base-control {
   text-align: center;
   position: relative;
   flex-shrink: 0;
+  -webkit-user-select: none;
   user-select: none;
   width: auto;
   white-space: nowrap;

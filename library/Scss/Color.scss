@@ -4,8 +4,10 @@
   --dynamic-form-space: 18px;
   --dynamic-form-primary-color: #1a91f3;
   --dynamic-form-primary-color2: #79bbff;
-  --dynamic-form-error-color: #f55;
-  --dynamic-form-error-color2: #f89898;
+  --dynamic-form-error-color: #e74a4a;
+  --dynamic-form-error-color2: #ffdddd;
+  --dynamic-form-warning-color: #f5a623;
+  --dynamic-form-warning-color2: #ffe5ac;
   --dynamic-form-secondary-color: #666;
   --dynamic-form-background-color: #efefef;
   --dynamic-form-placeholder-color: #bbbbbb;
@@ -13,4 +15,6 @@
   --dynamic-form-base-color: #fff;
   --dynamic-form-text-color: #333;
   --dynamic-form-text-light-color: #fff;
+
+  --dynamic-form-item-nest-margin: 20px;
 }

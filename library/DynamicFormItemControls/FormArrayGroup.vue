@@ -2,12 +2,9 @@
   <div class="dynamic-form-array-group">
     <!--列表-->
     <div :class="['list', direction ]">
-      <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [array] 警告：输入字段 {{ name }} 是 undefined</span>
-      </div>
       <!--循环数据条目-->
       <!--对象类型-->
-      <template v-else-if="isObject">
+      <template v-if="isObject">
         <div v-for="(childData, key) in model"
           :key="key" 
           class="item-container"

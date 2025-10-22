@@ -4,7 +4,8 @@ import DynamicFormRoot from './DynamicFormRoot.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
 import { 
   defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD, 
-  IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback 
+  IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback, 
+  IDynamicFormObject
 } from './DynamicForm';
 import { Rule } from 'async-validator';
 import { ColProps } from 'DynamicFormBasicControls';
@@ -32,12 +33,18 @@ export default defineComponent({
       type: Object,
       default: null
     },
-
     /**
-     * 全局参数。用于向每个表单项的参数中添加额外的参数，可以在回调中的 formGlobalParams 中访问。
+     * 表单名称, 设置到表单组件上。
+     */
+    name: {
+      type: String,
+      default: ''
+    },
+    /**
+     * TODO: 全局参数。用于向每个表单项的参数中添加额外的参数，可以在回调中的 formGlobalParams 中访问。
      */
     globalParams: {
-      type: Object,
+      type: Object as PropType<IDynamicFormObject>,
       default: null
     },
   },
@@ -60,7 +67,7 @@ export default defineComponent({
     'ready',
   ],
   setup(props, ctx) {
-    const { options, model } = toRefs(props);
+    const { options, model, name } = toRefs(props);
 
     const finalOptions = ref<IDynamicFormOptions>({
       ...defaultDynamicFormOptions,
@@ -76,6 +83,7 @@ export default defineComponent({
 
     provide('rawModel', model);
     provide('globalParams', toRef(props, 'globalParams'));
+    provide('formName', name.value || 'unnamed');
     provide('finalOptions', finalOptions);
 
     const formEditor = ref();
@@ -202,7 +210,11 @@ export default defineComponent({
 
     return () => {
 
-      const renderChildren = () => h(DynamicFormRoot as any, { options: finalOptions.value, model: model.value }, ctx.slots);
+      const renderChildren = () => h(DynamicFormRoot as any, { 
+        options: finalOptions.value, 
+        model: model.value,
+        name: name.value,
+      }, ctx.slots);
       const internalWidgetsForm = finalOptions.value.internalWidgets?.Form;
       const {
         formRules = {},
@@ -218,6 +230,7 @@ export default defineComponent({
         return h(internalWidgetsForm.component as any, {
           ...props,
           ref: formEditor,
+          name: name.value,
           [internalWidgetsForm.propsMap.rules || 'rules']: formRules,
           [internalWidgetsForm.propsMap.model || 'model']: model.value,
           [internalWidgetsForm.propsMap.labelWidth || 'labelWidth']: formLabelWidth,
@@ -237,6 +250,7 @@ export default defineComponent({
       return (
         h(DynamicFormDefaultForm, {
           ...props,
+          name: name.value,
           ref: formEditor,
           rules: formRules as Record<string, Rule>,
           model: model.value,

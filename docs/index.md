@@ -30,5 +30,6 @@ features:
 </ClientOnly>
 
 <script setup>
+import './assets/root.scss'
 import DocHome from './examples/DocHome.vue';
 </script>

@@ -67,6 +67,11 @@ export interface IDynamicFormItem {
    */
   defaultValue?: any;
   /**
+   * 是否屏蔽空错误。默认否
+   * @default false
+   */
+  suppressEmptyError?: boolean,
+  /**
    * 当前条目的校验规则，会自动根据当前表单路径合并至 formRules 。
    */
   rules?: any[];
@@ -295,11 +300,11 @@ export interface IDynamicFormOptions {
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formLabelCol?: { span: number, offset?: number }|string|number,
+  formLabelCol?: ColProps|string|number,
   /**
    * 表单组件栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
-  formWrapperCol?: { span: number, offset?: number }|string|number,
+  formWrapperCol?: ColProps|string|number,
   /**
    * 表单label宽度。部分UI库的Form组件可能不支持这个属性。
    */
@@ -315,6 +320,9 @@ export interface IDynamicFormOptions {
   formAdditionalEvents?: Record<string, Function>;
   /**
    * 表单嵌套名称生成类型。默认是 dot 。
+   * 该选项用于生成嵌套表单对象的名称，例如 `a.b.c` 或者 `['a','b','c']` ，
+   * 用于适配不同的UI库组件的name定义（例如 ant-design-vue 的 FormItem 组件，表单验证时需要使用数组格式‘array’）。
+   * @default 'dot'
    */
   formNestNameGenerateType?: DynamicFormNestNameGenerateType,
 
@@ -328,14 +336,28 @@ export interface IDynamicFormOptions {
   internalWidgets?: IDynamicFormInternalWidgets,
   /**
    * 表单是否禁用。默认否
+   * @default false
    */
   disabled?: boolean,
   /**
    * 当表单中无可用编辑条目时，显示的提示，为空则不显示提示。默认为空
+   * @default ''
    */
   emptyText?: string,
   /**
-   * 当显示嵌套的表单对象条目时是否在前部显示缩进。默认是
+   * 是否屏蔽顶层对象错误。默认否
+   * @default false
+   */
+  suppressRootError?: boolean,
+  /**
+   * 是否屏蔽所有子条目空错误。默认否
+   * @default false
+   */
+  suppressEmptyError?: boolean,
+  /**
+   * 当显示嵌套的表单对象条目时是否在前部显示缩进，
+   * 缩进大小可使用 CSS 变量 `--dynamic-form-item-nest-margin` 自定义。默认是 20px
+   * @default true
    */
   nestObjectMargin?: boolean,
 }

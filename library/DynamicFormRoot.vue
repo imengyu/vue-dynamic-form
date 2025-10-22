@@ -4,9 +4,12 @@
   <slot name="empty" v-if="options.formItems.length == 0 || !model">
     <div v-if="options.emptyText" class="dynamic-form-item-empty">{{ options.emptyText }}</div>
   </slot>
-  <div class="dynamic-form-item-empty" v-else-if="(typeof model !== 'object')">
-    DynamicForm Warn: model is not a object!
-  </div>
+  <Alert 
+    v-else-if="(typeof model !== 'object' && !options.suppressRootError)"
+    type="warning"
+    message="DynamicForm: model is not a object!"
+    :extraMessage="`At form ${name || 'unnamed'} Root`"
+  />
   <template v-else>
     <!--表单条目渲染核心-->
     <DynamicFormItemContainer 
@@ -14,10 +17,10 @@
       :key="index"
       :item="item"
       :name="item.name"
-      :rawModel="model"
-      :model="model[item.name]"
-      :parentModel="model"
-      @update:model="(v: unknown) => model[item.name] = v"
+      :rawModel="finalModel"
+      :model="finalModel[item.name]"
+      :parentModel="finalModel"
+      @update:model="(v: unknown) => finalModel[item.name] = v"
       :disabled="options.disabled"
     >
       <template #arrayButtonAdd="props">
@@ -35,15 +38,15 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue';
+import { computed, PropType } from 'vue';
 import { IDynamicFormOptions, IDynamicFormObject } from './DynamicForm';
 import DynamicFormItemContainer from './DynamicFormItemContainer.vue';
+import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 
 /**
  * 动态表单组件。
  */
-
-defineProps({
+const props = defineProps({
   model: {
     type: Object as PropType<IDynamicFormObject>,
     default: null
@@ -52,5 +55,15 @@ defineProps({
     type: Object as PropType<IDynamicFormOptions>,
     default: null
   },
+  name: {
+    type: String,
+    default: ''
+  }
+});
+
+const finalModel = computed(() => {
+  if (typeof props.model !== 'object')
+    return {};
+  return props.model;
 });
 </script>

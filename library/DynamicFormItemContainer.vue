@@ -12,67 +12,75 @@
     }"
   >
     <!--对象组-->
-    <template v-if="item.type === 'object'">
-      <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [object] Warn: Input field {{ name }} is undefined</span>
-      </div>
-      <template v-else>
-        <!--标题-->
-        <DynamicFormItemNormal 
-          v-if="item.label"
-          :item="item"
-          :name="''"
-          :rawModel="rawModel"
-          :model="null"
-          :noLabel="true"
-          :disabled="disabled || evaluateCallback(item.disabled)"
-        >
-          <template #insertion>
-            <span v-if="item.label" class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
-          </template>
-        </DynamicFormItemNormal>
-        <!--循环子条目-->
-        <DynamicFormItem 
-          v-for="(child, k) in item.children"
-          :key="k"
-          :item="child"
-          :name="name+'.'+child.name"
-          :rawModel="rawModel"
-          :model="(model as IDynamicFormObject)[child.name]"
-          :parentModel="model"
-          :parentName="name"
-          @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled || evaluateCallback(item.disabled)"
-        />
-      </template>
-    </template>
+    <DynamicFormCheckEmpty 
+      v-if="item.type === 'object'" 
+      :model="model"
+      :modelWithDefault="finalModel"
+      :suppressEmptyError="item.suppressEmptyError"
+      :name="name"
+      checkType="object"
+    >
+      <!--标题-->
+      <DynamicFormItemNormal 
+        v-if="item.label"
+        :item="item"
+        :name="''"
+        :rawModel="rawModel"
+        :model="null"
+        :noLabel="true"
+        :disabled="disabled || evaluateCallback(item.disabled)"
+      >
+        <template #insertion>
+          <span v-if="item.label" class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
+        </template>
+      </DynamicFormItemNormal>
+      <!--循环子条目-->
+      <DynamicFormItemContainer 
+        v-for="(child, k) in item.children"
+        :key="k"
+        :item="child"
+        :name="name+'.'+child.name"
+        :rawModel="rawModel"
+        :model="(finalModel as IDynamicFormObject)[child.name]"
+        :parentModel="finalModel"
+        :parentName="name"
+        @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+        :disabled="disabled || evaluateCallback(item.disabled)"
+      />
+    </DynamicFormCheckEmpty>
     <!--对象组-->
-    <FormGroup v-else-if="item.type === 'group-object'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
-      <div v-if="model === undefined">
-        <span class="dynamic-form-error-alert"> [group-object] Warn: Input field {{ name }} is undefined</span>
-      </div>
-      <Row v-else v-bind="item.rowProps">
-        <!--循环子条目-->
-        <DynamicFormItem 
-          v-for="(child, k) in item.children" 
-          :key="k"
-          :item="child"
-          :colProps="{ ...item.childrenColProps, ...child.colProps }"
-          :name="name+'.'+child.name"
-          :rawModel="rawModel"
-          :model="((model as IDynamicFormObject)[child.name] as IDynamicFormObject)"
-          :parentModel="model"
-          :parentName="name"
-          @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
-          :disabled="disabled || evaluateCallback(item.disabled)"
-        />
-      </Row>
-    </FormGroup>
+    <DynamicFormCheckEmpty 
+      v-else-if="item.type === 'group-object'" 
+      :model="model"
+      :modelWithDefault="finalModel"
+      :suppressEmptyError="item.suppressEmptyError"
+      :name="name"
+      checkType="object"
+    >
+      <FormGroup :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
+        <Row v-bind="item.rowProps">
+          <!--循环子条目-->
+          <DynamicFormItemContainer 
+            v-for="(child, k) in item.children" 
+            :key="k"
+            :item="child"
+            :colProps="{ ...item.childrenColProps, ...child.colProps }"
+            :name="name+'.'+child.name"
+            :rawModel="rawModel"
+            :model="((finalModel as IDynamicFormObject)[child.name] as IDynamicFormObject)"
+            :parentModel="finalModel"
+            :parentName="name"
+            @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
+            :disabled="disabled || evaluateCallback(item.disabled)"
+          />
+        </Row>
+      </FormGroup>
+    </DynamicFormCheckEmpty>
     <!--扁平组-->
     <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
       <Row v-bind="item.rowProps">
         <!--循环子条目-->
-        <DynamicFormItem 
+        <DynamicFormItemContainer 
           v-for="(child, k) in item.children" 
           :colProps="{ ...item.childrenColProps, ...child.colProps }"
           :key="k"
@@ -88,13 +96,13 @@
           <template #formCeil="values">
             <slot name="formCeil" v-bind="values" />
           </template>
-        </DynamicFormItem>
+        </DynamicFormItemContainer>
       </Row>
     </FormGroup>
     <!--自定义扁平组-->
     <FormCustomLayout v-else-if="item.type === 'custom-flat'" :item="item">
       <!--循环子条目-->
-      <DynamicFormItem 
+      <DynamicFormItemContainer 
         v-for="(child, k) in item.children" 
         :colProps="{ ...item.childrenColProps, ...child.colProps }"
         :key="k"
@@ -110,7 +118,7 @@
         <template #formCeil="values">
           <slot name="formCeil" v-bind="values" />
         </template>
-      </DynamicFormItem>
+      </DynamicFormItemContainer>
     </FormCustomLayout>
     <!--标签页-->
     <DynamicFormTab 
@@ -127,7 +135,7 @@
           :item="child"
         >
           <!--循环子条目-->
-          <DynamicFormItem 
+          <DynamicFormItemContainer 
             v-for="(formRow, k) in child.children" 
             :colProps="{ ...child.childrenColProps, ...formRow.colProps }"
             :key="k"
@@ -143,7 +151,7 @@
             <template #formCeil="values">
               <slot name="formCeil" v-bind="values" />
             </template>
-          </DynamicFormItem>
+          </DynamicFormItemContainer>
         </DynamicFormTabPage>
       </template>
     </DynamicFormTab>
@@ -152,7 +160,7 @@
       :item="item"
       :name="name"
       :disabled="disabled || evaluateCallback(item.disabled)"
-      :model="(model as IDynamicFormObject)"
+      :model="(finalModel as IDynamicFormObject)"
       :rawModel="rawModel"
       :parentModel="parentModel"
       :parentName="parentName"
@@ -160,7 +168,7 @@
       <template #insertion>
         <Row v-bind="item.rowProps">
           <!--循环子条目-->
-          <DynamicFormItem 
+          <DynamicFormItemContainer 
             v-for="(child, k) in item.children" 
             :key="k"
             :item="child"
@@ -176,94 +184,112 @@
             <template #formCeil="values">
               <slot name="formCeil" v-bind="values" />
             </template>
-          </DynamicFormItem>
+          </DynamicFormItemContainer>
         </Row>
       </template>
     </DynamicFormItemNormal>
     <!--数组变量组-->
-    <DynamicFormItemNormal v-else-if="item.type === 'array-single'" 
-      :item="item"
-      :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
-      :model="(model as IDynamicFormObject)"
-      :rawModel="rawModel"
-      :parentModel="parentModel"
-      :parentName="name"
-    >
-      <template #insertion>
-        <FormArrayGroup
-          :model="(model as unknown as unknown[])"
-          :item="item"
-          :name="name"
-          :rawModel="rawModel"
-          :isObject="false"
-          :addCallback="item.newChildrenObject"
-          :deleteCallback="item.deleteChildrenCallback"
-          v-bind="(item.additionalProps as IDynamicFormObject)"
-        >
-          <template #addButton="props">
-            <slot name="arrayButtonAdd" v-bind="props" />
-          </template>
-          <template #itemButton="props">
-            <slot name="arrayButtons" v-bind="props" />
-          </template>
-          <template #child="{ item, kname, model: child, onUpdateValue }">
-            <DynamicFormItem
-              :item="item"
-              :name="kname"
-              :rawModel="rawModel"
-              :model="child"
-              :parentModel="model"
-              :parentName="name"
-              :disabled="disabled || evaluateCallback(item.disabled)"
-              @update:model="(v: unknown) => onUpdateValue(v)"
-            />
-          </template>
-        </FormArrayGroup>
-      </template>
-    </DynamicFormItemNormal>
-    <!--数组对象组-->
-    <DynamicFormItemNormal v-else-if="item.type === 'array-object'" 
-      :item="item"
-      :name="name"
-      :disabled="disabled || evaluateCallback(item.disabled)"
+    <DynamicFormCheckEmpty 
+      v-else-if="item.type === 'array-single'"
       :model="model"
-      :rawModel="rawModel"
-      :parentModel="parentModel"
-      :parentName="parentName"
+      :modelWithDefault="finalModel"
+      :suppressEmptyError="item.suppressEmptyError"
+      :name="name"
+      checkType="array"
     >
-      <template #insertion>
-        <FormArrayGroup
-          :model="(model as unknown as unknown[])"
-          :item="item"
-          :name="name"
-          :rawModel="rawModel"
-          :isObject="true"
-          :addCallback="item.newChildrenObject"
-          :deleteCallback="item.deleteChildrenCallback"
-          v-bind="(item.additionalProps as IDynamicFormObject)"
-        >
-          <template #addButton="props">
-            <slot name="arrayButtonAdd" v-bind="props" />
-          </template>
-          <template #itemButton="props">
-            <slot name="arrayButtons" v-bind="props" />
-          </template>
-          <template #child="{ item, kname, model: child, onUpdateValue }">
-            <DynamicFormItem
-              :item="item"
-              :name="kname"
-              :rawModel="rawModel"
-              :model="child"
-              :parentModel="model"
-              :parentName="name"
-              :disabled="disabled || evaluateCallback(item.disabled)"
-              @update:model="(v: unknown) => onUpdateValue(v)"
-            />
-          </template>
-        </FormArrayGroup>
-      </template>
-    </DynamicFormItemNormal>
+      <DynamicFormItemNormal 
+        :item="item"
+        :name="name"
+        :disabled="disabled || evaluateCallback(item.disabled)"
+        :model="(finalModel as IDynamicFormObject)"
+        :rawModel="rawModel"
+        :parentModel="parentModel"
+        :parentName="name"
+      >
+        <template #insertion>
+          <FormArrayGroup
+            :model="(finalModel as unknown as unknown[])"
+            :item="item"
+            :name="name"
+            :rawModel="rawModel"
+            :isObject="false"
+            :addCallback="item.newChildrenObject"
+            :deleteCallback="item.deleteChildrenCallback"
+            v-bind="(item.additionalProps as IDynamicFormObject)"
+          >
+            <template #addButton="props">
+              <slot name="arrayButtonAdd" v-bind="props" />
+            </template>
+            <template #itemButton="props">
+              <slot name="arrayButtons" v-bind="props" />
+            </template>
+            <template #child="{ item, kname, model: child, onUpdateValue }">
+              <DynamicFormItemContainer
+                :item="item"
+                :name="kname"
+                :rawModel="rawModel"
+                :model="child"
+                :parentModel="model"
+                :parentName="name"
+                :disabled="disabled || evaluateCallback(item.disabled)"
+                @update:model="(v: unknown) => onUpdateValue(v)"
+              />
+            </template>
+          </FormArrayGroup>
+        </template>
+      </DynamicFormItemNormal>
+    </DynamicFormCheckEmpty>
+    <!--数组对象组-->
+    <DynamicFormCheckEmpty 
+      v-else-if="item.type === 'array-object'"
+      :model="model"
+      :modelWithDefault="finalModel"
+      :suppressEmptyError="item.suppressEmptyError"
+      :name="name"
+      checkType="array"
+    >
+      <DynamicFormItemNormal  
+        :item="item"
+        :name="name"
+        :disabled="disabled || evaluateCallback(item.disabled)"
+        :model="finalModel"
+        :rawModel="rawModel"
+        :parentModel="parentModel"
+        :parentName="parentName"
+      >
+        <template #insertion>
+          <FormArrayGroup
+            :model="(finalModel as unknown as unknown[])"
+            :item="item"
+            :name="name"
+            :rawModel="rawModel"
+            :isObject="true"
+            :addCallback="item.newChildrenObject"
+            :deleteCallback="item.deleteChildrenCallback"
+            v-bind="(item.additionalProps as IDynamicFormObject)"
+          >
+            <template #addButton="props">
+              <slot name="arrayButtonAdd" v-bind="props" />
+            </template>
+            <template #itemButton="props">
+              <slot name="arrayButtons" v-bind="props" />
+            </template>
+            <template #child="{ item, kname, model: child, onUpdateValue }">
+              <DynamicFormItemContainer
+                :item="item"
+                :name="kname"
+                :rawModel="rawModel"
+                :model="child"
+                :parentModel="model"
+                :parentName="name"
+                :disabled="disabled || evaluateCallback(item.disabled)"
+                @update:model="(v: unknown) => onUpdateValue(v)"
+              />
+            </template>
+          </FormArrayGroup>
+        </template>
+      </DynamicFormItemNormal>
+    </DynamicFormCheckEmpty>
     <!--正常条目-->
     <DynamicFormItemNormal
       v-else
@@ -272,7 +298,7 @@
       :disabled="disabled || evaluateCallback(item.disabled)"
       :rawModel="rawModel"
       :parentModel="parentModel"
-      :model="model"
+      :model="finalModel"
       @update:model="(v: unknown) => $emit('update:model', v)"
     >
       <template #formCeil="values">
@@ -283,7 +309,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, PropType, Ref, toRefs } from 'vue';
+import { inject, PropType, Ref, toRefs, computed } from 'vue';
 import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions } from './DynamicForm';
 import { Rules } from 'async-validator';
 import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
@@ -294,9 +320,10 @@ import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
 import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
 import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
 import Row from './DynamicFormBasicControls/Layout/Row.vue';
+import DynamicFormCheckEmpty from './DynamicFormCheckEmpty.vue';
 
 /**
- * 动态表单条目渲染组件。
+ * 动态表单条目包装组件，处理基础类型分支、数据传入、回调处理、事件传递。
  */
 
 const props = defineProps({
@@ -309,13 +336,14 @@ const props = defineProps({
     required: true,
   },
   disabled: {
-    type: Boolean
+    type: Boolean,
+    default: false,
   },
   model: {
-    required: true,
+    type: null
   },
   parentModel: {
-    required: true,
+    type: null
   },
   parentName: {
     type: String,
@@ -335,14 +363,30 @@ defineEmits([	'update:model' ]);
 
 const propsP = toRefs(props);
 const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
+const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
 
+//处理默认值
+const finalModel = computed(() => {
+  const val = props.model
+  if (val !== undefined && val !== null)
+    return props.model;
+  if (props.item.defaultValue) {
+    if (typeof props.item.defaultValue === 'function')
+      return props.item.defaultValue();
+    return props.item.defaultValue;
+  }
+  return null;
+});
+
+//处理回调函数
 function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
   if (typeof val === 'object' && typeof (val as IDynamicFormItemCallback<T>).callback === 'function')
     return (val as IDynamicFormItemCallback<T>).callback(
-      propsP.model.value, 
+      finalModel.value, 
       propsP.rawModel.value,
-      propsP.parentModel.value,
+      propsP.parentModel?.value,
       propsP.item.value,
+      globalParams?.value || {},
       (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
     );
   return val as T;

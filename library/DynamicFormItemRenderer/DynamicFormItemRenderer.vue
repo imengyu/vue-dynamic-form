@@ -11,6 +11,7 @@ import BaseRadio from "../DynamicFormItemControls/BaseRadio.vue";
 import BaseSelectVue from "../DynamicFormItemControls/BaseSelect.vue";
 import BaseTextAreaVue from "../DynamicFormItemControls/BaseTextArea.vue";
 import { DynamicFormItemRegistry, DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
+import Alert from "../DynamicFormBasicControls/Blocks/Alert.vue";
 
 let registeredInternal = false;
 
@@ -65,6 +66,8 @@ export default defineComponent({
     const componentAdditionalProps = ref(null as any);
     const componentValueName = ref(null as any);
     const componentOnUpdateValueName = ref(null as any);
+
+    const formName = inject('formName', '');
 
     function getRef() {
       return componentRef.value;
@@ -197,9 +200,11 @@ export default defineComponent({
         return h(componentInstance.value, props, additionalSlot);
         
       } else {
-        return h('span', {
-          class: 'dynamic-form-error-alert'
-        }, `警告：未找到表单组件实例 ${(item.value as IDynamicFormItem)?.type || '未知'}`);
+        return h(Alert, {
+          type: 'error',
+          message: `DynamicForm: Not found component instance for type ${(item.value as IDynamicFormItem)?.type || 'unknown'}`,
+          extraMessage: `At form ${formName || 'unnamed'}: ${name.value || 'unnamed'}`,
+        });
       }
     }
   },

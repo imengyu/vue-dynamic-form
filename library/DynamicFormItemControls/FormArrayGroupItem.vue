@@ -8,17 +8,17 @@
       :item="child"
       :kname="name+keyName+'.'+child.name"
       :model="(childData as IDynamicFormObject)[child.name]"
-      :onUpdateValue="(v: undefined) => (childData as IDynamicFormObject)[child.name] = v"
+      :onUpdateValue="(v: any) => (childData as IDynamicFormObject)[child.name] = v"
     />
   </div>
-  <div v-else class="form-container">
+  <div v-else-if="item.children" class="form-container">
     <!--循环子条目-->
     <slot 
       name="child"
       :item="item.children?.[0]"
       :kname="name+keyName"
       :model="childData"
-      :onUpdateValue="(v: undefined) => $emit('update:childData', v)"
+      :onUpdateValue="(v: any) => $emit('update:childData', v)"
     />
   </div>
 

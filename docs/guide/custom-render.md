@@ -19,7 +19,7 @@
       <template v-if="item.name == 'test_custom_render'">
         <Row>
           <Col>
-            <Avatar :imageUrl="model.avata" />
+            <Avatar :imageUrl="model.avatar" />
           </Col>
           <Col style="text-align: left;margin-left: 10px;">
             <span style="font-size: 18px; margin-bottom: 4px;">{{ model.name }} (自定义渲染+仅展示)</span>
