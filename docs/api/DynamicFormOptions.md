@@ -11,13 +11,18 @@ title: API 参考 - IDynamicFormOptions
 | formItems | 表单条目数据 | [`IDynamicFormItem[]`](#idynamicformitem) | 是 |
 | formRules | 表单的校验规则 | `Record<string, Rule>` | — |
 | formLabelCol | 表单label栅格宽度 | `{ span: number, offset?: number }` | — |
-| formLabelWidth | 表单label宽度 | `number|string` | — |
+| formLabelWidth | 表单label宽度 | `number\|string` | — |
 | formWrapperCol | 表单组件栅格宽度 | `{ span: number, offset?: number }` | — |
 | formAdditionaProps | 表单组件附加属性 | `Record<string, unknown>` | — |
 | formAdditionalEvents | 表单组件附加事件绑定 | `Record<string, Function>` | — |
+| formNestNameGenerateType | 表单嵌套名称生成类型。该选项用于生成嵌套表单对象的名称，例如 `a.b.c` 或者 `['a','b','c']` ，用于适配不同的UI库组件的name定义（例如 ant-design-vue 的 FormItem 组件，表单验证时需要使用数组格式‘array’）。 | `'dot' \| 'bracket'` | — |
 | widgets | 自定义重写表单控件。你可以重写内置控件，在这个表单中会以此重写列表为先查找表单组件。 | [`Record<string, DynamicFormItemRegistryItem>`](./global.md#dynamicformitemregistryitem) | — |
 | internalWidgets | 自定义重写内置表单控件 Form FormItem。你可以使用其他组件库的组件例如 elemnent-ui 或者 ant-desgin-vue | [`IDynamicFormInternalWidgets`](#idynamicforminternalwidgets) | — |
 | disabled | 表单是否禁用 | `boolean` | — |
+| emptyText | 当表单中无可用编辑条目时，显示的提示，为空则不显示提示。默认为空 | `string` | — |
+| suppressRootError | 是否屏蔽顶层对象错误。默认否 | `boolean` | — |
+| suppressEmptyError | 是否屏蔽所有子条目空错误。默认否 | `boolean` | — |
+| nestObjectMargin | 当显示嵌套的表单对象条目时是否在前部显示缩进，缩进大小可使用 CSS 变量 `--dynamic-form-item-nest-margin` 自定义。默认是 20px | `boolean` | — |
 
 ## IDynamicFormItem
 
@@ -32,13 +37,16 @@ title: API 参考 - IDynamicFormOptions
 | additionalEvents | 附加组件事件绑定。事件名称不需要加 on 前缀。 | `Record<string, Function>` | — |
 | additionalDirectProps | 当前表单类型 | `string` | — |
 | type | 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。 | `Record<string, unknown>` | — |
+| rules | 当前条目的校验规则，会自动根据当前表单路径合并至 formRules 。 | `any[]` | — |
 | formProps | 附加 FormItem 组件属性 | `unknown` | — |
 | watch | 监听当前表单数据更改 | `(oldValue: unknown, newValue: unknown) => void` | — |
 | name | 当前表单项名称。 | `string` | 是 |
 | label | [联动回调] 当前表单说明文字。支持动态回调。 | `string` or `IDynamicFormItemCallback<string>` | — |
+| defaultValue | 默认值。如果表单条目接收到 undefined 或 null ，则使用默认值。可以使用一个工厂函数返回对象。需要在顶层调用 `formRef.value.initDefaultValuesToModel` 方法初始化默认值至模型中才可生效。| `unknown` | — |
+| suppressEmptyError | 是否屏蔽当前子条目的空错误。默认否 | `boolean` | - |
 | children | 子条目。仅在 'object','array-single','array-object','group-object' 或者其他容器条目中有效。 | `IDynamicFormItem[]` | — |
 | newChildrenObject | 当子对象为数组时，可设置这个自定义回调。用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。 | `(arrayNow: unknown[]) => unknown` | — |
-| deleteChildrenCallback | 当子对象为数组时，可设置这个自定义回调。删除按钮回调，可选，不提供时默认操作为将 | `(arrayNow: unknown[], deleteObject: unknown) => unknown` | — |
+| deleteChildrenCallback | 当子对象为数组时，可设置这个自定义回调。删除按钮回调，可选，不提供时默认操作为将 item 从 array 中移除。 | `(arrayNow: unknown[], deleteObject: unknown) => unknown` | — |
 | childrenColProps | 子条目的 Col 配置属性(应用到当前条目的所有子条目上)。仅在 object 或者其他容器条目中有效。 | `ColProps` | — |
 | colProps | 条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。 | `ColProps` | — |
 | rowProps | 条目的 Row 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。 | `RowProps` | — |

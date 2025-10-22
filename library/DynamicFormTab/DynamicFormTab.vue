@@ -1,6 +1,6 @@
 <script lang="ts">
 import { PropType, Ref, defineComponent, h, inject, onBeforeUnmount, onMounted, ref } from 'vue';
-import { IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, type IDynamicFormItem, type IDynamicFormOptions, type IDynamicFormTabProps } from '../DynamicForm';
+import { IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, MESSAGE_TAB_PREV, type IDynamicFormItem, type IDynamicFormOptions, type IDynamicFormTabProps } from '../DynamicForm';
 import Tab from '../DynamicFormBasicControls/Tabs/Tab.vue';
 
 export default defineComponent({
@@ -30,6 +30,11 @@ export default defineComponent({
         case MESSAGE_TAB_NEXT: {
           const keys = props.item.children?.map((item) => item.name) || [];
           activeKey.value = keys[keys.indexOf(activeKey.value) + 1] || keys[0];
+          break;
+        }
+        case MESSAGE_TAB_PREV: {
+          const keys = props.item.children?.map((item) => item.name) || [];
+          activeKey.value = keys[keys.indexOf(activeKey.value) - 1] || keys[keys.length - 1];
           break;
         }
         case MESSAGE_TAB_ACTIVE:

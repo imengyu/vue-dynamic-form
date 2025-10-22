@@ -54,6 +54,10 @@ export const MESSAGE_RELOAD = 'reload';
  */
 export const MESSAGE_TAB_NEXT = 'tab-next';
 /**
+ * 切换到上一个 Tab 页
+ */
+export const MESSAGE_TAB_PREV = 'tab-prev';
+/**
  * 设置当前 Tab 页
  * * 参数：string 目标 Tab 页的 key
  */

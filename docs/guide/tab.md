@@ -108,6 +108,31 @@ const resultJson = computed(() => {
 </script>
 ```
 
+### 下一个标签页按钮
+
+* 使用 `base-next-tab-button` 可以声明一个下一个标签页按钮，按钮必须处于标签页组件的子级。
+* 点击按钮会切换到下一个标签页。
+* 如果当前标签页是最后一个标签页，则点击按钮会切换至第一个标签页。
+
+### 设置当前标签页
+
+你可以通过向表单项发送下面的事件来跳转下一页或者设置当前标签页：
+
+* `MESSAGE_TAB_NEXT` ：切换到下一个标签页。
+* `MESSAGE_TAB_PREV` ：切换到上一个标签页。
+* `MESSAGE_TAB_ACTIVE` ：设置当前标签页。
+
+例如：
+
+```js
+// 切换到下一个标签页
+formRef.dispatchMessage(MESSAGE_TAB_NEXT);
+// 切换到上一个标签页
+formRef.dispatchMessage(MESSAGE_TAB_PREV);
+// 设置当前标签页为 page2
+formRef.dispatchMessage(MESSAGE_TAB_ACTIVE, 'page2');
+```
+
 ## 自定义Tab组件
 
 :::tip

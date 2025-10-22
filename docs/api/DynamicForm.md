@@ -54,5 +54,8 @@ title: API 参考 - DynamicForm
 | `getFormRef: <T>() => T` | 获取表单组件的 Ref |
 | `getFormItemControlRef: <T>(key: string) => T` | 获取指定表单项组件的 Ref |
 | `submit: () => void` | 触发提交。同 getFormRef().submit() |
+| `validate: () => Promise<void>` | 触发校验。同 getFormRef().validate() |
 | `setValueByPath: (path: string, value: unknown) => void` | 外部修改指定单个 field 的数据 |
 | `getValueByPath: (path: string) => unknow` | 外部获取指定单个 field 的数据 |
+| `getVisibleFormNames: () => string[]` | 获取当前表单中可见的所有字段名 |
+| `initDefaultValuesToModel: () => void`| 初始化表单默认值到模型中，对于已有数据非空的字段，不会覆盖已有的值。 |
