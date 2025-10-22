@@ -65,7 +65,8 @@
     <!--添加按钮-->
     <slot name="addButton" :onClick="handleAdd">
       <button v-if="showAddButton" class="add dynamic-form-base-control base-button" type="button" @click="handleAdd">
-        + 添加
+        <IconAdd /> 
+        <span>添加</span>
       </button>
     </slot>
   </div>
@@ -76,6 +77,7 @@ import { ArrayUtils } from "@imengyu/imengyu-utils";
 import { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
 import FormArrayGroupItem from "./FormArrayGroupItem.vue";
+import IconAdd from "../Images/IconAdd.vue";
 
 export interface FormArrayGroupProps {
   model: unknown[];
@@ -162,10 +164,9 @@ function handleDown(data: unknown) {
     display: flex;
     flex-direction: row;
     background-color: var(--dynamic-form-background-color);
-    border: 1px solid var(--dynamic-form-border-color);
     padding: 10px;
     padding-bottom: 0;
-    border-radius: 10px;
+    border-radius: var(--dynamic-form-border-radius);
     margin-bottom: 10px;
   }
 
@@ -178,12 +179,18 @@ function handleDown(data: unknown) {
   .nav-button-conntainer {
     display: flex;
     flex-direction: column;
+    gap: 6px;
 
     .base-button {
       padding: 0;
-      width: 30px;
-      height: 30px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 
@@ -196,6 +203,8 @@ function handleDown(data: unknown) {
     }
 
     &.add {
+      --dynamic-form-button-shadow-color: var(--dynamic-form-shadow-primary-color);
+      
       color: var(--dynamic-form-text-light-color);
       background-color: var(--dynamic-form-primary-color);
 
@@ -205,6 +214,8 @@ function handleDown(data: unknown) {
     }
 
     &.delete {
+      --dynamic-form-button-shadow-color: var(--dynamic-form-shadow-error-color);
+
       color: var(--dynamic-form-text-light-color);
       background-color: var(--dynamic-form-error-color);
 

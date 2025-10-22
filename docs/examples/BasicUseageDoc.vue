@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
+import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, defaultDynamicFormInternalWidgets, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import { computed, reactive, ref, } from 'vue'
 
 const resultJson = computed(() => {
@@ -25,6 +25,7 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [

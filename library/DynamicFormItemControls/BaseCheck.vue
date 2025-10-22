@@ -1,22 +1,27 @@
 <template>
-  <div>
+  <div 
+    class="dynamic-form-base-control base-checkbox"
+    tabindex="0"
+    @blur="onBlur"
+    @click="onCheckClick"
+  >
     <input
-      class="dynamic-form-base-control base-checkbox"
       type="checkbox"
       :modelValue="value"
       :id="name"
-      @update:modelValue="onValueUpdate"
-      @change="(e: Event) => onValueUpdate((e.target as HTMLInputElement).checked)"
-      @blur="onBlur"
     />
+    <div class="checker-container">
+      <IconCheck v-if="value" class="checker" />
+    </div>
     <label :for="name">{{text}}</label>
   </div>
 </template>
 
 <script lang="ts" setup>
+import IconCheck from "../Images/IconCheck.vue";
 import { useInjectFormItemContext } from "../DynamicFormBasicControls";
 
-defineProps({
+const props = defineProps({
   value: {},
   name: {
     type: String,
@@ -32,6 +37,9 @@ const emit = defineEmits([ 'update:value' ]);
 
 const formContext = useInjectFormItemContext();
 
+function onCheckClick() {
+  onValueUpdate(!props.value);
+}
 function onBlur() {
   formContext.onFieldBlur();
 }

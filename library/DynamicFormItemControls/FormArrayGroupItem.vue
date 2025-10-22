@@ -28,14 +28,14 @@
     :onDownClick="() => $emit('down', childData)"
   >
     <div class="nav-button-conntainer">
-      <button v-if="showUpDownButton" title="上移" class="dynamic-form-base-control base-button add margin" type="button" @click="$emit('up', childData)">
-        ↑
+      <button v-if="showUpDownButton" title="上移" class="dynamic-form-base-control base-button margin" type="button" @click="$emit('up', childData)">
+        <IconUp />
       </button>
-      <button v-if="showUpDownButton" title="下移" class="dynamic-form-base-control base-button add margin" type="button" @click="$emit('down', childData)">
-        ↓
+      <button v-if="showUpDownButton" title="下移" class="dynamic-form-base-control base-button margin" type="button" @click="$emit('down', childData)">
+        <IconDown />
       </button>
       <button v-if="showDeleteButton" title="删除" class="dynamic-form-base-control base-button delete margin" type="button" @click="$emit('delete', childData)">
-        ×
+        <IconDelete />
       </button>
     </div>
   </slot>
@@ -45,6 +45,9 @@
 import { PropType } from "vue";
 import { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
+import IconUp from "../Images/IconUp.vue";
+import IconDown from "../Images/IconDown.vue";
+import IconDelete from "../Images/IconDelete.vue";
 
 defineEmits([ 'up', 'down', 'delete', 'update:childData' ]);
 defineProps({

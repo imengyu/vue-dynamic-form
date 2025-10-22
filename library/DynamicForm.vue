@@ -268,9 +268,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import './Scss/Color.scss';
-@import './Scss/BaseControl.scss';
-@import './Scss/Form.scss';
+@use './Scss/Color.scss';
+@use './Scss/BaseControl.scss';
+@use './Scss/Form.scss';
 
 .dynamic-form-item-flow {
   display: none;

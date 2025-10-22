@@ -1,16 +1,25 @@
+:root {
+  --dynamic-form-border-size: 2px;
+  --dynamic-form-border-radius: 8px;
+  --dynamic-form-control-size: 2rem;
+  --dynamic-form-check-control-size: 1.6rem;
+}
+
+//输入框
 input[type="text"].dynamic-form-base-control,
 input[type="password"].dynamic-form-base-control, 
 textarea.dynamic-form-base-control, 
 select.dynamic-form-base-control {
   max-width: 100%;
   padding: 1px 11px;
+
   background-color: var(--dynamic-form-base-color);
   background-image: none;
-  border-radius: 5px;
-  border: 1px solid var(--dynamic-form-border-color);
+  border-radius: var(--dynamic-form-border-radius);
+  border: var(--dynamic-form-border-size) solid var(--dynamic-form-border-color);
+  box-shadow: 0 3px 6px 0 var(--dynamic-form-shadow-color);
+
   font-size: var(--dynamic-form-font-size);
-  line-height: 30px;
-  height: 30px;
   outline: none;
 
   &::-webkit-input-placeholder {
@@ -24,12 +33,22 @@ select.dynamic-form-base-control {
 
   &:hover, &:active, &:focus {
     border-color: var(--dynamic-form-primary-color);
+    box-shadow: 0 3px 6px 0 var(--dynamic-form-shadow-darker-color);
   }
 }
+input[type="text"].dynamic-form-base-control,
+input[type="password"].dynamic-form-base-control, 
+textarea.dynamic-form-base-control {
+  line-height: var(--dynamic-form-control-size);
+  height: var(--dynamic-form-control-size);
+}
 
+//单选框
 .dynamic-form-base-control.radio {
   display: flex;
   flex-direction: row;
+  cursor: pointer;
+  gap: 6px;
 
   .item {
     display: flex;
@@ -37,24 +56,28 @@ select.dynamic-form-base-control {
     align-items: center;
   }
 
+  --dynamic-form-border-size: 4px;
+
   input {
     position: relative;
     appearance: none;
-    width: 22px;
-    height: 22px;
-    border-radius: 22px;
+    width: var(--dynamic-form-check-control-size);
+    height: var(--dynamic-form-check-control-size);
+    border-radius: 50%;
     background-color: var(--dynamic-form-base-color);
-    border: 1px solid var(--dynamic-form-border-color);
+    border: var(--dynamic-form-border-size) solid var(--dynamic-form-border-color);
+    box-shadow: 0 4px 6px 0 var(--dynamic-form-shadow-color);
     margin: 0;
     margin-right: 5px;
+    cursor: pointer;
     
     &:after {
       position: absolute;
       display: inline-block;
       top: 3px;
       left: 3px;
-      width: 14px;
-      height: 14px;
+      width: calc(var(--dynamic-form-check-control-size) - 6px - var(--dynamic-form-border-size) * 2);
+      height: calc(var(--dynamic-form-check-control-size) - 6px - var(--dynamic-form-border-size) * 2);
       content: "";
       border: none;
       text-align: center;
@@ -70,11 +93,60 @@ select.dynamic-form-base-control {
   }
 }
 
+//复选框
+.dynamic-form-base-control.base-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  --dynamic-form-border-size: 4px;
+
+  input {
+    display: none;
+  }
+
+  .checker-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    height: var(--dynamic-form-check-control-size);
+    width: var(--dynamic-form-check-control-size);
+    overflow: hidden;
+    background-color: var(--dynamic-form-base-color);
+    background-image: none;
+    border-radius: var(--dynamic-form-border-radius);
+    border: var(--dynamic-form-border-size) solid var(--dynamic-form-border-color);
+    color: var(--dynamic-form-primary-color);
+    box-shadow: 0 4px 6px 0 var(--dynamic-form-shadow-color);
+    margin: 0;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .checker {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+}
+
+//多行文本框
 textarea.dynamic-form-base-control {
   height: unset;
 }
 
+//按钮
 .dynamic-form-base-control.base-button {
+  --dynamic-form-button-shadow-color: rgba(0, 0, 0, 0.2);
+
   position: relative;
   display: inline-flex;
   justify-content: center;
@@ -89,66 +161,47 @@ textarea.dynamic-form-base-control {
   transition: background-color .1s,transform .1s,color .35s cubic-bezier(.65,0,.25,1);
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: var(--dynamic-form-border-radius);
   box-sizing: border-box;
   overflow: hidden;
   min-width: 60px;
-  height: 30px;
+  height: var(--dynamic-form-control-size);
   padding: 0 14px;
   font-size: var(--dynamic-form-font-size);
+  box-shadow: 0 4px 6px 0 var(--dynamic-form-button-shadow-color);
 
-  background: #f0f0f0;
-  color: #333;
+  background: var(--dynamic-form-background-color);
+  color: var(--dynamic-form-text-color);
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    fill: currentColor;
+  }
+  span {
+    margin-left: 5px;
+  }
 
   &:hover {
-    background-color: #ebebeb;
+    background-color: var(--dynamic-form-background-hover-color);
+  }
+  &:focus, &:active {
+    outline: var(--dynamic-form-border-size) solid var(--dynamic-form-primary-color);
   }
   &:active {
-    background-color: #d8d8d8;
-    transform: scale(0.9);
-  }
-}
-.dynamic-form-base-control.base-checkbox {
-  vertical-align: middle;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: transparent;
-  appearance: none;
-  height: 22px;
-  width: 22px;
-  overflow: hidden;
-  background-color: var(--dynamic-form-base-color);
-  background-image: none;
-  border-radius: 5px;
-  border: 1px solid var(--dynamic-form-border-color);
-  color: var(--dynamic-form-primary-color);
-  margin: 0;
-  margin-right: 10px;
-
-  &:after {
-    display: inline-block;
-    width: 22px;
-    line-height: 22px;
-    top: 0px;
-    content: "";
-    color: var(--dynamic-form-primary-color);
-    border: none;
-    text-align: center;
-    font-size: 12px;
-  }
-
-  &:checked:after {
-    content: "✔️";
-    color: var(--dynamic-form-primary-color);
+    transform: scale(0.96);
   }
 }
 
+//布局
 .dynamic-form-row {
   display: flex;
   flex-direction: row;
   flex: 1;
+
+  &.center {
+    align-items: center;
+  }
 }
 .dynamic-form-col {
   display: flex;

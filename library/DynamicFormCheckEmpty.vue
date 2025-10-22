@@ -5,12 +5,12 @@
     :message="`DynamicForm: Input field ${name} is undefined or null`"
     :extraMessage="`At form ${formName}: ${name}`"
   />
-  <Alert v-else-if="(checkType && checkType === 'array' && !Array.isArray(modelWithDefault))"
+  <Alert v-else-if="(checkType === 'array' && !Array.isArray(modelWithDefault))"
     type="error"
-    :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not a array`"
+    :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not array`"
     :extraMessage="`At form ${formName}: ${name}`"
   />
-  <Alert v-else-if="(checkType && typeof modelWithDefault !== checkType)"
+  <Alert v-else-if="(checkType && checkType !== 'array' && typeof modelWithDefault !== checkType)"
     type="error"
     :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not a ${checkType}`"
     :extraMessage="`At form ${formName}: ${name}`"

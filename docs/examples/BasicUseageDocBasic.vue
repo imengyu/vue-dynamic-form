@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { reactive, ref, } from 'vue'
 
 const formModel = reactive({
@@ -19,6 +19,7 @@ const formModel = reactive({
   booleanProp: false,
 });
 const formOptions = ref<IDynamicFormOptions>({
+  internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [

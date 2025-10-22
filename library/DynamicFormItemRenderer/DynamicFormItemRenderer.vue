@@ -178,6 +178,7 @@ export default defineComponent({
           rawModel: rawModel.value,
           parentModel: parentModel.value,
           name: name.value,
+          'data-dynamic-form-item': item.value.type,
           ...(additionalProps.value as Record<string, unknown>),
           //双向数据绑定属性
           [componentValueName.value]: value.value,

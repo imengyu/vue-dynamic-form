@@ -1,5 +1,5 @@
 <template>
-  <div class="dynamic-form-base-control radio">
+  <div class="dynamic-form-base-control radio dynamic-form-row center">
     <div class="item" v-for="item in items" :key="item.value">
       <input 
         type="radio"

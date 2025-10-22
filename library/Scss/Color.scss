@@ -1,7 +1,7 @@
 :root {
   --dynamic-form-font-size: 14px;
   --dynamic-form-height: 32px;
-  --dynamic-form-space: 18px;
+  --dynamic-form-space: 12px;
   --dynamic-form-primary-color: #1a91f3;
   --dynamic-form-primary-color2: #79bbff;
   --dynamic-form-error-color: #e74a4a;
@@ -9,12 +9,17 @@
   --dynamic-form-warning-color: #f5a623;
   --dynamic-form-warning-color2: #ffe5ac;
   --dynamic-form-secondary-color: #666;
-  --dynamic-form-background-color: #efefef;
+  --dynamic-form-background-color: #f7f7f7;
+  --dynamic-form-background-hover-color: #ebebeb;
   --dynamic-form-placeholder-color: #bbbbbb;
   --dynamic-form-border-color: #dcdfe6;
   --dynamic-form-base-color: #fff;
   --dynamic-form-text-color: #333;
   --dynamic-form-text-light-color: #fff;
+  --dynamic-form-shadow-color: rgba(0, 0, 0, 0.06);
+  --dynamic-form-shadow-darker-color: rgba(0, 0, 0, 0.1);
+  --dynamic-form-shadow-primary-color: rgba(26, 145, 243, 0.2);
+  --dynamic-form-shadow-error-color: rgba(232, 74, 74, 0.2);
 
   --dynamic-form-item-nest-margin: 20px;
 }

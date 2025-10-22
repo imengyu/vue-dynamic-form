@@ -11,7 +11,12 @@
 import { DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { ref } from 'vue'
 
-const formModel = ref({});
+const formModel = ref({
+  obj: {
+    name: '',
+    prop: ''
+  }
+});
 const formOptions : IDynamicFormOptions = {
   internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 8 },
@@ -19,6 +24,13 @@ const formOptions : IDynamicFormOptions = {
   formItems: [
     { type: 'base-text', label: '正常', name: 'name', additionalProps: { placeholder: '请输入名称' } },
     { type: 'my-text', label: '缺失条目', name: 'description', additionalProps: { placeholder: '请输入说明' } },
+    { 
+      type: 'object', label: '对象条目', name: 'obj', 
+      children: [
+        { type: 'base-text', label: '正常属性条目', name: 'name', additionalProps: { placeholder: '请输入名称' } },
+        { type: 'my-select2', label: '缺失属性条目', name: 'prop' },
+      ]
+    },
   ],
   formRules: {},
 };
