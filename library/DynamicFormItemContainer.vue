@@ -16,7 +16,7 @@
       v-if="item.type === 'object'" 
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="item.suppressEmptyError"
+      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="object"
     >
@@ -53,7 +53,7 @@
       v-else-if="item.type === 'group-object'" 
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="item.suppressEmptyError"
+      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="object"
     >
@@ -94,7 +94,7 @@
           :disabled="disabled || evaluateCallback(item.disabled)"
         >
           <template #formCeil="values">
-            <slot name="formCeil" v-bind="values" />
+            <slot name="formCeil" v-bind="(values as FormCeilProps)" />
           </template>
         </DynamicFormItemContainer>
       </Row>
@@ -116,7 +116,7 @@
         :disabled="disabled || evaluateCallback(item.disabled)"
       >
         <template #formCeil="values">
-          <slot name="formCeil" v-bind="values" />
+          <slot name="formCeil" v-bind="(values as FormCeilProps)" />
         </template>
       </DynamicFormItemContainer>
     </FormCustomLayout>
@@ -149,7 +149,7 @@
             :disabled="disabled || evaluateCallback(formRow.disabled)"
           >
             <template #formCeil="values">
-              <slot name="formCeil" v-bind="values" />
+              <slot name="formCeil" v-bind="(values as FormCeilProps)" />
             </template>
           </DynamicFormItemContainer>
         </DynamicFormTabPage>
@@ -182,7 +182,7 @@
             :disabled="disabled || evaluateCallback(item.disabled)"
           >
             <template #formCeil="values">
-              <slot name="formCeil" v-bind="values" />
+              <slot name="formCeil" v-bind="(values as FormCeilProps)" />
             </template>
           </DynamicFormItemContainer>
         </Row>
@@ -193,7 +193,7 @@
       v-else-if="item.type === 'array-single'"
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="item.suppressEmptyError"
+      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="array"
     >
@@ -244,7 +244,7 @@
       v-else-if="item.type === 'array-object'"
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="item.suppressEmptyError"
+      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="array"
     >
@@ -302,17 +302,17 @@
       @update:model="(v: unknown) => $emit('update:model', v)"
     >
       <template #formCeil="values">
-        <slot name="formCeil" v-bind="values" />
+        <slot name="formCeil" v-bind="(values as FormCeilProps)" />
       </template>
     </DynamicFormItemNormal>
   </Col>
 </template>
 
 <script lang="ts" setup>
-import { inject, PropType, Ref, toRefs, computed } from 'vue';
-import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions } from './DynamicForm';
+import { inject, PropType, Ref, toRefs, computed, provide } from 'vue';
+import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef, IEvaluateCallback } from './DynamicForm';
 import { Rules } from 'async-validator';
-import DynamicFormItemNormal from './DynamicFormItemNormal.vue';
+import DynamicFormItemNormal, { FormCeilProps } from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
 import DynamicFormTab from './DynamicFormTab/DynamicFormTab.vue';
@@ -360,10 +360,22 @@ const props = defineProps({
 });
 
 defineEmits([	'update:model' ]);
+defineSlots<{
+  formCeil(props: FormCeilProps): any,
+  arrayButtonAdd(props: {
+    onClick: () => void;
+  }): any,
+  arrayButtons(props: {
+    onDeleteClick: () => void;
+    onUpClick: () => void;
+    onDownClick: () => void;
+  }): any,
+}>()
 
 const propsP = toRefs(props);
 const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
 const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
+const formRef = inject<IDynamicFormRef>('formRef');
 
 //处理默认值
 const finalModel = computed(() => {
@@ -385,10 +397,15 @@ function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
       finalModel.value, 
       propsP.rawModel.value,
       propsP.parentModel?.value,
-      propsP.item.value,
-      globalParams?.value || {},
-      (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+      {
+        item: propsP.item.value,
+        form: formRef!,
+        formGlobalParams: globalParams?.value || {},
+        formRules: (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+      }
     );
   return val as T;
 }
+
+provide<IEvaluateCallback>('evaluateCallback', evaluateCallback);
 </script>

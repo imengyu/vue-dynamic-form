@@ -17,16 +17,47 @@ export type IDynamicFormItemCallback<T> = {
    * @param model 当前表单条目的值
    * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
    * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
-   * @param item 当前表单条目信息
-   * @param formGlobalParams 全局参数。由表单组件顶层添加额外的参数。
-   * @param formRules 当前条目校验数据
+   * @param params 当前表单条目信息
    */
-  callback: (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formGlobalParams: IDynamicFormObject, formRules?: Record<string, Rule>) => T;
+  callback: (model: unknown, rawModel: unknown, parentModel: unknown, params: {
+    /**
+     * 当前表单条目
+     */
+    item: IDynamicFormItem, 
+    /**
+     * 当前表单组件实例
+     */
+    form: IDynamicFormRef,
+    /**
+     * 全局参数。由表单组件顶层添加额外的参数。
+     */
+    formGlobalParams: IDynamicFormObject, 
+    /**
+     * 当前条目校验数据
+     */
+    formRules?: Record<string, Rule>,
+  }, ) => T;
 }
 
+export type DynamicFormNestNameGenerateType = 'dot'|'array'
 export type IDynamicFormItemCallbackAdditionalProps<T> = { [P in keyof T]?: T[P]|IDynamicFormItemCallback<T[P]> }
 
+/**
+ * 表单事件中心消息名称
+ */
+/**
+ * 重新加载表单项目。由条目自由处理。
+ */
 export const MESSAGE_RELOAD = 'reload';
+/**
+ * 切换到下一个 Tab 页
+ */
+export const MESSAGE_TAB_NEXT = 'tab-next';
+/**
+ * 设置当前 Tab 页
+ * * 参数：string 目标 Tab 页的 key
+ */
+export const MESSAGE_TAB_ACTIVE = 'tab-active';
 
 export interface IDynamicFormItem {
   /**
@@ -64,6 +95,8 @@ export interface IDynamicFormItem {
   additionalDirectProps?: unknown;
   /**
    * 默认值。如果表单条目接收到 undefined 或 null ，则使用默认值。
+   * 可以使用一个工厂函数返回对象。
+   * 需要在顶层调用 `formRef.value.initDefaultValuesToModel` 方法初始化默认值至模型中才可生效。
    */
   defaultValue?: any;
   /**
@@ -155,60 +188,6 @@ export interface IDynamicFormItem {
   nestObjectMargin?: boolean,
 }
 
-//DynamicForm 实例方法接口
-export interface IDynamicFormRef {
-  /**
-   * 获取表单组件的 Ref
-   * @returns 
-   */
-  getFormRef: <T>() => T;
-  /**
-   * 获取指定表单项组件的 Ref
-   * @returns 
-   */
-  getFormItemControlRef: <T>(key: string) => T;
-  /**
-   * 触发提交。同 getFormRef().submit() 。
-   * @returns 
-   */
-  submit: () => void;
-  /**
-   * 验证当前表单数据是否有效。同 getFormRef().validate() 。
-   * @returns 
-   */
-  validate: () => Promise<void>;
-  /**
-   * 外部修改指定单个 field 的数据
-   * @param path 路径
-   * @param value 值
-   * @returns 
-   */
-  setValueByPath: (path: string|string[], value: unknown) => void,
-  /**
-   * 外部获取指定单个 field 的数据
-   * @param path 路径
-   * @returns 
-   */
-  getValueByPath: (path: string|string[]) => unknown,
-  /**
-   * 向所有或者指定的子组件分发消息事件。
-   * @param messageName 消息名称。
-   * @param data 可选参数。
-   * @param receiveFilter 可选名称筛选正则，此正则通过名称的子组件会接受事件，其他则不会。
-   * @returns 
-   */
-  dispatchMessage: (messageName: string, data?: unknown, receiveFilter?: RegExp) => void;
-  /**
-   * 向所有子组件分发重新加载消息事件。
-   * @returns 
-   */
-  dispatchReload: () => void;
-  /**
-   * 获取当前表单中可见的所有字段名
-   */
-  getVisibleFormNames: () => string[];
-}
-
 export const defaultDynamicFormInternalWidgets = {
   Form: {
     component: markRaw(Form),
@@ -219,7 +198,6 @@ export const defaultDynamicFormInternalWidgets = {
     propsMap: {},
   }
 } as IDynamicFormInternalWidgets
-
 export interface IDynamicFormInternalWidgets {
   Form?: {
     /**
@@ -286,8 +264,64 @@ export interface IDynamicFormInternalWidgets {
   },
 }
 
-export type DynamicFormNestNameGenerateType = 'dot'|'array'
-
+// DynamicForm 实例方法接口
+export interface IDynamicFormRef {
+  /**
+   * 获取表单组件的 Ref
+   * @returns 
+   */
+  getFormRef: <T>() => T;
+  /**
+   * 获取指定表单项组件的 Ref
+   * @returns 
+   */
+  getFormItemControlRef: <T>(key: string) => T;
+  /**
+   * 触发提交。同 getFormRef().submit() 。
+   * @returns 
+   */
+  submit: () => void;
+  /**
+   * 验证当前表单数据是否有效。同 getFormRef().validate() 。
+   * @returns 
+   */
+  validate: () => Promise<void>;
+  /**
+   * 外部修改指定单个 field 的数据
+   * @param path 路径
+   * @param value 值
+   * @returns 
+   */
+  setValueByPath: (path: string|string[], value: unknown) => void,
+  /**
+   * 外部获取指定单个 field 的数据
+   * @param path 路径
+   * @returns 
+   */
+  getValueByPath: (path: string|string[]) => unknown,
+  /**
+   * 向所有或者指定的子组件分发消息事件。
+   * @param messageName 消息名称。
+   * @param data 可选参数。
+   * @param receiveFilter 可选名称筛选正则，此正则通过名称的子组件会接受事件，其他则不会。
+   * @returns 
+   */
+  dispatchMessage: (messageName: string, data?: unknown, receiveFilter?: RegExp) => void;
+  /**
+   * 向所有子组件分发重新加载消息事件。
+   * @returns 
+   */
+  dispatchReload: () => void;
+  /**
+   * 获取当前表单中可见的所有字段名
+   */
+  getVisibleFormNames: () => string[];
+  /**
+   * 初始化表单默认值到模型中，对于已有数据非空的字段，不会覆盖已有的值。
+   * @returns 
+   */
+  initDefaultValuesToModel: () => void;
+}
 export interface IDynamicFormOptions {
   /**
    * 表单条目数据
@@ -362,6 +396,8 @@ export interface IDynamicFormOptions {
   nestObjectMargin?: boolean,
 }
 
+// 动态表单属性接口
+
 /**
  * 默认的动态表单属性
  */
@@ -403,6 +439,7 @@ export function renderTextDefaultSlot(text: string) {
   }
 } 
 
+export type IEvaluateCallback = <T>(val: T | IDynamicFormItemCallback<T>) => T;
 export type IDynamicFormMessageCenterCallback = (messageName: string, data: unknown) => void;
 
 export interface IDynamicFormMessageCenter {

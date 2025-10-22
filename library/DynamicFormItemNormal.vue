@@ -1,10 +1,22 @@
 <script lang="ts">
 import { defineComponent, h, inject, PropType, Ref, ref, renderSlot, toRefs } from 'vue';
-import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormOptions } from './DynamicForm';
+import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from './DynamicForm';
 import { Rules } from 'async-validator';
 import { VNode } from 'vue';
 import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem.vue';
+
+export interface FormCeilProps extends IDynamicFormItem {
+  ref: Ref<DynamicFormItemRendererInterface | undefined>,
+  value: unknown,
+  rawModel: unknown,
+  parentModel: unknown,
+  'onUpdate:value': (v: unknown) => void,
+  item: IDynamicFormItem,
+  name: string,
+  disabled: boolean,
+  additionalProps: Record<string, unknown>,
+}
 
 /**
  * 动态表单条目渲染组件。
@@ -60,6 +72,8 @@ export default defineComponent({
 
     const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
     const widgetsRefMap = inject<Record<string,() => unknown>>('widgetsRefMap'); 
+    const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
+    const formRef = inject<IDynamicFormRef>('formRef');
     const currentFormItem = ref<DynamicFormItemRendererInterface>(); 
 
     function evaluateCallback(val: unknown|IDynamicFormItemCallback<unknown>) {
@@ -68,8 +82,12 @@ export default defineComponent({
           model.value, 
           rawModel.value, 
           parentModel.value, 
-          item.value, 
-          (finalOptions?.value.formRules ?? {}) as Record<string, Rules>
+          {
+            item: item.value, 
+            form: formRef!,
+            formGlobalParams: globalParams?.value || {},
+            formRules: (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+          }
         );
       return val as unknown;
     }
@@ -137,7 +155,7 @@ export default defineComponent({
           name: name.value,
           disabled: disabled.value,
           additionalProps: evaluateCallbackObj(item.value.additionalProps as Record<string, unknown>),
-        }));
+        } as FormCeilProps));
       }
 
       //后缀渲染

@@ -6,17 +6,17 @@
     :extraMessage="`At form ${formName}: ${name}`"
   />
   <Alert v-else-if="(checkType && checkType === 'array' && !Array.isArray(modelWithDefault))"
-    type="warning"
+    type="error"
     :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not a array`"
     :extraMessage="`At form ${formName}: ${name}`"
   />
   <Alert v-else-if="(checkType && typeof modelWithDefault !== checkType)"
-    type="warning"
+    type="error"
     :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not a ${checkType}`"
     :extraMessage="`At form ${formName}: ${name}`"
   />
   <Alert v-else-if="(checkCustomType && !checkCustomType(modelWithDefault))"
-    type="warning"
+    type="error"
     :message="`DynamicForm: Input field ${name} (${modelWithDefault}) is not a valid type, type is ${typeof modelWithDefault}`"
     :extraMessage="`At form ${formName}: ${name}`"
   />

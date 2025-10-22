@@ -5,7 +5,9 @@ import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
 import { 
   defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD, 
   IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback, 
-  IDynamicFormObject
+  IDynamicFormObject,
+  IDynamicFormItem,
+  IDynamicFormRef
 } from './DynamicForm';
 import { Rule } from 'async-validator';
 import { ColProps } from 'DynamicFormBasicControls';
@@ -83,7 +85,6 @@ export default defineComponent({
 
     provide('rawModel', model);
     provide('globalParams', toRef(props, 'globalParams'));
-    provide('formName', name.value || 'unnamed');
     provide('finalOptions', finalOptions);
 
     const formEditor = ref();
@@ -148,6 +149,24 @@ export default defineComponent({
       dispatchMessage(MESSAGE_RELOAD);
     }
 
+    //初始化默认值到模型
+    function initDefaultValuesToModel() {
+      function loopItems(key: string, items: IDynamicFormItem[]) {
+        for (const item of items) {
+          const currentKey = (key ? key + '.' : '') + item.name;
+          if (item.children)
+            loopItems(currentKey, item.children);
+          if (item.defaultValue !== undefined) {
+            const oldValue = accessFormModel(currentKey, false, undefined);
+            if (oldValue !== undefined && oldValue !== null)
+              continue;
+            accessFormModel(currentKey, true, item.defaultValue);
+          }
+        }
+      }
+      loopItems('', finalOptions.value.formItems);
+    }
+
     //获取当前表单中可见的所有字段名
     function getVisibleFormNames() {
       return Array.from(messageCenterMap.keys());
@@ -159,46 +178,18 @@ export default defineComponent({
       }, 400);
     });
 
-    ctx.expose({
-      /**
-       * 获取当前表单中可见的所有字段名
-       */
+    const formRef : IDynamicFormRef = {
+      initDefaultValuesToModel,
       getVisibleFormNames,
-      /**
-       * 获取表单组件的 Ref
-       * @returns 
-       */
       getFormRef: () => formEditor.value,
-      /**
-       * 获取表单组件的 Ref
-       * @returns 
-       */
-      getFormItemControlRef,
-      /**
-       * 触发提交。同 getFormRef().submit() 。
-       * 默认函数名是 submit ，可以通过 propsMap.submit 自定义。
-       * @returns 
-       */
+      getFormItemControlRef: getFormItemControlRef as any,
       submit: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit'](),
-      /**
-       * 验证当前表单数据是否有效。同 getFormRef().validate() 。
-       * 默认函数名是 validate ，可以通过 propsMap.validate 自定义。
-       * @returns 
-       */
       validate: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate'](),
-      /**
-       * 外部修改指定单个 field 的数据
-       * @returns 
-       */
       setValueByPath: (path: string|string[], value: unknown) => {
         if (Array.isArray(path))
           path = path.join('.');
         return accessFormModel(path, true, value);
       },
-      /**
-       * 外部获取指定单个 field 的数据
-       * @returns 
-       */
       getValueByPath: (path: string|string[]) => {
         if (Array.isArray(path))
           path = path.join('.');
@@ -206,7 +197,12 @@ export default defineComponent({
       },
       dispatchMessage,
       dispatchReload,
-    });
+    };
+
+    provide('formRef', formRef);
+    provide('formName', name.value || 'unnamed');
+
+    ctx.expose(formRef);
 
     return () => {
 

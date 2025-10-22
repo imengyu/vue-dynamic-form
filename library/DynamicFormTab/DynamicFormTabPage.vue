@@ -1,6 +1,7 @@
 <script lang="ts">
 import { PropType, Ref, defineComponent, h, inject } from 'vue';
-import type { IDynamicFormOptions, IDynamicFormItem, IDynamicFormTabPageProps } from '../DynamicForm';
+import type { IDynamicFormOptions, IDynamicFormItem, IDynamicFormTabPageProps, IEvaluateCallback } from '../DynamicForm';
+import TabPage from '../DynamicFormBasicControls/Tabs/TabPage.vue';
 
 export default defineComponent({
   props: {
@@ -16,6 +17,7 @@ export default defineComponent({
   setup(props, ctx) {
     const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
     const additionalProps = props.item.additionalProps as IDynamicFormTabPageProps;
+    const evaluateCallback = inject<IEvaluateCallback>('evaluateCallback');
 
     return () => {
       const internalWidgets = finalOptions?.value.internalWidgets;
@@ -29,7 +31,13 @@ export default defineComponent({
             [internalWidgets.TabPage.propsMap.disabled || 'disabled']: props.item.disabled,
           }, ctx.slots) 
         ];
-      return [];
+      return [
+        h(TabPage, {
+          key: props.tabKey,
+          title: props.item.label as string,
+          disabled: evaluateCallback?.(props.item.disabled) ?? false,
+        }, ctx.slots)
+      ];
     }
   },
 });
