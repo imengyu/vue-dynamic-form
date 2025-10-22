@@ -1,8 +1,8 @@
 # 基础用法
 
 <script>
-import DynamicFormBasicUseage1 from '../examples/BasicUseageDoc1.vue'
-import DynamicFormBasicUseage2 from '../examples/BasicUseageDoc2.vue'
+import DynamicFormBasicUseage1 from '../examples/BasicUseageDocBasic.vue'
+import DynamicFormBasicUseage2 from '../examples/BasicUseageDocBasicWithCol.vue'
 </script>
 
 ## 编写表单结构+数据

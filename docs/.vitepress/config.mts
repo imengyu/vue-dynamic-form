@@ -49,6 +49,7 @@ export default defineConfig({
             { text: '表单方法', link: '/guide/form-funs' },
             { text: '表单嵌套', link: '/guide/form-nest' },
             { text: '表单标签页', link: '/guide/tab' },
+            { text: '错误提示与处理', link: '/guide/error-catch' },
           ]
         },
       ],

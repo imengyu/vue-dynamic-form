@@ -1,9 +1,9 @@
 # 表单联动
 
 <script setup>
-import DynamicFormBasicUseage3 from '../examples/BasicUseageDoc3.vue'
-import DynamicFormBasicUseage4 from '../examples/BasicUseageDoc4.vue'
-import DynamicFormBasicUseage5 from '../examples/BasicUseageDoc5.vue'
+import DynamicFormBasicUseage3 from '../examples/BasicUseageDocBasicLinkage.vue'
+import DynamicFormBasicUseage4 from '../examples/BasicUseageDocCheckLinkage.vue'
+import DynamicFormBasicUseage5 from '../examples/BasicUseageDocSelectLinkage.vue'
 </script>
 
 表单组件间的联动是开发中普遍的问题，希望能保持简洁易用的同时支持联动。

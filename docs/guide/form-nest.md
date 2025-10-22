@@ -1,8 +1,8 @@
 # 表单嵌套
 
 <script>
-import DynamicFormBasicUseage6 from '../examples/BasicUseageDoc6.vue'
-import DynamicFormBasicUseage7 from '../examples/BasicUseageDoc7.vue'
+import DynamicFormBasicUseage6 from '../examples/BasicUseageDocSingleObject.vue'
+import DynamicFormBasicUseage7 from '../examples/BasicUseageDocNestObject.vue'
 </script>
 
 在表单中经常会遇到对象与数组这种嵌套的结构，在之前的手动表单写法中，经常需要自己处理，当数据结构特别复杂的时候，这真的是一个非常麻烦的事情。所以，vue-dynamic-form 支持为你处理对象与数组的嵌套表单。

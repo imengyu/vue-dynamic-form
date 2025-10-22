@@ -29,7 +29,7 @@ title: API 参考 - IDynamicFormOptions
 | hidden | [联动回调] 显是否隐藏当前表单项 | `boolean` or `IDynamicFormItemCallback<boolean>` | — |
 | disabled | [联动回调] 是否禁用当前表单项 | `boolean` or `IDynamicFormItemCallback<boolean>` | — |
 | additionalProps | [联动回调] 附加组件属性。支持动态回调(只支持第一级传入回调)。当传入值是函数时，请使用 additionalDirectProps。 | `string` | — |
-| additionalEvents | 附加组件事件绑定 | `Record<string, Function>` | — |
+| additionalEvents | 附加组件事件绑定。事件名称不需要加 on 前缀。 | `Record<string, Function>` | — |
 | additionalDirectProps | 当前表单类型 | `string` | — |
 | type | 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。 | `Record<string, unknown>` | — |
 | formProps | 附加 FormItem 组件属性 | `unknown` | — |
