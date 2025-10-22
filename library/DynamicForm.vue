@@ -1,24 +1,42 @@
 <script lang="ts">
-import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch } from 'vue';
-import DynamicFormInner from './DynamicFormInner.vue';
-import DynamicFormDefaultForm from './DynamicFormBasicControls/Form';
-import { defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD } from './DynamicForm';
-import { IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback } from './DynamicFormInternal';
+import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch, toRef } from 'vue';
+import DynamicFormRoot from './DynamicFormRoot.vue';
+import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
+import { 
+  defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD, 
+  IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback 
+} from './DynamicForm';
+import { Rule } from 'async-validator';
+import { ColProps } from 'DynamicFormBasicControls';
 
 /**
  * 动态表单组件。
  */
 export default defineComponent({
   components: {
-    DynamicFormInner,
+    DynamicFormRoot,
     DynamicFormDefaultForm,
   },
   props: {
+    /**
+     * 动态表单选项
+     */
     options: {
       type: Object as PropType<IDynamicFormOptions>,
       default: null
     },
+    /**
+     * 表单数据模型
+     */
     model: {
+      type: Object,
+      default: null
+    },
+
+    /**
+     * 全局参数。用于向每个表单项的参数中添加额外的参数，可以在回调中的 formGlobalParams 中访问。
+     */
+    globalParams: {
       type: Object,
       default: null
     },
@@ -56,8 +74,9 @@ export default defineComponent({
       };
     });
 
-    provide('finalOptions', finalOptions);
     provide('rawModel', model);
+    provide('globalParams', toRef(props, 'globalParams'));
+    provide('finalOptions', finalOptions);
 
     const formEditor = ref();
     const widgetsRefMap = ref<Record<string,() => unknown>>({});
@@ -149,21 +168,32 @@ export default defineComponent({
       getFormItemControlRef,
       /**
        * 触发提交。同 getFormRef().submit() 。
+       * 默认函数名是 submit ，可以通过 propsMap.submit 自定义。
        * @returns 
        */
-      submit: () => formEditor.value.submit(),
+      submit: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit'](),
+      /**
+       * 验证当前表单数据是否有效。同 getFormRef().validate() 。
+       * 默认函数名是 validate ，可以通过 propsMap.validate 自定义。
+       * @returns 
+       */
+      validate: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate'](),
       /**
        * 外部修改指定单个 field 的数据
        * @returns 
        */
-      setValueByPath: (path: string, value: unknown) => {
+      setValueByPath: (path: string|string[], value: unknown) => {
+        if (Array.isArray(path))
+          path = path.join('.');
         return accessFormModel(path, true, value);
       },
       /**
        * 外部获取指定单个 field 的数据
        * @returns 
        */
-      getValueByPath: (path: string) => {
+      getValueByPath: (path: string|string[]) => {
+        if (Array.isArray(path))
+          path = path.join('.');
         return accessFormModel(path, false, undefined);
       },
       dispatchMessage,
@@ -172,7 +202,7 @@ export default defineComponent({
 
     return () => {
 
-      const renderChildren = () => h(DynamicFormInner as any, { options: finalOptions.value, model: model.value }, ctx.slots);
+      const renderChildren = () => h(DynamicFormRoot as any, { options: finalOptions.value, model: model.value }, ctx.slots);
       const internalWidgetsForm = finalOptions.value.internalWidgets?.Form;
       const {
         formRules = {},
@@ -208,13 +238,13 @@ export default defineComponent({
         h(DynamicFormDefaultForm, {
           ...props,
           ref: formEditor,
-          rules: formRules,
+          rules: formRules as Record<string, Rule>,
           model: model.value,
-          labelCol: formLabelCol,
+          labelCol: formLabelCol as ColProps,
           labelWidth: formLabelWidth,
-          wrapperCol: formWrapperCol,
+          wrapperCol: formWrapperCol as ColProps,
           ...formAdditionaProps,
-          onFinish: (d) => ctx.emit('finish', d),
+          onFinish: () => ctx.emit('finish'),
           onFinishFailed: (d) => ctx.emit('finishFailed', d),
           onSubmit: (d) => ctx.emit('submit', d),
           ...formAdditionalEvents,

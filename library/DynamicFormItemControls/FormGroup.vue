@@ -1,14 +1,14 @@
 <template>
   <div class="dynamic-form-group mt-3">
     <h3>{{ title }}</h3>
-    <Row :justify="justify" :gutter="gutter">
+    <Row :justify="(justify as any)" :gutter="gutter">
       <slot />
     </Row>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Row from "../DynamicFormBasicControls/Layout/Row";
+import Row from "../DynamicFormBasicControls/Layout/Row.vue";
 
 defineProps({
   /**

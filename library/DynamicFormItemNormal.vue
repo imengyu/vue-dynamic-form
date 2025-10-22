@@ -4,7 +4,7 @@ import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormOptions } from 
 import { Rules } from 'async-validator';
 import { VNode } from 'vue';
 import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
-import FormItem from './DynamicFormBasicControls/FormItem';
+import FormItem from './DynamicFormBasicControls/FormItem.vue';
 
 /**
  * 动态表单条目渲染组件。
@@ -20,14 +20,18 @@ export default defineComponent({
       type: String
     },
     disabled: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     model: {
+      type: null
     },
     parentModel: {
+      type: null
     },
     rawModel: {
       type: Object as PropType<Record<string, unknown>>,
+      default: null
     },
     noLabel: {
       type: Boolean,

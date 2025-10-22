@@ -75,9 +75,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ArrayUtils } from "@imengyu/imengyu-utils";
 import { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
-import ArrayUtils from "../DynamicFormBasicControls/Utils/ArrayUtils";
 import FormArrayGroupItem from "./FormArrayGroupItem.vue";
 
 export interface FormArrayGroupProps {

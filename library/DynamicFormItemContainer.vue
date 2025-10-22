@@ -292,8 +292,8 @@ import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
 import DynamicFormTab from './DynamicFormTab/DynamicFormTab.vue';
 import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
 import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
-import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col';
-import Row from './DynamicFormBasicControls/Layout/Row';
+import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
+import Row from './DynamicFormBasicControls/Layout/Row.vue';
 
 /**
  * 动态表单条目渲染组件。

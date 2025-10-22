@@ -3,7 +3,7 @@
 <script lang="ts">
 import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, Ref, ref, toRefs, watch } from "vue";
 import { IDynamicFormItem, IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
-import { IDynamicFormMessageCenter } from "../DynamicFormInternal";
+import { IDynamicFormMessageCenter } from "../DynamicForm";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
 import BaseInputVue from "../DynamicFormItemControls/BaseInput.vue";
@@ -24,19 +24,27 @@ export default defineComponent({
   props: {
     item: {
       type: Object as PropType<IDynamicFormItem>,
+      default: () => ({})
     },
     disabled: {
-      type: Boolean
+      type: Boolean,
+      default: false,
     },
     parentModel: {
+      type: null,
+      default: null,
     },
     value: {
+      type: null,
+      default: null,
     },
     name: {
-      type: String
+      type: String,
+      default: '',
     },
     additionalProps: {
       type: Object as PropType<Record<string, unknown>>,
+      default: () => ({}),
     },
   },
   emits: [ 

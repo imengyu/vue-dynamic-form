@@ -9,7 +9,7 @@
   </div>
   <template v-else>
     <!--表单条目渲染核心-->
-    <DynamicFormItem 
+    <DynamicFormItemContainer 
       v-for="(item, index) in options.formItems"
       :key="index"
       :item="item"
@@ -29,7 +29,7 @@
       <template #formCeil="values">
         <slot name="formCeil" v-bind="values" />
       </template>
-    </DynamicFormItem>
+    </DynamicFormItemContainer>
     <slot name="endButton" />
   </template>
 </template>
@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { PropType } from 'vue';
 import { IDynamicFormOptions, IDynamicFormObject } from './DynamicForm';
-import DynamicFormItem from './DynamicFormItem.vue';
+import DynamicFormItemContainer from './DynamicFormItemContainer.vue';
 
 /**
  * 动态表单组件。

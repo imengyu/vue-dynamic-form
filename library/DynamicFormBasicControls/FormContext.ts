@@ -1,4 +1,5 @@
 import { InjectionKey, inject, provide, Ref } from "vue";
+import { ColProps } from "./Layout/Col.vue";
 
 export type ValidTrigger = "blur" | "change" | "submit";
 
@@ -27,8 +28,8 @@ export type FormContext = {
   colon: Ref<boolean>;
   labelWidth: Ref<string|number>;
   labelAlign: Ref<string>;
-  labelCol: Ref<Record<string, unknown>>;
-  wrapperCol: Ref<Record<string, unknown>>;
+  labelCol: Ref<ColProps>;
+  wrapperCol: Ref<ColProps>;
   showLabel: Ref<boolean>;
   name: Ref<string>;
   getItemValue: (item: FormItemInternalContext) => unknown;

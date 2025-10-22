@@ -30,6 +30,7 @@
     "docs:serve": "vitepress serve docs"
   },
   "dependencies": {
+    "@imengyu/imengyu-utils": "^0.0.16",
     "async-validator": "^4.2.5",
     "scroll-into-view-if-needed": "^3.0.3",
     "vue": "^3.2.45"

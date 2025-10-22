@@ -1,4 +1,4 @@
-import { ColProps } from "./DynamicFormBasicControls/Layout/Col";
+import { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
 import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import { Rule } from 'async-validator';
 import { Form, FormItem, RowProps } from "./DynamicFormBasicControls";
@@ -18,9 +18,10 @@ export type IDynamicFormItemCallback<T> = {
    * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
    * @param parentModel 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item）
    * @param item 当前表单条目信息
+   * @param formGlobalParams 全局参数。由表单组件顶层添加额外的参数。
    * @param formRules 当前条目校验数据
    */
-  callback: (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formRules?: Record<string, Rule>) => T;
+  callback: (model: unknown, rawModel: unknown, parentModel: unknown, item: IDynamicFormItem, formGlobalParams: IDynamicFormObject, formRules?: Record<string, Rule>) => T;
 }
 
 export type IDynamicFormItemCallbackAdditionalProps<T> = { [P in keyof T]?: T[P]|IDynamicFormItemCallback<T[P]> }
@@ -53,7 +54,7 @@ export interface IDynamicFormItem {
    */
   additionalSlot?: Record<string, Slot>;
   /**
-   * 附加组件事件绑定
+   * 附加组件事件绑定。事件名称不需要加 on 前缀。
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
   additionalEvents?: Record<string, Function>;
@@ -61,6 +62,15 @@ export interface IDynamicFormItem {
    * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
    */
   additionalDirectProps?: unknown;
+  /**
+   * 默认值。如果表单条目接收到 undefined 或 null ，则使用默认值。
+   */
+  defaultValue?: any;
+  /**
+   * 当前条目的校验规则，会自动根据当前表单路径合并至 formRules 。
+   */
+  rules?: any[];
+
   /**
    * 加载时的钩子函数
    * @param nowValue 当前组件的实例
@@ -158,18 +168,23 @@ export interface IDynamicFormRef {
    */
   submit: () => void;
   /**
+   * 验证当前表单数据是否有效。同 getFormRef().validate() 。
+   * @returns 
+   */
+  validate: () => Promise<void>;
+  /**
    * 外部修改指定单个 field 的数据
    * @param path 路径
    * @param value 值
    * @returns 
    */
-  setValueByPath: (path: string, value: unknown) => void,
+  setValueByPath: (path: string|string[], value: unknown) => void,
   /**
    * 外部获取指定单个 field 的数据
    * @param path 路径
    * @returns 
    */
-  getValueByPath: (path: string) => unknown,
+  getValueByPath: (path: string|string[]) => unknown,
   /**
    * 向所有或者指定的子组件分发消息事件。
    * @param messageName 消息名称。
@@ -218,6 +233,8 @@ export interface IDynamicFormInternalWidgets {
       onFinish?: string,
       onFinishFailed?: string,
       onSubmit?: string,
+      submit?: string,
+      validate?: string,
     },
   },
   FormItem?: {
@@ -363,3 +380,10 @@ export function renderTextDefaultSlot(text: string) {
     default: () => [ h('span', text) ],
   }
 } 
+
+export type IDynamicFormMessageCenterCallback = (messageName: string, data: unknown) => void;
+
+export interface IDynamicFormMessageCenter {
+  addInstance: (name: string, fn: IDynamicFormMessageCenterCallback) => void,
+  removeInstance: (name: string) => void,
+}
