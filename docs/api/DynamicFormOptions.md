@@ -37,7 +37,7 @@ title: API 参考 - IDynamicFormOptions
 | additionalEvents | 附加组件事件绑定。事件名称不需要加 on 前缀。 | `Record<string, Function>` | — |
 | additionalDirectProps | 当前表单类型 | `string` | — |
 | type | 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。 | `Record<string, unknown>` | — |
-| rules | 当前条目的校验规则，会自动根据当前表单路径合并至 formRules 。 | `any[]` | — |
+| rules | 当前条目的校验规则。 | `any[]` | — |
 | formProps | 附加 FormItem 组件属性 | `unknown` | — |
 | watch | 监听当前表单数据更改 | `(oldValue: unknown, newValue: unknown) => void` | — |
 | name | 当前表单项名称。 | `string` | 是 |

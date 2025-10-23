@@ -10,6 +10,7 @@ export type FormItemContext = {
   clearValidate: () => void;
 };
 export type FormItemInternalContext = {
+  rules: Ref<unknown|unknown[]>;
   getFieldName: () => string,
   getValidateTrigger: () => ValidTrigger;
   getUniqueId: () => string,

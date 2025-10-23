@@ -109,7 +109,7 @@ export interface IDynamicFormItem {
    */
   suppressEmptyError?: boolean,
   /**
-   * 当前条目的校验规则，会自动根据当前表单路径合并至 formRules 。
+   * 当前条目的校验规则，赋值至 FormItem 上。
    */
   rules?: any[];
 
@@ -237,6 +237,7 @@ export interface IDynamicFormInternalWidgets {
       label?: string,
       labelCol?: string,
       wrapperCol?: string,
+      rules?: string,
     },
   },
   Tab?: {

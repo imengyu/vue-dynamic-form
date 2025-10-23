@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onBeforeUnmount, provide, ref, computed, StyleValue } from 'vue';
+import { inject, onBeforeUnmount, provide, ref, computed, StyleValue, toRef } from 'vue';
 import { FormContext, FormItemContextContextKey, FormItemInternalContext, ValidTrigger } from './FormContext';
 import Col, { ColProps } from './Layout/Col.vue';
 import Row from './Layout/Row.vue';
@@ -117,6 +117,10 @@ export interface FormItemProps {
    * 左侧文本宽度
    */
   labelWidth?: string | number;
+  /**
+   * 当前条目的校验规则
+   */
+  rules?: any|any[];
 }
 
 // Props 声明
@@ -146,6 +150,7 @@ const labelColValue = computed(() => (props.labelCol?.span ?? formContextProps?.
 
 // Context for parent
 const formItemInternalContext = {
+  rules: toRef(props, 'rules'),
   getValidateTrigger: () => props.validateTrigger || formContextProps?.validateTrigger.value || 'submit',
   getFieldName: () => props.name,
   setErrorState(errorMessage) { error.value = errorMessage; },

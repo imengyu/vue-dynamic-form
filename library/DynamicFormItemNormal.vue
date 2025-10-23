@@ -126,6 +126,7 @@ export default defineComponent({
           rawModel: rawModel.value,
           parentModel: parentModel.value,
           rule: formRules ? formRules[item.value.name] : undefined,
+          rules: item.value.rules,
           disabled: disabled.value,
         }));
       }
@@ -180,6 +181,7 @@ export default defineComponent({
           [internalWidgetsFormItem.propsMap.name || 'name']: finalName,
           [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
           [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
+          [internalWidgetsFormItem.propsMap.rules || 'rules']: item.value.rules,
         }, {
           default: renderChildrenSlot,
         })
@@ -193,6 +195,7 @@ export default defineComponent({
           labelCol: item.value.formLabelCol ?? formLabelColDefault.value as any,
           wrapperCol: item.value.formWrapperCol ?? formWrapperColDefault.value as any,
           label: noLabel.value ? '' : evaluateCallback(item.value.label) as string,
+          rules: item.value.rules,
           name: finalName,
         }, {
           default: renderChildrenSlot,

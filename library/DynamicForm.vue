@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch, toRef } from 'vue';
+import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch, toRef, computed } from 'vue';
 import DynamicFormRoot from './DynamicFormRoot.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
 import { 
@@ -70,18 +70,10 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const { options, model, name } = toRefs(props);
-
-    const finalOptions = ref<IDynamicFormOptions>({
+    const finalOptions = computed<IDynamicFormOptions>(() => ({
       ...defaultDynamicFormOptions,
       ...options.value,
-    });
-
-    watch(options, () => {
-      finalOptions.value = {
-        ...defaultDynamicFormOptions,
-        ...options.value,
-      };
-    });
+    }));
 
     provide('rawModel', model);
     provide('globalParams', toRef(props, 'globalParams'));

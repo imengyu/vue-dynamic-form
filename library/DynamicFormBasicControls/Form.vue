@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, provide, ref, onMounted, toRefs } from 'vue';
+import { defineProps, defineEmits, provide, ref, onMounted, toRefs, computed, Ref } from 'vue';
 import { FormContext, FormItemInternalContext, ValidTrigger } from './FormContext';
 import Schema, { Rules, Rule } from 'async-validator';
 import scrollIntoView from 'scroll-into-view-if-needed';
@@ -102,7 +102,7 @@ const {
 
 // 初始化状态
 const intitalModel = ref<Record<string, unknown>|null>(null);
-const formItems = ref(new Map<string, FormItemInternalContext>());
+const formItems = ref(new Map<string, FormItemInternalContext>()) as Ref<Map<string, FormItemInternalContext>>;
 
 // 访问表单模型数据的函数
 function accessFormModel(keyName: string, isSet: boolean, setValue: unknown) : unknown {
@@ -177,7 +177,7 @@ const formContext = {
 
 // 检查规则是否必填
 function checkRuleRequired(name: string) {
-  const rule = rules.value?.[name];
+  const rule = getRuleByFieldName(name);
   if (rule instanceof Array)
     return rule.find((r) => r.required === true) !== undefined;
   else if (rule)
@@ -241,6 +241,16 @@ function scrollToField(name: string) {
   }
 }
 
+function getRuleByFieldName(name: string) {
+  const item = formItems.value.get(name);
+  if (!item)
+    return undefined;
+  let rule = item.rules.value;
+  if (!rule)
+    rule = rules.value ? rules.value[name] : undefined;
+  return rule as Rule|undefined;
+}
+
 // 验证表单
 function validate(name?: string|string[]) {
   const filteredRules = {} as Record<string, Rule|undefined>;
@@ -249,7 +259,7 @@ function validate(name?: string|string[]) {
 
   // 筛选需要验证的字段
   formItems.value.forEach((_, key) => {
-    const rule = rules.value ? rules.value[key] : undefined;
+    const rule = getRuleByFieldName(key);
     if (rule) {
       if (typeof name === 'string') {
         if (name === key) filteredRules[key] = rule as Rule;
