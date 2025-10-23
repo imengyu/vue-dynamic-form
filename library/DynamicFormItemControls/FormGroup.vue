@@ -1,6 +1,6 @@
 <template>
-  <div class="dynamic-form-group mt-3">
-    <h4>{{ title }}</h4>
+  <div class="dynamic-form-group">
+    <h5 v-if="title">{{ title }}</h5>
     <Row :justify="(justify as any)" :gutter="gutter">
       <slot />
     </Row>
@@ -41,11 +41,10 @@ defineProps({
   background-color: var(--dynamic-form-background-color);
   border-radius: var(--dynamic-form-border-radius);
 
-  h4 {
-    padding: 12px 16px;
+  h5 {
     color: var(--dynamic-form-text-color);
-    line-height: 2rem;
     margin: 0;
+    margin-bottom: 12px;
   }
 }
 </style>

@@ -1,12 +1,14 @@
-export interface FormGroupProps {
+import type { HTMLAttributes } from "vue";
+
+export interface FormGroupProps extends HTMLAttributes {
   /**
    * 标题
    */
   title: string
   /**
-   * 栅格间隔，可以写成像素值或支持响应式的对象写法来设置水平间隔 { xs: 8, sm: 16, md: 24}。或者使用数组形式同时设置 [水平间距, 垂直间距]
+   * 列元素之间的间距（单位为 px）
    */
-  gutter: unknown,
+  gutter: number,
   /**
    * flex 布局下的水平排列方式：
    */
