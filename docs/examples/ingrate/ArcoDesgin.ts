@@ -6,7 +6,7 @@ import {
   TabPane,
   Select
 } from "@arco-design/web-vue";
-import { DynamicFormItemRegistry, IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
+import { DynamicFormItemRegistry, type IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
 import MyCheckBox from "./MyCheckBox.vue";
 
 export const defaultConfig = {

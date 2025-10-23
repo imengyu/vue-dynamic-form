@@ -1,10 +1,11 @@
 <script lang="ts">
-import { defineComponent, h, inject, PropType, Ref, ref, renderSlot, toRefs } from 'vue';
-import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from './DynamicForm';
-import { Rules } from 'async-validator';
-import { VNode } from 'vue';
-import DynamicFormItemRenderer, { DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
+import { defineComponent, h, inject, onMounted, type PropType, type Ref, ref, renderSlot, toRefs } from 'vue';
+import type { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from './DynamicForm';
+import type { Rules } from 'async-validator';
+import type { VNode } from 'vue';
+import DynamicFormItemRenderer, { type DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem.vue';
+import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 
 export interface FormCeilProps extends IDynamicFormItem {
   ref: Ref<DynamicFormItemRendererInterface | undefined>,
@@ -74,6 +75,7 @@ export default defineComponent({
     const widgetsRefMap = inject<Record<string,() => unknown>>('widgetsRefMap'); 
     const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
     const formRef = inject<IDynamicFormRef>('formRef');
+    const formName = inject('formName', '');
     const currentFormItem = ref<DynamicFormItemRendererInterface>(); 
 
     function evaluateCallback(val: unknown|IDynamicFormItemCallback<unknown>) {
@@ -174,17 +176,25 @@ export default defineComponent({
 
       //自定义渲染Form
       if (internalWidgetsFormItem) {
-        return h(internalWidgetsFormItem.component as any, {
-          ...item.value.formProps as {},
-          colon: noLabel.value !== true,
-          [internalWidgetsFormItem.propsMap.label || 'label']: noLabel.value ? '' : evaluateCallback(item.value.label),
-          [internalWidgetsFormItem.propsMap.name || 'name']: finalName,
-          [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
-          [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
-          [internalWidgetsFormItem.propsMap.rules || 'rules']: item.value.rules,
-        }, {
-          default: renderChildrenSlot,
-        })
+        try {
+          return h(internalWidgetsFormItem.component as any, {
+            ...item.value.formProps as {},
+            colon: noLabel.value !== true,
+            [internalWidgetsFormItem.propsMap.label || 'label']: noLabel.value ? '' : evaluateCallback(item.value.label),
+            [internalWidgetsFormItem.propsMap.name || 'name']: finalName,
+            [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
+            [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
+            [internalWidgetsFormItem.propsMap.rules || 'rules']: item.value.rules,
+          }, {
+            default: renderChildrenSlot,
+          })
+        } catch (error) {
+          return h(Alert, {
+            type: 'error',
+            message: 'ynamicForm render error: ' + (error instanceof Error ? error.message : 'Unknown Error'),
+            extraMessage: `At Form ${formName}:${item.value.name}`,
+          });
+        }
       }
 
       //默认Form

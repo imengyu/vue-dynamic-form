@@ -1,10 +1,10 @@
 <!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <!-- eslint-disable vue/no-mutating-props -->
 <script lang="ts">
-import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, PropType, Ref, ref, toRefs, watch } from "vue";
-import { IDynamicFormItem, IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
-import { IDynamicFormMessageCenter } from "../DynamicForm";
-import { DynamicFormItemRegistry, DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
+import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, type PropType, type Ref, ref, toRefs, watch } from "vue";
+import { type IDynamicFormItem, type IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
+import { type IDynamicFormMessageCenter } from "../DynamicForm";
+import { DynamicFormItemRegistry, type DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";
 import BaseInputVue from "../DynamicFormItemControls/BaseInput.vue";
@@ -200,7 +200,15 @@ export default defineComponent({
           }
         }
 
-        return h(componentInstance.value, props, additionalSlot);
+        try {
+          return h(componentInstance.value, props, additionalSlot);
+        } catch (error) {
+          return h(Alert, {
+            type: 'error',
+            message: 'DynamicForm render error: ' + (error instanceof Error ? error.message : 'Unknown Error'),
+            extraMessage: `At form ${formName || 'unnamed'}: ${name.value || 'unnamed'}`,
+          });
+        }
         
       } else {
         return h(Alert, {

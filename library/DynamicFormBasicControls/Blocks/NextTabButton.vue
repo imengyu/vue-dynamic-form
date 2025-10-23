@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { IDynamicFormRef, MESSAGE_TAB_NEXT } from '../../DynamicForm';
+import { type IDynamicFormRef, MESSAGE_TAB_NEXT } from '../../DynamicForm';
 import { inject } from 'vue';
 
 const formRef = inject<IDynamicFormRef>('formRef');

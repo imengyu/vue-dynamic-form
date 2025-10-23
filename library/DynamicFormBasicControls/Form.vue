@@ -9,12 +9,12 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, provide, ref, onMounted, toRefs, computed, Ref } from 'vue';
-import { FormContext, FormItemInternalContext, ValidTrigger } from './FormContext';
-import Schema, { Rules, Rule } from 'async-validator';
+import { defineProps, defineEmits, provide, ref, onMounted, toRefs, type Ref } from 'vue';
+import type { FormContext, FormItemInternalContext, ValidTrigger } from './FormContext';
+import Schema, { type Rules, type Rule } from 'async-validator';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import { ObjectUtils } from '@imengyu/imengyu-utils';
-import { ColProps } from './Layout/Col.vue';
+import type { ColProps } from './Layout/Col.vue';
 
 // Form 实例接口
 export interface Form {
@@ -242,10 +242,10 @@ function scrollToField(name: string) {
 }
 
 function getRuleByFieldName(name: string) {
-  const item = formItems.value.get(name);
+  const item = formItems?.value.get(name);
   if (!item)
     return undefined;
-  let rule = item.rules.value;
+  let rule = item.rules?.value;
   if (!rule)
     rule = rules.value ? rules.value[name] : undefined;
   return rule as Rule|undefined;

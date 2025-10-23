@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, PropType } from 'vue';
-import { IDynamicFormObject } from './DynamicForm';
+import { inject, type PropType } from 'vue';
+import type { IDynamicFormObject } from './DynamicForm';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 
 const formName = inject('formName', '')

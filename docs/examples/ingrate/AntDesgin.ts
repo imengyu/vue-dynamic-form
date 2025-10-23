@@ -4,7 +4,7 @@ import {
   FormItem, Image, Input, InputNumber, 
   Rate, Switch, Textarea, TimePicker
 } from "ant-design-vue";
-import { DynamicFormItemRegistry, IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
+import { DynamicFormItemRegistry, type IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
 
 export const defaultConfig = {
   internalWidgets: {

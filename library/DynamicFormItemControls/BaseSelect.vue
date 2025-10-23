@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue";
-import { IDynamicFormItemSelectOption } from "./BaseSelect";
+import type { PropType } from "vue";
+import type { IDynamicFormItemSelectOption } from "./BaseSelect";
 import { useInjectFormItemContext } from "../DynamicFormBasicControls";
 
 defineProps({

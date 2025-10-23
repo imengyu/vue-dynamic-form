@@ -104,5 +104,13 @@ title: API 参考 - IDynamicFormOptions
 | model | 当前表单条目的值 | `unknown` | 是 |
 | rawModel | 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取） | `unknown` | 是 |
 | parentModel | 父表单元素的值 （上一级的值，只在列表场景的使用，例如列表某个元素的父级就是整个 item） | `unknown` | 是 |
+| params | 当前表单条目信息 | `IDynamicFormItemCallbackParams` | 是 |
+
+### IDynamicFormItemCallbackParams
+
+| 属性 | 描述 | 类型 | 必填 |
+| :----: | :----: | :----: | :----: |
 | item | 当前表单条目信息 | `IDynamicFormItem` | 是 |
-| formRules | 当前条目校验数据 | `Record<string, Rule>` | 是 |
+| formRules | 当前条目校验数据 | `Record<string, Rule>` | 否 |
+| form | 当前表单实例 | `IDynamicFormRef` | 是 |
+| formGlobalParams | 当前表单实例 | `IDynamicFormRef` | 是 |

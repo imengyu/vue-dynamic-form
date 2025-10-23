@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PropType, Ref, defineComponent, h, inject } from 'vue';
+import { type PropType, type Ref, defineComponent, h, inject } from 'vue';
 import type { IDynamicFormOptions, IDynamicFormItem, IDynamicFormTabPageProps, IEvaluateCallback } from '../DynamicForm';
 import TabPage from '../DynamicFormBasicControls/Tabs/TabPage.vue';
 

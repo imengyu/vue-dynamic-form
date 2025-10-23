@@ -1,8 +1,8 @@
-import { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
-import { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
-import { Rule } from 'async-validator';
-import { Form, FormItem, RowProps } from "./DynamicFormBasicControls";
-import { Slot, VNode, h, markRaw } from "vue";
+import type { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
+import type { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
+import type { Rule } from 'async-validator';
+import { Form, FormItem, type RowProps } from "./DynamicFormBasicControls";
+import { type Slot, type VNode, h, markRaw } from "vue";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -412,7 +412,7 @@ export let defaultDynamicFormOptions = {} as IDynamicFormOptions;
  * 配置默认的动态表单属性，配置后将会对所有动态表单生效。
  * @param options 参数
  */
-export function configDefaultDynamicFormOptions(options: IDynamicFormOptions) {
+export function configDefaultDynamicFormOptions(options: Omit<IDynamicFormOptions, 'formItems'>) {
   defaultDynamicFormOptions = {
     ...defaultDynamicFormOptions,
     ...options,

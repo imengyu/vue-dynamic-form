@@ -74,7 +74,7 @@
 
 <script lang="ts" setup>
 import { ArrayUtils } from "@imengyu/imengyu-utils";
-import { IDynamicFormItem } from "../DynamicForm";
+import type { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
 import FormArrayGroupItem from "./FormArrayGroupItem.vue";
 import IconAdd from "../Images/IconAdd.vue";

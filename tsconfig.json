@@ -1,4 +1,5 @@
 {
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "library/env.d.ts",
     "library/**/*",
@@ -9,29 +10,15 @@
   ],
   "exclude": ["library/**/__tests__/*"],
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "jsx": "preserve",
-    "importHelpers": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "allowJs": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictFunctionTypes": false,
-    "composite": true,
-    "baseUrl": ".",
-    "isolatedModules": false,
-    "outDir": "./temp",
     "paths": {
       "@/*": ["./library/*"],
       "vue-dynamic-form": [ "./library/main" ],
       "@imengyu/vue-dynamic-form": [ "./library/main" ]
-    },
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    }
   }
 }

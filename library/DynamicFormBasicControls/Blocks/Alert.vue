@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import IconError from '../../Images/IconError.svg';
 import IconWarning from '../../Images/IconWarning.svg';
 

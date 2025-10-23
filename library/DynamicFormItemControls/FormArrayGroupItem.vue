@@ -42,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from "vue";
-import { IDynamicFormItem } from "../DynamicForm";
+import type { PropType } from "vue";
+import type { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
 import IconUp from "../Images/IconUp.vue";
 import IconDown from "../Images/IconDown.vue";

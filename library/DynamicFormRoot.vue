@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <!--空显示-->
-  <slot name="empty" v-if="options.formItems.length == 0 || !model">
+  <slot name="empty" v-if="options.formItems?.length == 0 || !model">
     <div v-if="options.emptyText" class="dynamic-form-item-empty">{{ options.emptyText }}</div>
   </slot>
   <Alert 
@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue';
-import { IDynamicFormOptions, IDynamicFormObject } from './DynamicForm';
+import { computed, type PropType } from 'vue';
+import { type IDynamicFormOptions, type IDynamicFormObject } from './DynamicForm';
 import DynamicFormItemContainer from './DynamicFormItemContainer.vue';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 

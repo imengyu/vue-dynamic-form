@@ -1,5 +1,5 @@
-import { InjectionKey, inject, provide, Ref } from "vue";
-import { ColProps } from "./Layout/Col.vue";
+import { type InjectionKey, inject, provide, type Ref } from "vue";
+import type { ColProps } from "./Layout/Col.vue";
 
 export type ValidTrigger = "blur" | "change" | "submit";
 

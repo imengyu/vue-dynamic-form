@@ -1,16 +1,16 @@
 <script lang="ts">
-import { defineComponent, provide, toRefs, ref, h, PropType, onMounted, watch, toRef, computed } from 'vue';
+import { defineComponent, provide, toRefs, ref, h, type PropType, onMounted, watch, toRef, computed } from 'vue';
 import DynamicFormRoot from './DynamicFormRoot.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
 import { 
-  defaultDynamicFormOptions, IDynamicFormOptions, MESSAGE_RELOAD, 
-  IDynamicFormMessageCenter, IDynamicFormMessageCenterCallback, 
-  IDynamicFormObject,
-  IDynamicFormItem,
-  IDynamicFormRef
+  defaultDynamicFormOptions, type IDynamicFormOptions, MESSAGE_RELOAD, 
+  type IDynamicFormMessageCenter, type IDynamicFormMessageCenterCallback, 
+  type IDynamicFormObject,
+  type IDynamicFormItem,
+  type IDynamicFormRef
 } from './DynamicForm';
-import { Rule } from 'async-validator';
-import { ColProps } from 'DynamicFormBasicControls';
+import type { Rule } from 'async-validator';
+import type { ColProps } from './DynamicFormBasicControls';
 
 /**
  * 动态表单组件。

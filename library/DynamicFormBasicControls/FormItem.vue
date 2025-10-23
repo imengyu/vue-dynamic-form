@@ -39,9 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onBeforeUnmount, provide, ref, computed, StyleValue, toRef } from 'vue';
-import { FormContext, FormItemContextContextKey, FormItemInternalContext, ValidTrigger } from './FormContext';
-import Col, { ColProps } from './Layout/Col.vue';
+import { inject, onBeforeUnmount, provide, ref, computed, type StyleValue, toRef } from 'vue';
+import { type FormContext, FormItemContextContextKey, type FormItemInternalContext, type ValidTrigger } from './FormContext';
+import Col, { type ColProps } from './Layout/Col.vue';
 import Row from './Layout/Row.vue';
 
 // Props 定义

@@ -1,6 +1,6 @@
 <script lang="ts">
-import { PropType, Ref, defineComponent, h, inject, onBeforeUnmount, onMounted, ref } from 'vue';
-import { IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, MESSAGE_TAB_PREV, type IDynamicFormItem, type IDynamicFormOptions, type IDynamicFormTabProps } from '../DynamicForm';
+import { type PropType, type Ref, defineComponent, h, inject, onBeforeUnmount, onMounted, ref } from 'vue';
+import { type IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, MESSAGE_TAB_PREV, type IDynamicFormItem, type IDynamicFormOptions, type IDynamicFormTabProps } from '../DynamicForm';
 import Tab from '../DynamicFormBasicControls/Tabs/Tab.vue';
 
 export default defineComponent({

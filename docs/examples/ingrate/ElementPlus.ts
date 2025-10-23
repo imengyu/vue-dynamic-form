@@ -4,7 +4,7 @@ import {
   ElFormItem, ElImage, ElInput, ElInputNumber, 
   ElRate, ElSwitch, ElTimePicker
 } from "element-plus";
-import { DynamicFormItemRegistry, IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
+import { DynamicFormItemRegistry, type IDynamicFormOptions, configDefaultDynamicFormOptions } from "@imengyu/vue-dynamic-form";
 
 export const defaultConfig = {
   internalWidgets: {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { PropType, defineComponent } from 'vue';
+import { type PropType, defineComponent } from 'vue';
 import type { IDynamicFormItem, FormCustomLayoutProps } from '../DynamicForm';
 
 export default defineComponent({

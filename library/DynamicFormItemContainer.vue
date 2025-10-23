@@ -309,16 +309,16 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, PropType, Ref, toRefs, computed, provide } from 'vue';
-import { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef, IEvaluateCallback } from './DynamicForm';
-import { Rules } from 'async-validator';
-import DynamicFormItemNormal, { FormCeilProps } from './DynamicFormItemNormal.vue';
+import { inject, type PropType, type Ref, toRefs, computed, provide } from 'vue';
+import type { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef, IEvaluateCallback } from './DynamicForm';
+import type { Rules } from 'async-validator';
+import DynamicFormItemNormal, { type FormCeilProps } from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
 import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
 import DynamicFormTab from './DynamicFormTab/DynamicFormTab.vue';
 import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
 import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
-import Col, { ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
+import Col, { type ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
 import Row from './DynamicFormBasicControls/Layout/Row.vue';
 import DynamicFormCheckEmpty from './DynamicFormCheckEmpty.vue';
 
