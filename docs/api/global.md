@@ -35,6 +35,15 @@ title: API 参考 - 全局函数
 |--|--|--|--|
 |type|是|string|唯一类型名称|
 
+### DynamicFormItemRegistry.configItemAdditionalProps(type: string, additionalProps: Record<string, unknown>)
+
+配置已注册的表单组件的附加属性
+
+|参数|必填|类型|说明|
+|--|--|--|--|
+|type|是|string|唯一类型名称|
+|additionalProps|是|`Record<string, unknown>`|组件的附加属性，将会设置到渲染函数上|
+
 ### DynamicFormItemRegistry.findDynamicFormItemByType(type)
 
 查找已注册的表单组件，如果未找到，则返回 null

@@ -25,6 +25,20 @@ export const DynamicFormItemRegistry = {
     return DynamicFormItemRegistryData.get(type) || null;
   },
   /**
+   * 配置已注册的表单组件的附加属性
+   * @param type 唯一类型名称
+   * @param additionalProps 组件的附加属性，将会设置到渲染函数上
+   */
+  configItemAdditionalProps(type: string, additionalProps: Record<string, unknown>) {
+    const item = DynamicFormItemRegistryData.get(type);
+    if (!item) {
+      console.warn('[DynamicFormItemRegistry] Can not config additional props for nonexistent type ' + type + ' .');
+      return this;
+    }
+    item.additionalProps = { ...item.additionalProps, ...additionalProps };
+    return this;
+  },
+  /**
    * 注册自定义表单控件
    * @param type 唯一类型名称
    * @param componentInstance 组件类
