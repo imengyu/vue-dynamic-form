@@ -22,7 +22,7 @@ export default defineConfig({
     nav: [
       { text: '教程', link: '/guide/about' },
       { text: 'API 参考', link: '/api/global' },
-      { text: '更新日志', link: 'https://github.com/imengyu/vue-dynamic-form/CHANGELOG.md' }
+      { text: '更新日志', link: 'https://github.com/imengyu/vue-dynamic-form/blob/master/CHANGELOG.md' }
     ],
     sidebar: {
       '/guide/': [
