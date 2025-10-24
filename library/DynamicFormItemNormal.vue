@@ -191,7 +191,7 @@ export default defineComponent({
         } catch (error) {
           return h(Alert, {
             type: 'error',
-            message: 'ynamicForm render error: ' + (error instanceof Error ? error.message : 'Unknown Error'),
+            message: 'DynamicForm render error: ' + (error instanceof Error ? error.message : 'Unknown Error'),
             extraMessage: `At Form ${formName}:${item.value.name}`,
           });
         }
