@@ -43,7 +43,7 @@ title: API 参考 - IDynamicFormOptions
 | name | 当前表单项名称。 | `string` | 是 |
 | label | [联动回调] 当前表单说明文字。支持动态回调。 | `string` or `IDynamicFormItemCallback<string>` | — |
 | defaultValue | 默认值。如果表单条目接收到 undefined 或 null ，则使用默认值。可以使用一个工厂函数返回对象。需要在顶层调用 `formRef.value.initDefaultValuesToModel` 方法初始化默认值至模型中才可生效。| `unknown` | — |
-| suppressEmptyError | 是否屏蔽当前子条目的空错误。默认否 | `boolean` | - |
+| suppressEmptyError | 是否屏蔽当前子条目的空错误，为空时使用 defaultValue 作为值，注意：仅作为兜底使用。默认否 | `boolean` | - |
 | children | 子条目。仅在 'object','array-single','array-object','group-object' 或者其他容器条目中有效。 | `IDynamicFormItem[]` | — |
 | newChildrenObject | 当子对象为数组时，可设置这个自定义回调。用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。 | `(arrayNow: unknown[]) => unknown` | — |
 | deleteChildrenCallback | 当子对象为数组时，可设置这个自定义回调。删除按钮回调，可选，不提供时默认操作为将 item 从 array 中移除。 | `(arrayNow: unknown[], deleteObject: unknown) => unknown` | — |
@@ -92,6 +92,33 @@ title: API 参考 - IDynamicFormOptions
     propsMap: {
       name?: string,
       label?: string,
+    },
+  },
+  Tab?: {
+    /**
+     * 组件实例
+     */
+    component: unknown,
+    /**
+     * 属性的名称修改
+     */
+    propsMap: {
+      activeKey?: string,
+      defaultActiveKey?: string,
+    },
+  },
+  TabPage?: {
+    /**
+     * 组件实例
+     */
+    component: unknown,
+    /**
+     * 属性的名称修改
+     */
+    propsMap: {
+      key?: string,
+      title?: string,
+      disabled?: string,
     },
   },
 }
