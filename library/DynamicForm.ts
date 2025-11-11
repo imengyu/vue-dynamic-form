@@ -2,7 +2,7 @@ import type { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
 import type { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import type { Rule } from 'async-validator';
 import { Form, FormItem, type RowProps } from "./DynamicFormBasicControls";
-import { type Slot, type VNode, h, markRaw } from "vue";
+import { type Ref, type Slot, type VNode, h, markRaw } from "vue";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -24,6 +24,10 @@ export type IDynamicFormItemCallback<T> = {
      * 当前表单条目
      */
     item: IDynamicFormItem, 
+    /**
+     * 当前表单条目的父级，为空时表示当前条目为根级别。
+     */
+    parent?: IDynamicFormItem,
     /**
      * 当前表单组件实例
      */

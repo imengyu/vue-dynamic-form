@@ -1,16 +1,25 @@
 
 <template>
   <Col 
-    v-if="evaluateCallback(item.hidden) !== true"
+    v-if="editmode || evaluateCallback(item.hidden) !== true"
     :class="[
       'dynamic-form-item-wrapper',
       finalOptions?.nestObjectMargin !== false && item.nestObjectMargin !== false ? 'nest-with-margin' : '',
+      editmode && evaluateCallback(item.hidden) === true ? 'editor-hidden' : ''
     ]"
+    :data-dynamic-form-item="item.name"
+    :data-dynamic-form-item-type="item.type"
     v-bind="{
       ...colProps,
       ...(item.colProps as {})
     }"
   >
+    <!--编辑器-->
+    <DynamicFormItemEditor
+      v-if="editmode"
+      :item="item"
+      :parent="parent"
+    />
     <!--对象组-->
     <DynamicFormCheckEmpty 
       v-if="item.type === 'object'" 
@@ -24,6 +33,7 @@
       <DynamicFormItemNormal 
         v-if="item.label"
         :item="item"
+        :parent="parent"
         :name="''"
         :rawModel="rawModel"
         :model="null"
@@ -42,6 +52,7 @@
         :name="name+'.'+child.name"
         :rawModel="rawModel"
         :model="(finalModel as IDynamicFormObject)[child.name]"
+        :parent="item"
         :parentModel="finalModel"
         :parentName="name"
         @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
@@ -68,6 +79,7 @@
             :name="name+'.'+child.name"
             :rawModel="rawModel"
             :model="((finalModel as IDynamicFormObject)[child.name] as IDynamicFormObject)"
+            :parent="item"
             :parentModel="finalModel"
             :parentName="name"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
@@ -88,6 +100,7 @@
           :name="parentName ? `${parentName}.${child.name}` : child.name"
           :rawModel="rawModel"
           :model="((parentModel as IDynamicFormObject)[child.name])"
+          :parent="item"
           :parentModel="parentModel"
           :parentName="parentName"
           @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
@@ -110,6 +123,7 @@
         :name="parentName ? `${parentName}.${child.name}` : child.name"
         :rawModel="rawModel"
         :model="((parentModel as IDynamicFormObject)[child.name])"
+        :parent="item"
         :parentModel="parentModel"
         :parentName="parentName"
         @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
@@ -143,6 +157,7 @@
             :name="parentName ? `${parentName}.${formRow.name}` : formRow.name"
             :rawModel="rawModel"
             :model="((parentModel as IDynamicFormObject)[formRow.name])"
+            :parent="child"
             :parentModel="parentModel"
             :parentName="parentName"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
@@ -158,6 +173,7 @@
     <!--扁平普通-->
     <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
       :item="item"
+      :parent="parent"
       :name="name"
       :disabled="disabled || evaluateCallback(item.disabled)"
       :model="(finalModel as IDynamicFormObject)"
@@ -176,6 +192,7 @@
             :name="parentName ? `${parentName}.${child.name}` : child.name"
             :rawModel="rawModel"
             :model="((parentModel as IDynamicFormObject)[child.name])"
+            :parent="item"
             :parentModel="parentModel"
             :parentName="parentName"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
@@ -204,12 +221,14 @@
         :model="(finalModel as IDynamicFormObject)"
         :rawModel="rawModel"
         :parentModel="parentModel"
+        :parent="parent"
         :parentName="name"
       >
         <template #insertion>
           <FormArrayGroup
             :model="(finalModel as unknown as unknown[])"
             :item="item"
+            :parent="parent"
             :name="name"
             :rawModel="rawModel"
             :isObject="false"
@@ -223,12 +242,13 @@
             <template #itemButton="props">
               <slot name="arrayButtons" v-bind="props" />
             </template>
-            <template #child="{ item, kname, model: child, onUpdateValue }">
+            <template #child="{ item, pitem, kname, model: child, onUpdateValue }">
               <DynamicFormItemContainer
                 :item="item"
                 :name="kname"
                 :rawModel="rawModel"
                 :model="child"
+                :parent="pitem"
                 :parentModel="model"
                 :parentName="name"
                 :disabled="disabled || evaluateCallback(item.disabled)"
@@ -250,6 +270,7 @@
     >
       <DynamicFormItemNormal  
         :item="item"
+        :parent="parent"
         :name="name"
         :disabled="disabled || evaluateCallback(item.disabled)"
         :model="finalModel"
@@ -261,6 +282,7 @@
           <FormArrayGroup
             :model="(finalModel as unknown as unknown[])"
             :item="item"
+            :parent="parent"
             :name="name"
             :rawModel="rawModel"
             :isObject="true"
@@ -274,12 +296,13 @@
             <template #itemButton="props">
               <slot name="arrayButtons" v-bind="props" />
             </template>
-            <template #child="{ item, kname, model: child, onUpdateValue }">
+            <template #child="{ item, pitem, kname, model: child, onUpdateValue }">
               <DynamicFormItemContainer
                 :item="item"
                 :name="kname"
                 :rawModel="rawModel"
                 :model="child"
+                :parent="pitem"
                 :parentModel="model"
                 :parentName="name"
                 :disabled="disabled || evaluateCallback(item.disabled)"
@@ -294,6 +317,7 @@
     <DynamicFormItemNormal
       v-else
       :item="item"
+      :parent="parent"
       :name="name"
       :disabled="disabled || evaluateCallback(item.disabled)"
       :rawModel="rawModel"
@@ -321,6 +345,7 @@ import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
 import Col, { type ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
 import Row from './DynamicFormBasicControls/Layout/Row.vue';
 import DynamicFormCheckEmpty from './DynamicFormCheckEmpty.vue';
+import DynamicFormItemEditor from './DynamicFormItemEditor.vue';
 
 /**
  * 动态表单条目包装组件，处理基础类型分支、数据传入、回调处理、事件传递。
@@ -341,6 +366,10 @@ const props = defineProps({
   },
   model: {
     type: null
+  },
+  parent: {
+    type: Object as PropType<IDynamicFormItem>,
+    default: null,
   },
   parentModel: {
     type: null
@@ -376,6 +405,8 @@ const propsP = toRefs(props);
 const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions'); 
 const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
 const formRef = inject<IDynamicFormRef>('formRef');
+const editmode = inject('editmode', false);
+
 
 //处理默认值
 const finalModel = computed(() => {
@@ -409,3 +440,13 @@ function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
 
 provide<IEvaluateCallback>('evaluateCallback', evaluateCallback);
 </script>
+
+<style lang="scss">
+.dynamic-form-item-wrapper {
+  position: relative;
+
+  &.editor-hidden {
+    opacity: 0.4;
+  }
+}
+</style>

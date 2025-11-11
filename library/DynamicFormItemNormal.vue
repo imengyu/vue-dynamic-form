@@ -11,6 +11,7 @@ export interface FormCeilProps extends IDynamicFormItem {
   ref: Ref<DynamicFormItemRendererInterface | undefined>,
   value: unknown,
   rawModel: unknown,
+  parent?: IDynamicFormItem,
   parentModel: unknown,
   'onUpdate:value': (v: unknown) => void,
   item: IDynamicFormItem,
@@ -31,6 +32,10 @@ export default defineComponent({
     },
     name: {
       type: String
+    },
+    parent: {
+      type: Object as PropType<IDynamicFormItem>,
+      default: null
     },
     disabled: {
       type: Boolean,
@@ -62,7 +67,7 @@ export default defineComponent({
   emits: [ 'update:model' ],
   setup(props, ctx) {
     const {
-       model, rawModel, parentModel, 
+       model, rawModel, parentModel, parent,
        name, item, disabled, noLabel,
        formWrapperColDefault, formLabelColDefault
     } = toRefs(props);
@@ -86,6 +91,7 @@ export default defineComponent({
           parentModel.value, 
           {
             item: item.value, 
+            parent: parent.value,
             form: formRef!,
             formGlobalParams: globalParams?.value || {},
             formRules: (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
@@ -127,6 +133,7 @@ export default defineComponent({
           onModelUpdate: (v: unknown) => onModelUpdate(v),
           rawModel: rawModel.value,
           parentModel: parentModel.value,
+          parent: parent.value,
           rule: formRules ? formRules[item.value.name] : undefined,
           rules: item.value.rules,
           disabled: disabled.value,
@@ -152,6 +159,7 @@ export default defineComponent({
           ref: currentFormItem,
           value: model.value,
           rawModel: rawModel.value,
+          parent: parent.value,
           parentModel: parentModel.value,
           'onUpdate:value': (v: unknown) => onModelUpdate(v),
           item: item.value,

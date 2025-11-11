@@ -7,10 +7,11 @@ import {
   type IDynamicFormMessageCenter, type IDynamicFormMessageCenterCallback, 
   type IDynamicFormObject,
   type IDynamicFormItem,
-  type IDynamicFormRef
+  type IDynamicFormRef,
 } from './DynamicForm';
 import type { Rule } from 'async-validator';
 import type { ColProps } from './DynamicFormBasicControls';
+import type { IDynamicFormEditorContext } from 'DynamicFormItemEditor';
 
 /**
  * 动态表单组件。
@@ -49,6 +50,13 @@ export default defineComponent({
       type: Object as PropType<IDynamicFormObject>,
       default: null
     },
+    /**
+     * 编辑模式。用于在编辑模式下，表单控件会显示为可编辑状态。
+     */
+    editorContext: {
+      type: Object as PropType<IDynamicFormEditorContext>,
+      default: null
+    },
   },
   emits: [ 
     /**
@@ -78,6 +86,8 @@ export default defineComponent({
     provide('rawModel', model);
     provide('globalParams', toRef(props, 'globalParams'));
     provide('finalOptions', finalOptions);
+    provide('editmode', props.editorContext !== null);
+    provide('editorContext', props.editorContext);
 
     const formEditor = ref();
     const widgetsRefMap = ref<Record<string,() => unknown>>({});

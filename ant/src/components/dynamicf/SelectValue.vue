@@ -5,8 +5,12 @@
     :disabled="disabled"
     v-bind="customProps"
   >
-    <a-select-option v-for="it in options" :key="it.text" :value="it.text">
-      {{it.text}}
+    <a-select-option 
+    v-for="it in options" 
+    :key="it.value" 
+    :value="it.value"
+    >
+      it.label{{ it.label }}
     </a-select-option>
   </a-select>
 </template>
@@ -55,9 +59,9 @@ const emits = defineEmits([
 const selectValue = ref<string|null>('');
 
 function setSelectValue() {
-  selectValue.value = props.options.find(k => (k.value === props.value))?.text || null;
+  selectValue.value = props.options.find(k => (k.value === props.value))?.label || null;
   if (selectValue.value === null)
-    selectValue.value = props.options.find(k => (typeof k.value === typeof props.value))?.text || null;
+    selectValue.value = props.options.find(k => (typeof k.value === typeof props.value))?.label || null;
 }
 
 watch(() => props.value, () => {
@@ -68,7 +72,7 @@ onMounted(() => {
 });
 
 function onUpdateValue(v : unknown) {
-  emits('update:value', props.options.find(k => k.text === v)?.value);
+  emits('update:value', props.options.find(k => k.label === v)?.value);
 }
 
 </script>

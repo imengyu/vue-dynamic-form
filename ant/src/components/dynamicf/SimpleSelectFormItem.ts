@@ -2,7 +2,7 @@ import type { SelectProps } from "ant-design-vue";
 import type { VNode } from 'vue';
 
 export interface IDynamicFormItemSelectOption {
-  text: string,
+  label: string,
   value: string|number,
   badgeState?: 'success'|'error'|'default'|'processing'|'warning',
   badgeColor?: string,

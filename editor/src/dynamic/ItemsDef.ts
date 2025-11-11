@@ -1,4 +1,5 @@
 import type { IDynamicFormItem } from "@imengyu/vue-dynamic-form"
+import type { SimpleRadioValueFormItemProps, SimpleSelectValueFormItemProps } from "@imengyu/vue-dynamic-form-ant";
 
 export interface FormItemDef {
   label: string,
@@ -17,7 +18,71 @@ export interface FormItemDef {
   extraTag?: string,
 }
 
-export const FormCommonConfig : IDynamicFormItem[] = [
+export const FormConfig : IDynamicFormItem[] = [
+  {
+    label: '表单标题',
+    name: 'name',
+    type: 'text',
+    additionalProps: {
+      placeholder: '请输入表单标题',
+    },
+  },
+  {
+    label: '是否显示冒号',
+    name: 'colon',
+    type: 'switch',
+    additionalProps: {},
+  },
+  {
+    label: '布局',
+    name: 'layout',
+    type: 'select',
+    additionalProps: {
+      options: [
+        {
+          label: '垂直布局',
+          value: 'vertical',
+        },
+        {
+          label: '水平布局',
+          value: 'horizontal',
+        },
+      ],
+      value: 'vertical',
+      customProps: {},
+    } as SimpleSelectValueFormItemProps,
+  },
+  {
+    label: '标签位置',
+    name: 'labelAlign',
+    type: 'radio-value',
+    additionalProps: {
+      options: [
+        {
+          label: '左侧',
+          value: 'left',
+        },
+        {
+          label: '居中',
+          value: 'center',
+        },
+        {
+          label: '右侧',
+          value: 'right',
+        },
+      ],
+    } as SimpleRadioValueFormItemProps,
+  },
+  {
+    label: '标签宽度',
+    name: 'labelWidth',
+    type: 'number',
+    additionalProps: {
+      placeholder: '请输入标签宽度',
+    },
+  }
+]
+export const FormItemCommonConfig : IDynamicFormItem[] = [
   {
     label: '标签',
     name: 'label',
@@ -378,3 +443,5 @@ export const FormItems : {
     ],
   }
 ];
+
+export const FormItemsMap = new Map(FormItems.flatMap(group => group.items.map(item => [item.name, item])));

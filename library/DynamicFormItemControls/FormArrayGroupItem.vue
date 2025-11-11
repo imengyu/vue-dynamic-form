@@ -16,6 +16,7 @@
     <slot 
       name="child"
       :item="item.children?.[0]"
+      :pitem="parent"
       :kname="name+keyName"
       :model="childData"
       :onUpdateValue="(v: any) => $emit('update:childData', v)"
@@ -69,6 +70,10 @@ defineProps({
   item: {
     type: Object as PropType<IDynamicFormItem>,
     required: true,
+  },
+  parent: {
+    type: Object as PropType<IDynamicFormItem>,
+    default: null
   },
   showAddButton: {
     type: Boolean,

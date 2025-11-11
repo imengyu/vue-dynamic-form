@@ -14,7 +14,7 @@ const app = createApp(App)
 
 app.use(Antd)
 app.use(DynamicForm as Plugin)
-app.use(VueScrollRect)
+app.use(VueScrollRect as Plugin)
 app.use(VueDynamicFormAnt as Plugin, {})
 
 app.mount('#app')

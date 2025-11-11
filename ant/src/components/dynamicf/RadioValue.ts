@@ -1,7 +1,7 @@
 import type { RadioGroupProps, RadioProps } from "ant-design-vue";
 
 export interface IDynamicFormItemRadioValueOption {
-  text: string,
+  label: string,
   value: unknown,
 }
 
@@ -9,7 +9,7 @@ export interface SimpleRadioValueFormItemProps {
   /**
    * 是否禁用
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * 选项数据
    */
@@ -17,13 +17,13 @@ export interface SimpleRadioValueFormItemProps {
   /**
    * 选择值
    */
-  value: unknown;
+  value?: unknown;
   /**
    * a-radio 其他自定义参数
    */
-  customProps: RadioProps;
+  customProps?: RadioProps;
   /**
    * a-radio 其他自定义参数
    */
-  customGroupProps: RadioGroupProps;
+  customGroupProps?: RadioGroupProps;
 }

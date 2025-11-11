@@ -11,6 +11,7 @@
         >
           <FormArrayGroupItem 
             :item="item"
+            :parent="parent"
             :name="name"
             :childData="childData"
             :keyName="`[${key}]`"
@@ -39,6 +40,7 @@
         >
           <FormArrayGroupItem 
             :item="item"
+            :parent="parent"
             :name="name"
             :isObject="false"
             :childData="childData"
@@ -82,6 +84,7 @@ import IconAdd from "../Images/IconAdd.vue";
 export interface FormArrayGroupProps {
   model: unknown[];
   item: IDynamicFormItem;
+  parent?: IDynamicFormItem;
   name: string;
   isObject?: boolean;
   direction?: 'vertical' | 'horizontal',

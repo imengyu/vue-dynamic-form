@@ -36,7 +36,10 @@ import { ScrollRect } from '@imengyu/vue-scroll-rect';
 const activeKey = ref(new Array(FormItems.length).fill('').map((_, index) => index.toString()))
 
 const handleDragStart = (e: DragEvent, item: FormItemDef) => {
-  e.dataTransfer?.setData('text/plain', JSON.stringify(item));
+  e.dataTransfer?.setData('text/plain', JSON.stringify({
+    type: 'FormItemDef',
+    data: item
+  }));
 }
 
 </script>

@@ -9,9 +9,9 @@
       <VNodeRenderer :render="(renderOption as any)" :data="data" />
     </template>
     <a-select-option v-for="it in options" :key="it.value" v-bind="it">
-      <a-badge v-if="it.badgeColor" :color="it.badgeColor" :text="it.text" />
-      <a-badge v-else-if="it.badgeState" :status="it.badgeState" :text="it.text" />
-      <span v-else>{{it.text}}</span>
+      <a-badge v-if="it.badgeColor" :color="it.badgeColor" :text="it.label" />
+      <a-badge v-else-if="it.badgeState" :status="it.badgeState" :text="it.label" />
+      <span v-else>{{it.label}}</span>
     </a-select-option>
   </a-select>
 </template>

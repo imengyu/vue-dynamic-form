@@ -1,17 +1,17 @@
 <template>
   <a-radio-group 
-    :value="selectValue"
-    @update:value="onUpdateValue"
+    :value="value"
+    @update:value="emit('update:value', $event)"
     :disabled="disabled"
     v-bind="customGroupProps"
   >
     <a-radio 
       v-for="it in options"
-      :key="it.text"
-      :value="it.text"
+      :key="it.value"
+      :value="it.value"
       v-bind="customProps"
     >
-      {{it.text}}
+      {{it.label}}
     </a-radio>
   </a-radio-group>
 </template>
@@ -51,27 +51,8 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits([
+const emit = defineEmits([
   'update:value',
 ]);
-
-const selectValue = ref<string|null>('');
-
-function setRadioValue() {
-  selectValue.value = props.options.find(k => (k.value === props.value))?.text || null;
-  if (selectValue.value === null)
-    selectValue.value = props.options.find(k => (typeof k.value === typeof props.value))?.text || null;
-}
-
-watch(() => props.value, () => {
-  setRadioValue();
-});
-onMounted(() => {
-  setRadioValue();
-});
-
-function onUpdateValue(v : unknown) {
-  emits('update:value', props.options.find(k => k.text === v)?.value);
-}
 
 </script>
