@@ -1,0 +1,54 @@
+{
+  "name": "@imengyu/vue-dynamic-form-ant",
+  "version": "0.0.1",
+  "main": "lib/vue-dynamic-form-ant.umd.js",
+  "module": "lib/vue-dynamic-form-ant.es.js",
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "files": [
+    "lib",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "dev": "vite serve examples",
+    "build-demo": "vite build examples",
+    "build-lib": "vite build",
+    "docs:dev": "cd docs && vitepress dev",
+    "docs:build": "vitepress build ./docs"
+  },
+  "author": "imengyu",
+  "license": "MIT",
+  "dependencies": {
+    "@imengyu/imengyu-utils": "^0.0.16",
+    "@imengyu/vue-dynamic-form": "^0.1.2",
+    "@imengyu/vue-scroll-rect": "^0.1.7",
+    "@tinymce/tinymce-vue": "^6.3.0",
+    "@vuemap/vue-amap": "^2.1.17",
+    "ant-design-vue": "^4.2.6",
+    "tinymce": "^8.1.2",
+    "vue": "^3.5.22",
+    "vue-esign": "^1.1.4",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.18.6",
+    "@types/nprogress": "^0.2.3",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vitejs/plugin-vue-jsx": "^5.1.1",
+    "@vue/tsconfig": "^0.8.1",
+    "npm-run-all2": "^8.0.4",
+    "sass-embedded": "^1.93.2",
+    "typescript": "~5.9.0",
+    "vite": "^7.1.7",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-vue-devtools": "^8.0.2",
+    "vue-tsc": "^3.1.0"
+  }
+}
