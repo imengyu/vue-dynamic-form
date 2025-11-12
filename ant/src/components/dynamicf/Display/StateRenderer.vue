@@ -10,28 +10,24 @@
   </span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { IDynamicFormItemSelectOption } from "@imengyu/vue-dynamic-form";
-import { defineComponent, type PropType } from "vue";
+import { computed, type PropType } from "vue";
 
 export interface IStateOption extends IDynamicFormItemSelectOption {
   badgeState?: 'success' | 'processing' | 'error' | 'default' | 'warning';
   badgeColor?: string;
 }
 
-export default defineComponent({
-  props: {
-    value: {
-    },
-    stateValues: {
-      type: Object as PropType<Array<IStateOption>>,
-    },
+const props = defineProps({
+  value: {
   },
-  computed: {
-    currentState() {
-      return (this.stateValues as IStateOption[])
-        .find(k => k.value === this.value || k.text === this.value);
-    },
+  stateValues: {
+    type: Object as PropType<Array<IStateOption>>,
   },
+})
+const currentState = computed(() => {
+  return (props.stateValues as IStateOption[])
+    .find(k => k.value === props.value || k.text === props.value);
 });
 </script>

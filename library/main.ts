@@ -2,7 +2,7 @@ export * from './DynamicForm'
 export * from './DynamicFormBasicControls'
 export * from './DynamicFormItemControls'
 export * from './DynamicFormItemRenderer/DynamicFormItemRegistry'
-export * from './DynamicFormItemEditor'
+export * from './DynamicFormItemEditor/DynamicFormItemEditor'
 import type { App, Plugin } from 'vue'
 import DynamicForm from './DynamicForm.vue'
 

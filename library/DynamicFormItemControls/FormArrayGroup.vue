@@ -80,6 +80,7 @@ import type { IDynamicFormItem } from "../DynamicForm";
 import type { IDynamicFormObject } from "../DynamicForm";
 import FormArrayGroupItem from "./FormArrayGroupItem.vue";
 import IconAdd from "../Images/IconAdd.vue";
+import { computed } from "vue";
 
 export interface FormArrayGroupProps {
   model: unknown[];

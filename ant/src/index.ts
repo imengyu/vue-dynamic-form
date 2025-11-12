@@ -20,21 +20,28 @@ import {
 } from './components/dynamicf/index';
 import type { App, Plugin } from 'vue';
 import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap';
-import EditorWrapper from './components/dynamicf/Editor/EditorWrapper.vue';
-export * from './components/dynamicf/Dropdown/IdAsValueDropdown';
-export * from './components/dynamicf/Dropdown/IdAsValueTreeDropdown.vue';
+import RichText from './components/dynamicf/Editor/RichText.vue';
+export * from './components/dynamicf/Display/ShowImageList.vue';
+export * from './components/dynamicf/Display/ShowDateOrNull.vue';
+export * from './components/dynamicf/Display/ShowImageOrNull.vue';
+export * from './components/dynamicf/Display/ShowTagList.vue';
+export * from './components/dynamicf/Display/ShowValueOrNull.vue';
+export * from './components/dynamicf/Display/StateRenderer.vue';
+export * from './components/dynamicf/Dropdown/SelectId';
+export * from './components/dynamicf/Dropdown/SelectTreeId.vue';
 export * from './components/dynamicf/Map/AddressSercher.vue';
 export * from './components/dynamicf/Display/StateRenderer.vue';
+export * from './components/dynamicf/PasswordWithStrengthInput.vue';
 export * from './components/dynamicf/ActionRender';
 export * from './components/dynamicf/CascaderFormItem';
 export * from './components/dynamicf/CheckBoxValue';
+export * from './components/dynamicf/CheckBoxToInt.vue';
 export * from './components/dynamicf/IdAsValueTree';
 export * from './components/dynamicf/RadioValue';
+export * from './components/dynamicf/RadioId';
 export * from './components/dynamicf/SelectValue';
 export * from './components/dynamicf/Sign.vue';
-export * from './components/dynamicf/SimpleListDynamicForm.vue';
-export * from './components/dynamicf/SimpleSelectFormItem';
-export * from './components/dynamicf/UploadImageFormItem';
+export * from './components/dynamicf/UploaderFormItem';
 export * from './components/dynamicf/WhiteSpace';
 export * from './components/dynamicf/CheckBoxValue';
 export * from './components/dynamicf/CheckBoxList.vue';
@@ -48,7 +55,7 @@ export {
   ShowInList,
   ShowImageOrNull,
   ShowTagList,
-  EditorWrapper,
+  RichText,
 }
 
 const plugin : Plugin = {

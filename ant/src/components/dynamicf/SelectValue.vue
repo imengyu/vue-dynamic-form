@@ -1,7 +1,7 @@
 <template>
   <a-select
-    :value="selectValue"
-    @update:value="onUpdateValue"
+    :value="value"
+    @update:value="emits('update:value', $event)"
     :disabled="disabled"
     v-bind="customProps"
   >
@@ -10,7 +10,7 @@
     :key="it.value" 
     :value="it.value"
     >
-      it.label{{ it.label }}
+      {{ it.label }}
     </a-select-option>
   </a-select>
 </template>
@@ -19,9 +19,9 @@
 /**
  * 下拉框表单控件，用于解决 a-select 不能选择对象的问题
  */
-import type { SelectProps } from 'ant-design-vue/lib/vc-select';
-import { type PropType, ref, watch, onMounted } from 'vue';
-import type { IDynamicFormItemSelectValueOption } from './SelectValue';
+import type { SelectProps } from 'ant-design-vue';
+import type { PropType } from 'vue';
+import type { SelectValueOption } from './SelectValue';
 
 const props = defineProps({
   /**
@@ -35,7 +35,7 @@ const props = defineProps({
    * 选项数据
    */
   options: {
-    type: Object as PropType<IDynamicFormItemSelectValueOption[]>,
+    type: Object as PropType<SelectValueOption[]>,
     default: null,
   },
   /**
@@ -55,24 +55,5 @@ const props = defineProps({
 const emits = defineEmits([
   'update:value',
 ]);
-
-const selectValue = ref<string|null>('');
-
-function setSelectValue() {
-  selectValue.value = props.options.find(k => (k.value === props.value))?.label || null;
-  if (selectValue.value === null)
-    selectValue.value = props.options.find(k => (typeof k.value === typeof props.value))?.label || null;
-}
-
-watch(() => props.value, () => {
-  setSelectValue();
-});
-onMounted(() => {
-  setSelectValue();
-});
-
-function onUpdateValue(v : unknown) {
-  emits('update:value', props.options.find(k => k.label === v)?.value);
-}
 
 </script>

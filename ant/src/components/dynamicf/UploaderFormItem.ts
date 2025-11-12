@@ -1,7 +1,7 @@
 import { StringUtils } from "@imengyu/imengyu-utils";
 import { message, type UploadProps } from "ant-design-vue";
 
-export interface UploadImageFormItemProps {
+export interface UploaderFormItemProps {
   /**
    * 是否禁用
    */

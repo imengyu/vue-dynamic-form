@@ -6,7 +6,7 @@
     v-bind="customGroupProps"
   >
     <a-radio 
-      v-for="it in options"
+      v-for="it in loader.data.value"
       :key="it.value"
       :value="it.value"
       v-bind="customProps"
@@ -20,11 +20,14 @@
 /**
  * 下拉框表单控件，用于解决 a-select 不能选择对象的问题
  */
-import type { RadioValueFormItemProps } from './RadioValue';
+import { useDataLoader } from '../../common/DataLoader';
+import type { RadioIdFormItemProps, RadioIdOption } from './RadioId';
 
-const props = defineProps<RadioValueFormItemProps>();
+const props = defineProps<RadioIdFormItemProps>();
 const emit = defineEmits([
   'update:value',
 ]);
-
+const loader = useDataLoader<RadioIdOption[]>(async () => await props.loadData?.() || [], {
+  immediate: true,
+});
 </script>

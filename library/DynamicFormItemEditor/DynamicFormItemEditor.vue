@@ -3,7 +3,7 @@
   <div 
     :class="[
       'dynamic-form-item-editor',
-      editorContext?.currentFocusItem?.value === item ? 'active' : '',
+      editorContext?.currentFocusItem?.value.includes(item) ? 'active' : '',
       isDragOver ? 'drag-over' : ''
     ]"
     :draggable="canDrag"
@@ -54,13 +54,19 @@
       v-if="showTopIndicator" 
       class="drop-indicator top"
     >
-      <span>放置在这里</span>
+      <span>放置在上部</span>
     </div>
     <div 
       v-if="showBottomIndicator" 
       class="drop-indicator bottom"
     >
-      <span>放置在这里</span>
+      <span>放置在下部</span>
+    </div>
+    <div 
+      v-if="showCenterIndicator" 
+      class="drop-indicator center"
+    >
+      <span>放置在内部</span>
     </div>
   </div>
 </template>
@@ -68,7 +74,7 @@
 <script setup lang="ts">
 import { inject, ref, computed } from 'vue';
 import { getDropData, getStoragedDropData, storageDropData, type IDynamicFormEditorContext } from './DynamicFormItemEditor';
-import type { IDynamicFormItem } from 'DynamicForm';
+import type { IDynamicFormItem } from '../DynamicForm';
 
 const props = defineProps<{
   item: IDynamicFormItem,
@@ -88,6 +94,9 @@ const showTopIndicator = computed(() => {
 const showBottomIndicator = computed(() => {
   return isDragOver.value && dragPosition.value === 'bottom';
 });
+const showCenterIndicator = computed(() => {
+  return isDragOver.value && dragPosition.value === 'center';
+});
 
 function handleDragOver(event: DragEvent) {
   isDragOver.value = true;
@@ -100,7 +109,7 @@ function handleDragOver(event: DragEvent) {
     else if (y > rect.height * 3 / 4)
       dragPosition.value = 'bottom';
     else
-      dragPosition.value = 'top';
+      dragPosition.value = 'center';
   } else
     dragPosition.value = y < halfHeight ? 'top' : 'bottom';
 }
@@ -115,7 +124,9 @@ function handleDrop(event: DragEvent) {
   let item : {
     dropItem: IDynamicFormItem,
     dropItemParent?: IDynamicFormItem,
+    isNew: boolean,
   };
+
   if (dropData.type === 'FormItemDef') {
     const data = dropData.data as any;
     item = {
@@ -123,12 +134,14 @@ function handleDrop(event: DragEvent) {
         label: data.label,
         name: data.name,
         type: data.name,
-      }
+      },
+      isNew: true,
     }
   } else {
     item = {
       dropItem: getStoragedDropData((dropData.data as any).dropItem) as IDynamicFormItem,
       dropItemParent: getStoragedDropData((dropData.data as any).dropItemParent) as IDynamicFormItem,
+      isNew: false,
     };
   }
 
@@ -142,6 +155,7 @@ function handleDrop(event: DragEvent) {
       item.dropItem,
       item.dropItemParent,
       dragPosition.value,
+      item.isNew,
     );
   }
 }
@@ -180,6 +194,7 @@ function handleDragStart(event: DragEvent) {
   }
 
   &.drag-over {
+    background-color: transparent;
   }
   .drop-indicator {
     position: absolute;
@@ -212,9 +227,9 @@ function handleDragStart(event: DragEvent) {
 
       span {
         top: 2px;
-        background-color: var(--dynamic-form-background-color);
-        color: var(--dynamic-form-text-color);
         border-radius: 6px;
+        padding: 5px;
+        height: 25px;
       }
     }
 

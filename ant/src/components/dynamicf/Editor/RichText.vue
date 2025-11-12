@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h, nextTick, onMounted, ref, watch, type Prop, type PropType } from 'vue';
+import { computed, onMounted, type PropType } from 'vue';
 import { RandomUtils } from '@imengyu/imengyu-utils';
 import Editor from '@tinymce/tinymce-vue'
 import tinymce, { Editor as EditorType, type RawEditorOptions } from 'tinymce/tinymce';

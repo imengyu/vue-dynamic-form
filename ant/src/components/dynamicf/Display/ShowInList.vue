@@ -2,68 +2,60 @@
   <div>{{ result }}</div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import type { KeyValue } from "@imengyu/js-request-transform";
-import { defineComponent, type PropType } from "vue";
+import { ref, watch, onMounted, defineProps, withDefaults } from "vue";
 
-export default defineComponent({
-  name: "ShowInList",
-  data() {
-    return {
-      result: ''
-    }
-  },
-  props: {
-    noMatchText: {
-      type: String,
-      default: '暂无',
-    },
-    useProp: {
-      type: Boolean,
-      default: true,
-    },
-    usePropName: {
-      type: String,
-      default: 'id',
-    },
-    usePropValue: {
-      type: String,
-      default: 'name',
-    },
-    list: {
-      type: Object as PropType<Array<KeyValue>>,
-      default: null,
-    },
-    value: {
-      default: null,
-    }
-  },
-  mounted: function() {
-    this.loadText();
-  },
-  watch: {
-    list() { this.loadText(); },
-    value() { this.loadText(); }
-  },
-  methods: {
-    loadText() {
-      const list = this.list as Array<KeyValue>;
-      if(list && this.value && list.length > 0){
-        for(let i = 0, c = list.length; i < c; i++){
-          if(this.useProp)
-            if(list[i]![this.usePropName as string] == this.value) {
-              this.result = list[i]![this.usePropValue as string] as string;
-              return;
-            }
-          else
-            if(list[i] == this.value) {
-              this.result = list[i] as unknown as string;
-              return;
-            }
-        }
-        this.result = this.noMatchText as string;
-      }else this.result = this.noMatchText as string;
-    }
-  }
+export interface ShowInListProps {
+  noMatchText?: string;
+  useProp?: boolean;
+  usePropName?: string;
+  usePropValue?: string;
+  list?: Array<KeyValue> | null;
+  value?: any;
+}
+
+const props = withDefaults(defineProps<ShowInListProps>(), {
+  noMatchText: '暂无',
+  useProp: true,
+  usePropName: 'id',
+  usePropValue: 'name',
+  list: null,
+  value: null
 });
+
+const result = ref('');
+
+const loadText = () => {
+  if (props.list && props.value && props.list.length > 0) {
+    for (let i = 0, c = props.list.length; i < c; i++) {
+      if (props.useProp) {
+        if (props.list[i] && props.list[i]?.[props.usePropName] === props.value) {
+          result.value = props.list[i]![props.usePropValue] as string;
+          return;
+        }
+      } else {
+        if (props.list[i] === props.value) {
+          result.value = props.list[i] as unknown as string;
+          return;
+        }
+      }
+    }
+    result.value = props.noMatchText;
+  } else {
+    result.value = props.noMatchText;
+  }
+};
+
+onMounted(() => {
+  loadText();
+});
+
+watch(
+  [() => props.list, () => props.value],
+  () => {
+    loadText();
+  },
+  { deep: true }
+);
 </script>

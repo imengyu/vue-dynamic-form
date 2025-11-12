@@ -7,7 +7,7 @@
       type="password"
       v-bind="(item?.additionalProps as {})"
     />
-    <PasswordStrengthMeter :password="(value as string)" />
+    <PasswordStrengthMeter v-if="showPasswordStrengthMeter" :password="(value as string)" />
   </div>
 </template>
 
@@ -16,6 +16,14 @@ import { defineComponent, type PropType } from "vue";
 import PasswordStrengthMeter from "./PasswordStrengthMeter.vue";
 import type { IDynamicFormItem } from "@imengyu/vue-dynamic-form";
 
+export interface PasswordWithStrengthInputProps {
+  item?: IDynamicFormItem,
+  disabled?: boolean,
+  showPasswordStrengthMeter?: boolean,
+  value?: string,
+  additionalProps?: Record<string, unknown>,
+}
+
 export default defineComponent({
   props: {
     item: {
@@ -23,6 +31,10 @@ export default defineComponent({
     },
     disabled: {
       type: Boolean
+    },
+    showPasswordStrengthMeter: {
+      type: Boolean,
+      default: false,
     },
     value: {},
     additionalProps: {

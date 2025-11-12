@@ -100,7 +100,7 @@ const formOptions : IDynamicFormOptions = {
 
 function loadPackageSelect(newType: number) {
   //这里是写死手动判断了，实际在这里你可以去请求后端数据
-  let newData = [] as IDynamicFormItemSelectValueOption[];
+  let newData = [] as SelectValueOption[];
   switch (newType) {
     case 1:
       newData = [

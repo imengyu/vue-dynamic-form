@@ -21,57 +21,115 @@
 <script setup lang="ts">
 import { ref, toRef, type PropType } from 'vue';
 import { getDropData, type IDynamicFormEditorContext, type IDynamicFormItem, type IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
-import type { FormItemDef } from '../dynamic/ItemsDef';
+import { getFormItemDef, type FormItemDef } from '../dynamic/ItemsDef';
 import DynamicForm from '../../../library/DynamicForm.vue';
 import { ScrollRect } from '@imengyu/vue-scroll-rect';
 import { ArrayUtils } from '@imengyu/imengyu-utils';
 import { Modal } from 'ant-design-vue';
+import { useKeyPress } from './useKeyPress';
 
 const props = defineProps({
   currentFormOptions: {
     type: Object as PropType<IDynamicFormOptions>,
     default: () => ({}),
   },
-  currentFormSelectedFormItem: {
-    type: Object as PropType<IDynamicFormItem | null>,
-    default: null,
+  currentFormSelectedFormItems: {
+    type: Array as PropType<IDynamicFormItem[]>,
+    default: () => [],
   },
 });
-const emit = defineEmits(['update:currentFormSelectedFormItem']);
+const emit = defineEmits(['update:currentFormSelectedFormItems']);
 
 const previewModel = ref({});
 
 function getFormParent(parent?: IDynamicFormItem) {
   return (parent?.children || props.currentFormOptions.formItems);
 }
+function getUseableName(array: IDynamicFormItem[], name: string) {
+  let i = 1;
+  while (array.some(it => it.name === name + i))
+    i++;
+  return name + i;
+}
+function getUseableLabel(array: IDynamicFormItem[], label: string) {
+  let i = 1;
+  while (array.some(it => it.label === label + i))
+    i++;
+  return label + i;
+}
+
+const controlKeys = useKeyPress();
 
 const editorContext : IDynamicFormEditorContext = {
-  currentFocusItem: toRef(props, 'currentFormSelectedFormItem') as any,
-  dropItem: (sourceItem, sourceParent, dropItem, dropItemParent, direction) => {
+  currentFocusItem: toRef(props, 'currentFormSelectedFormItems') as any,
+  dropItem: (sourceItem, sourceParent, dropItem, dropItemParent, direction, isNew) => {
     //删除旧项, 插入指定位置
     ArrayUtils.remove(getFormParent(dropItemParent), dropItem);
 
     const arr = getFormParent(sourceParent);
     const oldIndex = arr.indexOf(sourceItem);
+
+    //新项需要重命名
+    if (isNew) {
+      dropItem.name = getUseableName(arr, dropItem.name);
+      dropItem.label = getUseableLabel(arr, dropItem.label);
+    }
+
+    const sourceItemConfig = getFormItemDef(sourceItem.type);
+    const dropItemConfig = getFormItemDef(dropItem.type);
+    if (!sourceItemConfig) {
+      Modal.error({ content: `未找到类型为${sourceItem.type}的表单项定义` });
+      return;
+    }
+    if (!dropItemConfig) {
+      Modal.error({ content: `未找到类型为${dropItem.type}的表单项定义` });
+      return;
+    }
     if (direction === 'top')
       ArrayUtils.insert(arr, Math.max(0, oldIndex), dropItem);
-    else
+    else if (direction === 'bottom')
       ArrayUtils.insert(arr, Math.min(arr.length, oldIndex + 1), dropItem);
+    else {
+      if (!sourceItemConfig.isContainer) {
+        Modal.error({ content: '非容器项不能插入子项' });
+        return;
+      } 
+      if (sourceItemConfig.isContainerSingle) {
+        Modal.confirm({
+          title: '确认替换已有条目吗？',
+          content: '本条目为单子项，只能有一个子项配置',
+          okType: 'danger',
+          onOk: () => {
+            sourceItem.children = [dropItem];
+          },
+        });
+      } else {
+        sourceItem.children = sourceItem.children || [];
+        sourceItem.children.push(dropItem);
+      }
+
+    }
   },
   setCurrentFocusItem: (item) => {
-    if (item === props.currentFormSelectedFormItem) {
-      emit('update:currentFormSelectedFormItem', null);
+    let newItems = props.currentFormSelectedFormItems.concat();
+    if (props.currentFormSelectedFormItems.includes(item)) {
+      ArrayUtils.remove(newItems, item);
     } else {
-      emit('update:currentFormSelectedFormItem', item);
+      if (controlKeys.keyState.value.ctrl) // 多选
+        newItems.push(item);
+      else
+        newItems = [item];
     }
+    emit('update:currentFormSelectedFormItems', newItems);
   },
   switchVisible: (item) => {
     item.hidden = !item.hidden;
   },
   copyItem: (item, parent) => {
     const newItem = { ...item };
-    newItem.name = `${item.name}_copy`;
     const arr = getFormParent(parent);
+    newItem.name = getUseableName(arr, `${item.name}_copy`);
+    newItem.label = getUseableLabel(arr, item.label);
     ArrayUtils.insert(arr, arr.indexOf(item) + 1, newItem);
   },
   deleteItem: (item, parent) => {
@@ -101,9 +159,10 @@ function handleDrop(e: DragEvent) {
   if (dragData) {
     if (dragData.type === 'FormItemDef') {
       const data = dragData.data as FormItemDef;
-      getFormParent(undefined).push({
-        label: data.label,
-        name:  data.name,
+      const arr = getFormParent(undefined);
+      ArrayUtils.insert(arr, arr.length, {
+        label: getUseableLabel(arr, data.label),
+        name: getUseableName(arr, data.name),
         type: data.name,
       });
     }

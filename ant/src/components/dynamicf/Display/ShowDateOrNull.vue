@@ -9,21 +9,17 @@
 
 <script lang="ts" setup>
 import { DateUtils } from '@imengyu/imengyu-utils';
-import { type PropType } from 'vue';
 
-defineProps({
-  nullText: {
-    default: '暂无',
-    type: String
-  },
-  size: {
-    default: '',
-    type: String
-  },
-  value: {
-    type: Object as PropType<Date>,
-    default: null,
-  }
+export interface ShowDateOrNullProps {
+  nullText?: string;
+  size?: string;
+  value?: Date | null;
+}
+
+withDefaults(defineProps<ShowDateOrNullProps>(), {
+  nullText: '暂无',
+  size: '',
+  value: null,
 });
 
 function formatDate(date: Date) {

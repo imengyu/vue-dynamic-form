@@ -15,17 +15,20 @@
     }"
   >
     <!--编辑器-->
-    <DynamicFormItemEditor
-      v-if="editmode"
-      :item="item"
-      :parent="parent"
-    />
+    <template v-if="editmode">
+      <DynamicFormItemEditor
+        :item="item"
+        :parent="parent"
+        :isContainer="isContainer"
+      />
+    </template>
+
     <!--对象组-->
     <DynamicFormCheckEmpty 
       v-if="item.type === 'object'" 
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
+      :suppressEmptyError="editmode || finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="object"
     >
@@ -44,6 +47,7 @@
           <span v-if="item.label" class="dynamic-form-object-title">{{ evaluateCallback(item.label) }}</span>
         </template>
       </DynamicFormItemNormal>
+      <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
       <!--循环子条目-->
       <DynamicFormItemContainer 
         v-for="(child, k) in item.children"
@@ -64,11 +68,12 @@
       v-else-if="item.type === 'group-object'" 
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
+      :suppressEmptyError="editmode || finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="object"
     >
       <FormGroup :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
+        <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
         <Row v-bind="item.rowProps">
           <!--循环子条目-->
           <DynamicFormItemContainer 
@@ -90,6 +95,7 @@
     </DynamicFormCheckEmpty>
     <!--扁平组-->
     <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
+      <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
       <Row v-bind="item.rowProps">
         <!--循环子条目-->
         <DynamicFormItemContainer 
@@ -182,6 +188,7 @@
       :parentName="parentName"
     >
       <template #insertion>
+        <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
         <Row v-bind="item.rowProps">
           <!--循环子条目-->
           <DynamicFormItemContainer 
@@ -210,7 +217,7 @@
       v-else-if="item.type === 'array-single'"
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
+      :suppressEmptyError="editmode || finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="array"
     >
@@ -225,6 +232,7 @@
         :parentName="name"
       >
         <template #insertion>
+          <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
           <FormArrayGroup
             :model="(finalModel as unknown as unknown[])"
             :item="item"
@@ -264,7 +272,7 @@
       v-else-if="item.type === 'array-object'"
       :model="model"
       :modelWithDefault="finalModel"
-      :suppressEmptyError="finalOptions?.suppressEmptyError || item.suppressEmptyError"
+      :suppressEmptyError="editmode || finalOptions?.suppressEmptyError || item.suppressEmptyError"
       :name="name"
       checkType="array"
     >
@@ -279,6 +287,7 @@
         :parentName="parentName"
       >
         <template #insertion>
+          <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
           <FormArrayGroup
             :model="(finalModel as unknown as unknown[])"
             :item="item"
@@ -345,7 +354,8 @@ import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
 import Col, { type ColProps } from './DynamicFormBasicControls/Layout/Col.vue';
 import Row from './DynamicFormBasicControls/Layout/Row.vue';
 import DynamicFormCheckEmpty from './DynamicFormCheckEmpty.vue';
-import DynamicFormItemEditor from './DynamicFormItemEditor.vue';
+import DynamicFormItemEditor from './DynamicFormItemEditor/DynamicFormItemEditor.vue';
+import DynamicFormItemEditorContainerEmptyNote from './DynamicFormItemEditor/DynamicFormItemEditorContainerEmptyNote.vue';
 
 /**
  * 动态表单条目包装组件，处理基础类型分支、数据传入、回调处理、事件传递。
@@ -387,6 +397,10 @@ const props = defineProps({
     default: null,
   }
 });
+
+const containerTypes = ['object', 'group-object', 'array-single','group-array','simple-flat','group-flat'];
+const isContainer = computed(() => containerTypes.includes(props.item.type));
+const showContainerEmptyNote = computed(() => isContainer.value && (!props.item.children || props.item.children.length === 0));
 
 defineEmits([	'update:model' ]);
 defineSlots<{

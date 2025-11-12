@@ -3,11 +3,12 @@ import type { IDynamicFormItem } from "DynamicForm";
 import type { Ref } from "vue";
 
 export interface IDynamicFormEditorContext {
-  currentFocusItem: Ref<IDynamicFormItem | null>,
+  currentFocusItem: Ref<IDynamicFormItem[]>,
   dropItem: (
     sourceItem: IDynamicFormItem, sourceParent?: IDynamicFormItem, 
     dropItem?: IDynamicFormItem, dropItemParent?: IDynamicFormItem,
-    direction?: 'top' | 'bottom' | 'center'
+    direction?: 'top' | 'bottom' | 'center',
+    isNew?: boolean,
   ) => void,
   setCurrentFocusItem: (item: IDynamicFormItem) => void,
   switchVisible: (item: IDynamicFormItem, parent?: IDynamicFormItem) => void,

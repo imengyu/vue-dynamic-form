@@ -27,16 +27,16 @@ import type { SelectProps } from "ant-design-vue";
 import { defineComponent, type PropType } from "vue";
 import type { TreeDataItem } from "../IdAsValueTree";
 
-export type IdAsValueTreeDropdownLoadDataFun = (pid: string|number, level: number) => Promise<TreeDataItem[]>;
-export type IdAsValueTreeDropdownCheckClickableFun = (item: TreeDataItem) => Promise<boolean>;
+export type SelectTreeIdLoadDataFun = (pid: string|number, level: number) => Promise<TreeDataItem[]>;
+export type SelectTreeIdCheckClickableFun = (item: TreeDataItem) => Promise<boolean>;
 
-export type IdAsValueTreeDropdownGetDiaplayValue = (ref: IdAsValueTreeDropdownInterface) => string;
-export type IdAsValueTreeDropdownGetRef = (ref: IdAsValueTreeDropdownInterface) => void;
+export type SelectTreeIdGetDiaplayValue = (ref: SelectTreeIdInterface) => string;
+export type SelectTreeIdGetRef = (ref: SelectTreeIdInterface) => void;
 
 /**
- * IdAsValueTreeDropdown 的公共接口
+ * SelectTreeId 的公共接口
  */
-export interface IdAsValueTreeDropdownInterface {
+export interface SelectTreeIdInterface {
   /**
    * 获取某个ID的树(正排列)
    * @param value 要获取的ID
@@ -53,9 +53,9 @@ export interface IdAsValueTreeDropdownInterface {
   reload(): void;
 }
 /**
- * IdAsValueTreeDropdown 的公共接口
+ * SelectTreeId 的公共接口
  */
-export interface IdAsValueTreeDropdownProps {
+export interface SelectTreeIdProps {
   /**
    * 允许清除
    */
@@ -78,15 +78,15 @@ export interface IdAsValueTreeDropdownProps {
   /**
    * 加载数据
    */
-  loadData?: IdAsValueTreeDropdownLoadDataFun,
+  loadData?: SelectTreeIdLoadDataFun,
   /**
    * 自定义检查条目是否可点击回调
    */
-  checkClickable?: IdAsValueTreeDropdownCheckClickableFun,
+  checkClickable?: SelectTreeIdCheckClickableFun,
   /**
    * 获取显示数据回调
    */
-  getDisplayValue?: IdAsValueTreeDropdownGetDiaplayValue,
+  getDisplayValue?: SelectTreeIdGetDiaplayValue,
   /**
    * 是否在非激活时显示临时字符串（防止树形数据没有加载，而无法显示当前值）
    */
@@ -109,7 +109,7 @@ export interface IdAsValueTreeDropdownProps {
  * 使用数据的ID作为value的下拉框包装
  */
 export default defineComponent({
-  name: "IdAsValueTreeDropdown",
+  name: "SelectTreeId",
   emits: [
     'update:value',
     'change',
@@ -148,15 +148,15 @@ export default defineComponent({
       default: null,
     },
     loadData: {
-      type: Function as PropType<IdAsValueTreeDropdownLoadDataFun>,
+      type: Function as PropType<SelectTreeIdLoadDataFun>,
       default: null,
     },
     checkClickable: {
-      type: Function as PropType<IdAsValueTreeDropdownCheckClickableFun>,
+      type: Function as PropType<SelectTreeIdCheckClickableFun>,
       default: null,
     },
     getDisplayValue: {
-      type: Function as PropType<IdAsValueTreeDropdownGetDiaplayValue>,
+      type: Function as PropType<SelectTreeIdGetDiaplayValue>,
       default: null,
     },
     defaultDisplayValue: {
@@ -188,7 +188,7 @@ export default defineComponent({
       if (this.valueV != null && this.valueV != 0 && this.defaultDisplayValue != '')
         return this.defaultDisplayValue;
       if (this.getDisplayValue)
-        return (this.getDisplayValue as IdAsValueTreeDropdownGetDiaplayValue)(this as IdAsValueTreeDropdownInterface); 
+        return (this.getDisplayValue as SelectTreeIdGetDiaplayValue)(this as SelectTreeIdInterface); 
       return '';
     },
   },
@@ -226,7 +226,7 @@ export default defineComponent({
     doLoadData(pid: string|number|null, level: number) {
       const loadData = this.loadData;
       if(typeof loadData === 'function') {
-        return (loadData as IdAsValueTreeDropdownLoadDataFun)(pid as string, level).then((d) => {
+        return (loadData as SelectTreeIdLoadDataFun)(pid as string, level).then((d) => {
           for(let i = this.treeData.length - 1; i >= 0; i--)
             if(this.treeData[i]?.pId == pid)
               this.treeData.splice(i, 1);

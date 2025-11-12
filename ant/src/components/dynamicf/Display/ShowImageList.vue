@@ -19,46 +19,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
+<script setup lang="ts">
+import { ref, computed } from "vue";
 import ImageFailed from '../../../common/ImageFailed.png';
 
-export default defineComponent({
-  name: "ShowImageList",
-  props: {
-    images: {
-      type: Object as PropType<Array<string>>,
-      default: null,
-    },
-    size: {
-      type: [Number,String],
-      default: 30,
-    },
-    maxCount: {
-      type: Number,
-      default: 5,
-    },
-    failImage: {
-      default: ImageFailed,
-      type: String
-    },
-  },
-  computed: {
-    imgSize() : number {
-      if (typeof this.size === 'string')
-        switch(this.size) {
-          case 'default': return 45;
-          case 'middle': return 30;
-          case 'small': return 20;
-        }
-      return this.size as number;
-    },  
-  },
-  data() {
-    return {
-      showAll: false,
-    };
-  },
+export interface ShowImageListProps {
+  images?: string[] | null;
+  size?: number | string;
+  maxCount?: number;
+  failImage?: string;
+}
+
+const props = withDefaults(defineProps<ShowImageListProps>(), {
+  images: null,
+  size: 30,
+  maxCount: 5,
+  failImage: ImageFailed
+});
+
+const showAll = ref(false);
+
+const imgSize = computed(() : number => {
+  if (typeof props.size === 'string') {
+    switch(props.size) {
+      case 'default': return 45;
+      case 'middle': return 30;
+      case 'small': return 20;
+    }
+  }
+  return Number(props.size);
 });
 </script>
 

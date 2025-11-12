@@ -3,19 +3,39 @@
     v-bind="customProps"
     :disabled="disabled"
     v-model:file-list="uploadSubImgList"
-    list-type="picture"
+    list-type="picture-card"
     :class="uploadClass"
-    :max-count="single ? 1 : maxCount"
+    :max-count="maxCount"
+    :show-upload-list="!single"
     :customRequest="handleUpload"
     :beforeUpload="handleBeforeUpload"
-    @change="handleUploadSubImgChange"
     @reject="handleUploadSubImgReject"
+    @change="handleUploadSubImgChange"
   >
-    <a-button v-if="!disabled">
-      <upload-outlined></upload-outlined>
-      上传
-    </a-button>
-    <span v-if="disabled && uploadSubImgList.length == 0">暂无</span>
+    <template v-if="single">
+      
+      <div v-if="Boolean(value)" class="ant-upload-image">
+        <span v-if="!disabled">点击替换图片</span>
+        <a-image
+          :src="(value as string)"
+          alt="avatar"
+          :width="singleImageSize.width"
+          :height="singleImageSize.height"
+          :preview="false"
+          :fallback="failImage" 
+        />
+      </div>
+      <div v-else :style="{ width: singleImageSize.width, height: singleImageSize.height }">
+        <loading-outlined v-if="uploadingSubImg"></loading-outlined>
+        <plus-outlined v-else></plus-outlined>
+        <div class="ant-upload-text">上传</div>
+      </div>
+    </template>
+    <template v-else>
+      <loading-outlined v-if="uploadingSubImg"></loading-outlined>
+      <plus-outlined v-else></plus-outlined>
+      <div class="ant-upload-text">上传</div>
+    </template>
   </a-upload>
 </template>
 
@@ -26,9 +46,9 @@
 import { 
   stringUrlsToUploadedItems, type UploadCoInterface, 
   type AntUploadRequestOption, type FileInfo, type FileItem 
-} from './UploadImageFormItem';
+} from './UploaderFormItem';
 import { message, type UploadProps } from 'ant-design-vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
 import { type PropType, ref, onMounted, watch } from 'vue';
 import FailImage from '../../common/ImageFailed.png';
 
@@ -86,7 +106,7 @@ const props = defineProps({
    */
   singleImageSize: {
     type: Object as PropType<{ width: number, height: number }>,
-    default: () => ({ width: 250, height: 150 })
+    default: () => ({ width: 100, height: 100 })
   },
   /**
    * 参数，可以是单张 string，多张 string[]
@@ -108,22 +128,21 @@ const emits = defineEmits([
 const uploadSubImgList = ref<FileItem[]>([]);
 const uploadingSubImg = ref(false);
 
-function loadValue() {
-uploadSubImgList.value = stringUrlsToUploadedItems(
-  props.value instanceof Array ? (props.value as string[] || []) : [
-    props.value as string
-  ])
-}
-
 onMounted(() => {
   //将之前上传的图片包括URL设置到已上传列表中
-  setTimeout(loadValue, 400);
+  if (!props.single) {
+    setTimeout(() => {
+      uploadSubImgList.value = stringUrlsToUploadedItems(props.value instanceof Array ? (props.value as string[] || []) : [])
+    }, 400);
+  }
 });
 
 const needRemoveItem : string[] = [];
 
 watch(() => props.value, () => {
-  loadValue();
+  if (!props.single) {
+    uploadSubImgList.value = stringUrlsToUploadedItems(props.value instanceof Array ? (props.value as string[] || []) : [])
+  }
 });
 watch(uploadSubImgList, (e) => {
   setTimeout(() => {
@@ -144,12 +163,11 @@ function handleBeforeUpload(file: FileItem) {
     needRemoveItem.push(file.uid);
   return result;
 }
-function handleUpload(requestOption: AntUploadRequestOption) {
+async function handleUpload(requestOption: AntUploadRequestOption) {
   props.uploadCo?.uploadRequest(requestOption);
 }
 function handleUploadSubImgReject(e: FileInfo) {
   console.log(e);
-  message.error('上传失败！' + e.file.response);
 }
 function handleUploadSubImgChange(info: FileInfo) {
   if (info.file.status === 'uploading') {
@@ -179,16 +197,22 @@ function handleUploadSubImgChange(info: FileInfo) {
 </script>
 
 <style lang="scss">
-.ant-upload-video {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid #666666;
-  background-color: #e8e8e8;
+.ant-upload-image {
+  position: relative;
+  border: 1px solid #dddddd;
+  overflow: hidden;
   border-radius: 8px;
   text-align: center;
+
+  span {
+    position: absolute;
+    margin: 10px;
+    background-color: #e8e8e8;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 12px;
+    z-index: 1;
+  }
 }
 
 </style>

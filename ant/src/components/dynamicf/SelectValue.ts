@@ -1,11 +1,11 @@
 import type { SelectProps } from "ant-design-vue";
 
-export interface IDynamicFormItemSelectValueOption {
+export interface SelectValueOption {
   label: string,
   value: unknown,
 }
 
-export interface SimpleSelectValueFormItemProps {
+export interface SelectValueFormItemProps {
   /**
    * 是否禁用
    */
@@ -13,7 +13,7 @@ export interface SimpleSelectValueFormItemProps {
   /**
    * 选项数据
    */
-  options: IDynamicFormItemSelectValueOption[];
+  options: SelectValueOption[];
   /**
    * 选择值
    */

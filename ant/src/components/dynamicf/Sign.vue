@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type PropType } from 'vue';
 import VueEsign from 'vue-esign';
+import { onMounted, ref, type PropType } from 'vue';
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckOutlined } from '@ant-design/icons-vue';
 import { Form, message, Modal } from 'ant-design-vue';
-import type { UploadCoInterface } from './UploadImageFormItem';
+import type { UploadCoInterface } from './UploaderFormItem';
 
 export interface SignProps {
   disabled: boolean;

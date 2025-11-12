@@ -5,47 +5,35 @@
   >{{text}}</a-checkbox>
 </template>
 
-<script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import type { CheckboxProps } from "ant-design-vue";
+<script setup lang="ts">
+import { ref, watch, onMounted } from "vue";
+import type { CheckBoxValueProps } from "./CheckBoxValue";
 
-export default defineComponent({
-  props: {
-    checkboxProps: {
-      type: Object as PropType<CheckboxProps>,
-      default: null,
-    },
-    text: {
-      type: String,
-      default: '',
-    },
-    checkedValue: {
-      default: true,
-    },
-    uncheckedValue: {
-      default: false,
-    },
-    value: {
-    },
-  },
-  emits: [ 'update:value' ],
-  watch: {
-    checked(v) {
-      this.$emit('update:value', v ? this.checkedValue : this.uncheckedValue);
-    },
-    value(v) {
-      const checked = v === this.checkedValue;
-      if (this.checked != checked)
-        this.checked = checked;
-    },
-  },
-  data() {
-    return {
-      checked: false,
-    }
-  },
-  mounted() {
-    this.checked = this.value === this.checkedValue;
-  },
+const props = withDefaults(defineProps<CheckBoxValueProps & {
+  value?: any;
+}>(), {
+  text: '',
+  checkedValue: () => true,
+  uncheckedValue: () => false,
+  value: undefined
+});
+
+const emit = defineEmits<{
+  'update:value': [value: any];
+}>();
+const checked = ref(false);
+
+watch(checked, (v) => {
+  emit('update:value', v ? props.checkedValue : props.uncheckedValue);
+});
+watch(() => props.value, (v) => {
+  const newChecked = v === props.checkedValue;
+  if (checked.value !== newChecked) {
+    checked.value = newChecked;
+  }
+});
+
+onMounted(() => {
+  checked.value = props.value === props.checkedValue;
 });
 </script>

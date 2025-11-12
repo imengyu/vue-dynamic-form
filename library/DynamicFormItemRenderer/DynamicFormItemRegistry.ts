@@ -44,9 +44,10 @@ export const DynamicFormItemRegistry = {
    * @param componentInstance 组件类
    * @param additionalProps 组件的附加属性，将会设置到渲染函数上
    * @param valueName 用于指定表单子组件的双向绑定值属性名称，默认是 value
+   * @param override 是否覆盖已存在的类型，默认是 false
    */
-  register(type: string, componentInstance: unknown, additionalProps: Record<string, unknown> = {}, valueName = 'value') {
-    if (DynamicFormItemRegistryData.has(type)) {
+  register(type: string, componentInstance: unknown, additionalProps: Record<string, unknown> = {}, valueName = 'value', override = false) {
+    if (DynamicFormItemRegistryData.has(type) && !override) {
       console.warn('[DynamicFormItemRegistry] Type ' + type + ' already exists and cannot be registered twice.');
       return this;
     }

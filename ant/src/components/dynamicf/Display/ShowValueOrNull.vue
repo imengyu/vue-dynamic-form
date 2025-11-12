@@ -14,53 +14,41 @@
   </span>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  name: "ShowValueOrNull",
-  data() {
-    return {
-      result: ''
-    }
-  },
-  emits: [ 'click' ],
-  props: {
-    block: {
-      default: false,
-      type: Boolean
-    },
-    clickable: {
-      default: false,
-      type: Boolean
-    },
-    prefix: {
-      default: '',
-      type: String
-    },
-    numericalPrecision: {
-      default: 0,
-      type: Number
-    },
-    nullText: {
-      default: '暂无',
-      type: String
-    },
-    record: {
-      default: null,
-    },
-    value: {
-      type: null,
-      default: null,
-    },
-  },
-  methods: {
-    onClick() {
-      if (this.clickable)
-        this.$emit('click', this.record);
-    },
-  },
+export interface ShowValueOrNullProps {
+  block?: boolean;
+  clickable?: boolean;
+  prefix?: string;
+  numericalPrecision?: number;
+  nullText?: string;
+  record?: any;
+}
+
+const props = withDefaults(defineProps<ShowValueOrNullProps & {
+  value?: any;
+}>(), {
+  block: false,
+  clickable: false,
+  prefix: '',
+  numericalPrecision: 0,
+  nullText: '暂无',
+  record: null,
+  value: null
 });
+
+const emit = defineEmits<{
+  click: [record: any];
+}>();
+
+const result = ref('');
+
+const onClick = () => {
+  if (props.clickable) {
+    emit('click', props.record);
+  }
+};
 </script>
 
 <style lang="scss">

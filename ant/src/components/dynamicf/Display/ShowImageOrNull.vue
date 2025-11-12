@@ -10,69 +10,60 @@
       :fallback="failImage"
       :width="imgSize"
       :height="imgSize"
+      @error="onError"
     />
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { StringUtils } from '@imengyu/imengyu-utils';
-import { defineComponent } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import ImageFailed from '../../../common/ImageFailed.png';
 import ImageEmpty from '../../../common/ImageEmpty.png';
 
-export default defineComponent({
-  name: "ShowImageOrNull",
-  props: {
-    nullImage: {
-      type: String,
-      default: ImageEmpty,
-    },
-    failImage: {
-      type: String,
-      default: ImageFailed,
-    },
-    size: {
-      type: [Number,String],
-      default: 30,
-    },
-    src: {
-      type: String,
-      default: null,
+export interface ShowImageOrNullProps {
+  nullImage?: string;
+  failImage?: string;
+  size?: number | string;
+  src?: string | null;
+}
+
+const props = withDefaults(defineProps<ShowImageOrNullProps>(), {
+  nullImage: ImageEmpty,
+  failImage: ImageFailed,
+  size: 30,
+  src: null
+});
+
+const imgUrl = ref('');
+
+const imgSize = computed((): number => {
+  if (typeof props.size === 'string')
+    switch(props.size) {
+      case 'default': return 55;
+      case 'middle': return 45;
+      case 'small': return 25;
     }
-  },
-  data() {
-    return {
-      imgUrl: '',
-    }
-  },
-  computed: {
-    imgSize() : number {
-      if (typeof this.size === 'string')
-        switch(this.size) {
-          case 'default': return 55;
-          case 'middle': return 45;
-          case 'small': return 25;
-        }
-      return this.size as number;
-    },  
-  },
-  mounted() {
-    setTimeout(() => { this.loadImage(); },100);
-  },
-  watch: {
-    src() { this.loadImage(); }
-  },
-  methods: {
-    loadImage() {
-      if(StringUtils.isNullOrEmpty(this.src))
-        this.imgUrl = this.nullImage as string;
-      else
-        this.imgUrl = this.src as string;
-    },
-    onError() {
-      if(this.imgUrl != this.failImage)
-        this.imgUrl = this.failImage as string;
-    }
-  }
+  return props.size as number;
+});
+
+const loadImage = () => {
+  if(StringUtils.isNullOrEmpty(props.src))
+    imgUrl.value = props.nullImage;
+  else
+    imgUrl.value = props.src || '';
+};
+
+const onError = () => {
+  if(imgUrl.value != props.failImage)
+    imgUrl.value = props.failImage;
+};
+
+onMounted(() => {
+  setTimeout(() => { loadImage(); }, 100);
+});
+
+watch(() => props.src, () => {
+  loadImage();
 });
 </script>

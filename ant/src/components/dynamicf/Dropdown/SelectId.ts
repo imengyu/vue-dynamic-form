@@ -14,9 +14,9 @@ export interface DropdownValues<T> {
 export type LoadDataFun<T extends DataModel> = (val: string | null) => Promise<DropdownValues<T>[]>;
 
 /**
- * IdAsValueDropdown 的公共接口
+ * SelectId 的公共接口
  */
-export interface IdAsValueDropdownInterface {
+export interface SelectIdInterface {
   /**
    * 获取某个ID的Lablel
    * @param value 要获取的ID
@@ -29,9 +29,9 @@ export interface IdAsValueDropdownInterface {
   reload(clearValue?: boolean): void;
 }
 /**
- * IdAsValueDropdown 的公共接口
+ * SelectId 的公共接口
  */
-export interface IdAsValueDropdownProps<T extends DataModel> {
+export interface SelectIdProps<T extends DataModel> {
   /**
    * 允许清除
    */

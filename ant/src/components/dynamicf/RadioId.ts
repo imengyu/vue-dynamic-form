@@ -1,11 +1,11 @@
 import type { RadioGroupProps, RadioProps } from "ant-design-vue";
 
-export interface RadioValueOption {
+export interface RadioIdOption {
   label: string,
   value: unknown,
 }
 
-export interface RadioValueFormItemProps {
+export interface RadioIdFormItemProps {
   /**
    * 是否禁用
    */
@@ -13,7 +13,7 @@ export interface RadioValueFormItemProps {
   /**
    * 选项数据
    */
-  options: RadioValueOption[];
+  loadData?: () => Promise<RadioIdOption[]>;
   /**
    * 选择值
    */

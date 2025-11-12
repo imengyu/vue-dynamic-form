@@ -1,5 +1,5 @@
 import type { IDynamicFormItem } from "@imengyu/vue-dynamic-form"
-import type { SimpleRadioValueFormItemProps, SimpleSelectValueFormItemProps } from "@imengyu/vue-dynamic-form-ant";
+import type { RadioValueFormItemProps, SelectValueFormItemProps } from "@imengyu/vue-dynamic-form-ant";
 
 export interface FormItemDef {
   label: string,
@@ -16,6 +16,16 @@ export interface FormItemDef {
    * * data-int
    */
   extraTag?: string,
+  /**
+   * 是否是容器项
+   * @default false
+   */
+  isContainer?: boolean,
+  /**
+   * 是否是容器项的单子项条目
+   * @default false
+   */
+  isContainerSingle?: boolean,
 }
 
 export const FormConfig : IDynamicFormItem[] = [
@@ -50,7 +60,7 @@ export const FormConfig : IDynamicFormItem[] = [
       ],
       value: 'vertical',
       customProps: {},
-    } as SimpleSelectValueFormItemProps,
+    } as SelectValueFormItemProps,
   },
   {
     label: '标签位置',
@@ -71,7 +81,7 @@ export const FormConfig : IDynamicFormItem[] = [
           value: 'right',
         },
       ],
-    } as SimpleRadioValueFormItemProps,
+    } as RadioValueFormItemProps,
   },
   {
     label: '标签宽度',
@@ -339,10 +349,11 @@ export const FormItems : {
     label: '布局',
     items: [
       {
-        label: '简单布局',
+        label: '简单',
         icon: 'icon-hangrongqi',
         name: 'simple-flat',
         expectType: 'object',
+        isContainer: true,
         configs: [
         ],
       },
@@ -352,6 +363,7 @@ export const FormItems : {
         name: 'group-flat',
         expectType: 'object',
         extraTag: 'group',
+        isContainer: true,
         configs: [
         ],
       },
@@ -365,6 +377,7 @@ export const FormItems : {
         icon: 'icon-shebei',
         name: 'object',
         expectType: 'object',
+        isContainer: true,
         configs: [
         ],
       },
@@ -374,15 +387,18 @@ export const FormItems : {
         name: 'group-object',
         expectType: 'object',
         extraTag: 'group',
+        isContainer: true,
         configs: [
         ],
       },
       {
         label: '基础数组',
         icon: 'icon-liebiao',
-        name: 'array',
+        name: 'array-single',
         expectType: 'any[]',
         extraTag: 'data-single',
+        isContainer: true,
+        isContainerSingle: true,
         configs: [
         ],
       },
@@ -392,6 +408,7 @@ export const FormItems : {
         name: 'array-object',
         expectType: 'object[]',
         extraTag: 'data-object',
+        isContainer: true,
         configs: [
         ],
       },
@@ -445,3 +462,7 @@ export const FormItems : {
 ];
 
 export const FormItemsMap = new Map(FormItems.flatMap(group => group.items.map(item => [item.name, item])));
+
+export function getFormItemDef(name: string) {
+  return FormItemsMap.get(name);
+}
