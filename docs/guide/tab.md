@@ -4,10 +4,10 @@
 
 ## 基础使用
 
-tab组件的对象属性嵌套类似于 [simple-flat](./form-nest.md#simple-flat)，每个标签页访问同级对象。
+tab组件的对象属性嵌套类似于 [flat-simple](./form-nest.md#flat-simple)，每个标签页访问同级对象。
 
-* 使用 `custom-tab` 声明一个标签组件。
-* 使用 `custom-tab-page` 声明一个标签页，标签页必须处于标签组件的子级。
+* 使用 `tab-custom` 声明一个标签组件。
+* 使用 `tab-custom-page` 声明一个标签页，标签页必须处于标签组件的子级。
 
 ```vue preview
 <template>
@@ -39,7 +39,7 @@ const formOptions : IDynamicFormOptions = {
   formWrapperCol: { span: 16 },
   formItems: [
     {
-      name: 'rootTab', label: '', type: 'custom-tab',
+      name: 'rootTab', label: '', type: 'tab-custom',
       additionalProps: {
         defaultActiveKey: 'page1',
         tabProps: {
@@ -51,7 +51,7 @@ const formOptions : IDynamicFormOptions = {
       } as IDynamicFormTabProps,
       children: [
         {
-          name: 'page1', label: '提交信息1', type: 'custom-tab-page',
+          name: 'page1', label: '提交信息1', type: 'tab-custom-page',
           children: [
             { type: 'text', label: '提交信息1', name: 'text1', additionalProps: { placeholder: '请输入文本' } },
             { type: 'text', label: '提交信息2', name: 'text2', additionalProps: { placeholder: '请输入文本' } },
@@ -61,7 +61,7 @@ const formOptions : IDynamicFormOptions = {
           ],
         },
         {
-          name: 'page2', label: '提交信息2', type: 'custom-tab-page',
+          name: 'page2', label: '提交信息2', type: 'tab-custom-page',
           children: [
             { type: 'check-box', label: '提交信息5', name: 'check1' },
             { type: 'check-box', label: '提交信息6', name: 'check2' },
@@ -70,7 +70,7 @@ const formOptions : IDynamicFormOptions = {
           ],
         },
         {
-          name: 'page3', label: '提交信息3', type: 'custom-tab-page',
+          name: 'page3', label: '提交信息3', type: 'tab-custom-page',
           children: [
             {
               type: 'select', label: '提交信息9', name: 'select1',
@@ -196,7 +196,7 @@ const formOptions : IDynamicFormOptions = {
   formWrapperCol: { span: 16 },
   formItems: [
     {
-      name: 'rootTab', label: '', type: 'custom-tab',
+      name: 'rootTab', label: '', type: 'tab-custom',
       additionalProps: {
         defaultActiveKey: 'page1',
         tabProps: {
@@ -208,7 +208,7 @@ const formOptions : IDynamicFormOptions = {
       } as IDynamicFormTabProps,
       children: [
         {
-          name: 'page1', label: '提交信息1', type: 'custom-tab-page',
+          name: 'page1', label: '提交信息1', type: 'tab-custom-page',
           children: [
             { type: 'text', label: '提交信息1', name: 'text1', additionalProps: { placeholder: '请输入文本' } },
             { type: 'text', label: '提交信息2', name: 'text2', additionalProps: { placeholder: '请输入文本' } },
@@ -217,7 +217,7 @@ const formOptions : IDynamicFormOptions = {
           ],
         },
         {
-          name: 'page2', label: '提交信息2', type: 'custom-tab-page',
+          name: 'page2', label: '提交信息2', type: 'tab-custom-page',
           children: [
             { type: 'check-box', label: '提交信息5', name: 'check1' },
             { type: 'check-box', label: '提交信息6', name: 'check2' },
@@ -225,7 +225,7 @@ const formOptions : IDynamicFormOptions = {
           ],
         },
         {
-          name: 'page3', label: '提交信息3', type: 'custom-tab-page',
+          name: 'page3', label: '提交信息3', type: 'tab-custom-page',
           children: [
             {
               type: 'select', label: '提交信息9', name: 'select1',

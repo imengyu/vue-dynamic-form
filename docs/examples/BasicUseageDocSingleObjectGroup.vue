@@ -28,7 +28,7 @@ const formOptions : IDynamicFormOptions = {
   formItems: [
     { type: 'base-text', label: '正常条目', name: 'otherProp' },
     { 
-      type: 'group-object', label: '单个对象条目', name: 'singleObjectProp', 
+      type: 'object-group', label: '单个对象条目', name: 'singleObjectProp', 
       formProps: {
         center: false,
       },

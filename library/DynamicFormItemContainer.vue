@@ -65,7 +65,7 @@
     </DynamicFormCheckEmpty>
     <!--对象组-->
     <DynamicFormCheckEmpty 
-      v-else-if="item.type === 'group-object'" 
+      v-else-if="item.type === 'object-group'" 
       :model="model"
       :modelWithDefault="finalModel"
       :suppressEmptyError="editmode || finalOptions?.suppressEmptyError || item.suppressEmptyError"
@@ -94,7 +94,7 @@
       </FormGroup>
     </DynamicFormCheckEmpty>
     <!--扁平组-->
-    <FormGroup v-else-if="item.type === 'group-flat'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
+    <FormGroup v-else-if="item.type === 'flat-group'" :title="evaluateCallback(item.label)" v-bind="(item.additionalProps as object)">
       <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
       <Row v-bind="item.rowProps">
         <!--循环子条目-->
@@ -119,7 +119,7 @@
       </Row>
     </FormGroup>
     <!--自定义扁平组-->
-    <FormCustomLayout v-else-if="item.type === 'custom-flat'" :item="item">
+    <FormCustomLayout v-else-if="item.type === 'flat-custom'" :item="item">
       <!--循环子条目-->
       <DynamicFormItemContainer 
         v-for="(child, k) in item.children" 
@@ -142,7 +142,7 @@
     </FormCustomLayout>
     <!--标签页-->
     <DynamicFormTab 
-      v-else-if="item.type === 'custom-tab'"
+      v-else-if="item.type === 'tab-custom'"
       :item="item"
     >
       <template
@@ -177,7 +177,7 @@
       </template>
     </DynamicFormTab>
     <!--扁平普通-->
-    <DynamicFormItemNormal v-else-if="item.type === 'simple-flat'" 
+    <DynamicFormItemNormal v-else-if="item.type === 'flat-simple'" 
       :item="item"
       :parent="parent"
       :name="name"
@@ -398,7 +398,7 @@ const props = defineProps({
   }
 });
 
-const containerTypes = ['object', 'group-object', 'array-single','group-array','simple-flat','group-flat'];
+const containerTypes = ['object', 'object-group', 'array-single','group-array','flat-simple','flat-group'];
 const isContainer = computed(() => containerTypes.includes(props.item.type));
 const showContainerEmptyNote = computed(() => isContainer.value && (!props.item.children || props.item.children.length === 0));
 

@@ -11,7 +11,7 @@ import {
 } from './DynamicForm';
 import type { Rule } from 'async-validator';
 import type { ColProps } from './DynamicFormBasicControls';
-import type { IDynamicFormEditorContext } from 'DynamicFormItemEditor';
+import type { IDynamicFormEditorContext } from './DynamicFormItemEditor/DynamicFormItemEditor';
 
 /**
  * 动态表单组件。
@@ -44,7 +44,7 @@ export default defineComponent({
       default: ''
     },
     /**
-     * TODO: 全局参数。用于向每个表单项的参数中添加额外的参数，可以在回调中的 formGlobalParams 中访问。
+     * 全局参数。用于向每个表单项的参数中添加额外的参数，可以在回调中的 formGlobalParams 中访问。
      */
     globalParams: {
       type: Object as PropType<IDynamicFormObject>,

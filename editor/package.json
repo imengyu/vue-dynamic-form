@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@guolao/vue-monaco-editor": "^1.6.0",
+    "@imengyu/imengyu-utils": "^0.0.20",
     "@imengyu/vue-scroll-rect": "^0.1.7",
     "@vuemap/vue-amap": "^2.1.17",
     "ant-design-vue": "^4.2.6",

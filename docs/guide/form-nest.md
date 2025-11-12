@@ -265,7 +265,7 @@ const resultJson = computed(() => {
 
 ## 其他嵌套模式
 
-### simple-flat
+### flat-simple
 
 类似 object 但是它的子表单读取的是父级对象的属性而不是当前的，因此 flat 模式经常用于展平对象。
 
@@ -300,7 +300,7 @@ const formOptions : IDynamicFormOptions = {
     { type: 'base-text', label: '文本', name: 'stringProp0', additionalProps: { placeholder: '请输入文本' } },
     { type: 'base-text', label: '文本', name: 'stringProp1', additionalProps: { placeholder: '请输入文本' } },
     {
-      type: 'simple-flat', label: '横向', name: 'horz_test',
+      type: 'flat-simple', label: '横向', name: 'horz_test',
       childrenColProps: { span: 12 },
       children: [
         {
@@ -337,12 +337,12 @@ const resultJson = computed(() => {
 </script>
 ```
 
-### group-object
+### object-group
 
 同 object，但是会在外层添加一个外壳样式，可以用于分组表单，帮助用户阅读更清晰。
 
 <BasicUseageDocSingleObjectGroup />
 
-### group-flat
+### flat-group
 
-同 simple-flat，但是会在外层添加一个外壳样式，可以用于分组表单，帮助用户阅读更清晰。
+同 flat-simple，但是会在外层添加一个外壳样式，可以用于分组表单，帮助用户阅读更清晰。

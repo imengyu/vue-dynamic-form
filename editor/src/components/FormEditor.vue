@@ -9,7 +9,7 @@
       </a-tab-pane>
     </a-tabs>
     <FormEditorPreview 
-      :currentFormOptions="currentFormOptions"
+      v-model:currentFormOptions="currentFormOptions"
       v-model:currentFormSelectedFormItems="currentFormSelectedFormItems"
     />
     <ScrollRect scroll="vertical" class="form-editor-props">
@@ -42,13 +42,13 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { FormConfig, FormItemCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
+import { ScrollRect } from '@imengyu/vue-scroll-rect'; 
 import type { FormProps } from 'ant-design-vue';
 import type { IDynamicFormItem, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import DynamicForm from '../../../library/DynamicForm.vue';
 import FormItemsList from './FormItemsList.vue';
 import FormEditorPreview from './FormEditorPreview.vue';
-import { FormConfig, FormItemCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
-import { ScrollRect } from '@imengyu/vue-scroll-rect';
 
 const tabLeft = ref('list');
 const tabRight = ref('form');
@@ -105,7 +105,10 @@ const currentFormItemProps = computed<IDynamicFormOptions>(() => {
 
 const propsDynamicFormOptions : IDynamicFormOptions = {
   formAdditionaProps: {
-    layout: 'vertical',
+    layout: 'horizontal',
+    labelCol: { span: 8 },
+    labelAlign: 'left',
+    wrapperCol: { span: 16 },
   } as FormProps,
   formItems: FormConfig,
 }

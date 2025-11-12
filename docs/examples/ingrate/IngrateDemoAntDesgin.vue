@@ -53,7 +53,7 @@ const formOptions : IDynamicFormOptions = {
   formItems: [
     { type: 'text', label: '手机号', name: 'mobile', additionalProps: { placeholder: '请输入手机号' } as InputProps },
     { 
-      type: 'simple-flat', label: '验证码', name: 'vcodeGroup',
+      type: 'flat-simple', label: '验证码', name: 'vcodeGroup',
       children: [
         { 
           type: 'text', label: '', name: 'vcode', additionalProps: { placeholder: '请输入验证码' } as InputProps,

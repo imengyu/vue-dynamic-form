@@ -35,8 +35,8 @@
 
 ## 0.0.19 - 2023-11-15
 
-* 修改custom-tab子条目的childrenColProps从父级读取
-* 增加custom-tab和custom-flat表单组合
+* 修改tab-custom子条目的childrenColProps从父级读取
+* 增加tab-custom和flat-custom表单组合
 
 ## 0.0.18 - 2023-11-16
 

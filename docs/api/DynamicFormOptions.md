@@ -44,7 +44,7 @@ title: API 参考 - IDynamicFormOptions
 | label | [联动回调] 当前表单说明文字。支持动态回调。 | `string` or `IDynamicFormItemCallback<string>` | — |
 | defaultValue | 默认值。如果表单条目接收到 undefined 或 null ，则使用默认值。可以使用一个工厂函数返回对象。需要在顶层调用 `formRef.value.initDefaultValuesToModel` 方法初始化默认值至模型中才可生效。| `unknown` | — |
 | suppressEmptyError | 是否屏蔽当前子条目的空错误，为空时使用 defaultValue 作为值，注意：仅作为兜底使用。默认否 | `boolean` | - |
-| children | 子条目。仅在 'object','array-single','array-object','group-object' 或者其他容器条目中有效。 | `IDynamicFormItem[]` | — |
+| children | 子条目。仅在 'object','array-single','array-object','object-group' 或者其他容器条目中有效。 | `IDynamicFormItem[]` | — |
 | newChildrenObject | 当子对象为数组时，可设置这个自定义回调。用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。 | `(arrayNow: unknown[]) => unknown` | — |
 | deleteChildrenCallback | 当子对象为数组时，可设置这个自定义回调。删除按钮回调，可选，不提供时默认操作为将 item 从 array 中移除。 | `(arrayNow: unknown[], deleteObject: unknown) => unknown` | — |
 | childrenColProps | 子条目的 Col 配置属性(应用到当前条目的所有子条目上)。仅在 object 或者其他容器条目中有效。 | `ColProps` | — |

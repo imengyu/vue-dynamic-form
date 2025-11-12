@@ -1,4 +1,4 @@
-import type { IDynamicFormItem } from "@imengyu/vue-dynamic-form"
+import type { FormGroupProps, IDynamicFormItem } from "@imengyu/vue-dynamic-form"
 import type { RadioValueFormItemProps, SelectValueFormItemProps } from "@imengyu/vue-dynamic-form-ant";
 
 export interface FormItemDef {
@@ -38,7 +38,7 @@ export const FormConfig : IDynamicFormItem[] = [
     },
   },
   {
-    label: '是否显示冒号',
+    label: '显示冒号',
     name: 'colon',
     type: 'switch',
     additionalProps: {},
@@ -90,7 +90,48 @@ export const FormConfig : IDynamicFormItem[] = [
     additionalProps: {
       placeholder: '请输入标签宽度',
     },
-  }
+  },
+  {
+    label: '标签占比',
+    name: 'labelCol',
+    type: 'object-group',
+    additionalProps: {
+      collapsible: true,
+      collapsed: true,
+      plain: true,
+    } as FormGroupProps,
+    children: [
+      {
+        label: '占比',
+        name: 'span',
+        type: 'number',
+        additionalProps: {
+          placeholder: '请输入标签占比',
+        },
+      },
+    ]
+  },
+  {
+    label: '内容占比',
+    name: 'wrapperCol',
+    type: 'object-group',
+    additionalProps: {
+      collapsible: true,
+      collapsed: true,
+      plain: true,
+    } as FormGroupProps,
+    children: [
+      {
+        label: '占比',
+        name: 'span',
+        type: 'number',
+        additionalProps: {
+          placeholder: '请输入内容占比',
+        },
+      },
+    ]
+  },
+
 ]
 export const FormItemCommonConfig : IDynamicFormItem[] = [
   {
@@ -351,7 +392,7 @@ export const FormItems : {
       {
         label: '简单',
         icon: 'icon-hangrongqi',
-        name: 'simple-flat',
+        name: 'flat-simple',
         expectType: 'object',
         isContainer: true,
         configs: [
@@ -360,7 +401,7 @@ export const FormItems : {
       {
         label: '分组',
         icon: 'icon-hangrongqi',
-        name: 'group-flat',
+        name: 'flat-group',
         expectType: 'object',
         extraTag: 'group',
         isContainer: true,
@@ -384,7 +425,7 @@ export const FormItems : {
       {
         label: '对象嵌套',
         icon: 'icon-shebei',
-        name: 'group-object',
+        name: 'object-group',
         expectType: 'object',
         extraTag: 'group',
         isContainer: true,

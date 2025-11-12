@@ -30,7 +30,6 @@ import WhiteSpaceVue from "./WhiteSpace.vue";
 import NumberRange from "./NumberRange.vue";
 import MapPointPicker from "./Map/MapPointPicker.vue";
 import RichText from "./Editor/RichText.vue";
-import AddressSercher from "./Map/AddressSercher.vue";
 import Sign from "./Sign.vue";
 import ShowInList from "./Display/ShowInList.vue";
 import ShowImageOrNull from "./Display/ShowImageOrNull.vue";
@@ -106,8 +105,7 @@ export function registerAllFormComponents() {
     .register('date-time-range', markRaw(WrapperRangePicker), { showTime: true })
     
     //Map
-    .register('map-pick-point', markRaw(MapPointPicker), {}, 'modelValue')
-    .register('address-sercher', markRaw(AddressSercher), {}, 'modelValue')
+    .register('select-lonlat', markRaw(MapPointPicker), {}, 'modelValue')
     //Editor
     .register('richtext', markRaw(RichText), {}, 'modelValue')
     .register('sign', markRaw(Sign), {}, 'modelValue')

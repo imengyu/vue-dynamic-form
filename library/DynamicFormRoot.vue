@@ -1,11 +1,14 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <!--空显示-->
+  <DynamicFormItemEditorContainerEmptyNote 
+    v-if="editmode && options.formItems?.length == 0"
+  />
   <slot name="empty" v-if="options.formItems?.length == 0 || !model">
     <div v-if="options.emptyText" class="dynamic-form-item-empty">{{ options.emptyText }}</div>
   </slot>
   <Alert 
-    v-else-if="(typeof model !== 'object' && !options.suppressRootError)"
+    v-else-if="(typeof model !== 'object' && !options.suppressRootError&& !editmode)"
     type="warning"
     message="DynamicForm: model is not a object!"
     :extraMessage="`At form ${name || 'unnamed'} Root`"
@@ -38,10 +41,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type PropType } from 'vue';
+import { computed, inject, type PropType } from 'vue';
 import { type IDynamicFormOptions, type IDynamicFormObject } from './DynamicForm';
 import DynamicFormItemContainer from './DynamicFormItemContainer.vue';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
+import DynamicFormItemEditorContainerEmptyNote from './DynamicFormItemEditor/DynamicFormItemEditorContainerEmptyNote.vue';
 
 /**
  * 动态表单组件。
@@ -60,6 +64,8 @@ const props = defineProps({
     default: ''
   }
 });
+
+const editmode = inject('editmode', false);
 
 const finalModel = computed(() => {
   if (typeof props.model !== 'object')
