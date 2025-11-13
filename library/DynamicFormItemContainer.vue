@@ -59,6 +59,8 @@
         :parent="item"
         :parentModel="finalModel"
         :parentName="name"
+        :isFirst="k === 0"
+        :isLast="k === (item.children?.length || 0) - 1"
         @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
         :disabled="disabled || evaluateCallback(item.disabled)"
       />
@@ -87,6 +89,8 @@
             :parent="item"
             :parentModel="finalModel"
             :parentName="name"
+            :isFirst="k === 0"
+            :isLast="k === (item.children?.length || 0) - 1"
             @update:model="(v: unknown) => (model as IDynamicFormObject)[child.name] = v"
             :disabled="disabled || evaluateCallback(item.disabled)"
           />
@@ -109,6 +113,8 @@
           :parent="item"
           :parentModel="parentModel"
           :parentName="parentName"
+          :isFirst="k === 0"
+          :isLast="k === (item.children?.length || 0) - 1"
           @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
           :disabled="disabled || evaluateCallback(item.disabled)"
         >
@@ -132,6 +138,8 @@
         :parent="item"
         :parentModel="parentModel"
         :parentName="parentName"
+        :isFirst="k === 0"
+        :isLast="k === (item.children?.length || 0) - 1"
         @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
         :disabled="disabled || evaluateCallback(item.disabled)"
       >
@@ -166,6 +174,8 @@
             :parent="child"
             :parentModel="parentModel"
             :parentName="parentName"
+            :isFirst="k === 0"
+            :isLast="k === (child.children?.length || 0) - 1"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[formRow.name] = v"
             :disabled="disabled || evaluateCallback(formRow.disabled)"
           >
@@ -202,6 +212,8 @@
             :parent="item"
             :parentModel="parentModel"
             :parentName="parentName"
+            :isFirst="k === 0"
+            :isLast="k === (item.children?.length || 0) - 1"
             @update:model="(v: unknown) => (parentModel as IDynamicFormObject)[child.name] = v"
             :disabled="disabled || evaluateCallback(item.disabled)"
           >
@@ -250,7 +262,7 @@
             <template #itemButton="props">
               <slot name="arrayButtons" v-bind="props" />
             </template>
-            <template #child="{ item, pitem, kname, model: child, onUpdateValue }">
+            <template #child="{ item, pitem, kname, model: child, onUpdateValue, isFirst, isLast }">
               <DynamicFormItemContainer
                 :item="item"
                 :name="kname"
@@ -260,6 +272,8 @@
                 :parentModel="model"
                 :parentName="name"
                 :disabled="disabled || evaluateCallback(item.disabled)"
+                :isFirst="isFirst"
+                :isLast="isLast"
                 @update:model="(v: unknown) => onUpdateValue(v)"
               />
             </template>
@@ -285,6 +299,8 @@
         :rawModel="rawModel"
         :parentModel="parentModel"
         :parentName="parentName"
+        :isFirst="isFirst"
+        :isLast="isLast"
       >
         <template #insertion>
           <DynamicFormItemEditorContainerEmptyNote v-if="showContainerEmptyNote" />
@@ -305,7 +321,7 @@
             <template #itemButton="props">
               <slot name="arrayButtons" v-bind="props" />
             </template>
-            <template #child="{ item, pitem, kname, model: child, onUpdateValue }">
+            <template #child="{ item, pitem, kname, model: child, onUpdateValue, isFirst, isLast }">
               <DynamicFormItemContainer
                 :item="item"
                 :name="kname"
@@ -314,6 +330,8 @@
                 :parent="pitem"
                 :parentModel="model"
                 :parentName="name"
+                :isFirst="isFirst"
+                :isLast="isLast"
                 :disabled="disabled || evaluateCallback(item.disabled)"
                 @update:model="(v: unknown) => onUpdateValue(v)"
               />
@@ -332,6 +350,8 @@
       :rawModel="rawModel"
       :parentModel="parentModel"
       :model="finalModel"
+      :isFirst="isFirst"
+      :isLast="isLast"
       @update:model="(v: unknown) => $emit('update:model', v)"
     >
       <template #formCeil="values">
@@ -395,7 +415,15 @@ const props = defineProps({
   colProps: {
     type: Object as PropType<ColProps>,
     default: null,
-  }
+  },
+  isFirst: {
+    type: Boolean,
+    default: false,
+  },
+  isLast: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const containerTypes = ['object', 'object-group', 'array-single','group-array','flat-simple','flat-group'];
@@ -420,11 +448,12 @@ const finalOptions = inject<Ref<IDynamicFormOptions>>('finalOptions');
 const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
 const formRef = inject<IDynamicFormRef>('formRef');
 const editmode = inject('editmode', false);
+const formName = inject('formName', '')
 
 //判断是否显示当前条目
 const isShow = computed(() => {
   if (props.item.show && props.item.hidden) {
-    console.warn('[DynamicFormItemContainer] The item has both hidden and show properties set. It will be shown. ', props.name);
+    console.warn(`[DynamicFormItemContainer] The item has both hidden and show properties set. It will be shown. At form ${formName}:${props.name}`);
     return true;
   }
   if (props.item.hidden !== undefined) {
@@ -464,6 +493,8 @@ function evaluateCallback<T>(val: T|IDynamicFormItemCallback<T>) {
         form: formRef!,
         formGlobalParams: globalParams?.value || {},
         formRules: (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+        isFirst: propsP.isFirst.value,
+        isLast: propsP.isLast.value,
       }
     );
   return val as T;

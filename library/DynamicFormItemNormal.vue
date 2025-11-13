@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, h, inject, onMounted, type PropType, type Ref, ref, renderSlot, toRefs } from 'vue';
+import { defineComponent, h, inject, type PropType, type Ref, ref, renderSlot, toRefs } from 'vue';
 import type { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from './DynamicForm';
 import type { Rules } from 'async-validator';
 import type { VNode } from 'vue';
@@ -7,7 +7,7 @@ import DynamicFormItemRenderer, { type DynamicFormItemRendererInterface } from '
 import FormItem from './DynamicFormBasicControls/FormItem.vue';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 
-export interface FormCeilProps extends IDynamicFormItem {
+export interface FormCeilProps {
   ref: Ref<DynamicFormItemRendererInterface | undefined>,
   value: unknown,
   rawModel: unknown,
@@ -63,13 +63,22 @@ export default defineComponent({
       type: Object,
       default: null
     },
+    isFirst: {
+      type: Boolean,
+      default: false,
+    },
+    isLast: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [ 'update:model' ],
   setup(props, ctx) {
     const {
        model, rawModel, parentModel, parent,
        name, item, disabled, noLabel,
-       formWrapperColDefault, formLabelColDefault
+       formWrapperColDefault, formLabelColDefault,
+       isFirst, isLast,
     } = toRefs(props);
 
     function onModelUpdate(newVal: unknown) {
@@ -95,6 +104,8 @@ export default defineComponent({
             form: formRef!,
             formGlobalParams: globalParams?.value || {},
             formRules: (finalOptions?.value.formRules ?? {}) as Record<string, Rules>,
+            isFirst: isFirst.value,
+            isLast: isLast.value,
           }
         );
       return val as unknown;
@@ -137,6 +148,8 @@ export default defineComponent({
           rule: formRules ? formRules[item.value.name] : undefined,
           rules: item.value.rules,
           disabled: disabled.value,
+          isFirst: isFirst.value,
+          isLast: isLast.value,
         }));
       }
       //静态文字

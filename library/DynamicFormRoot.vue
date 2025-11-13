@@ -23,6 +23,8 @@
       :rawModel="finalModel"
       :model="finalModel[item.name]"
       :parentModel="finalModel"
+      :isFirst="index === 0"
+      :isLast="index === options.formItems.length - 1"
       @update:model="(v: unknown) => finalModel[item.name] = v"
       :disabled="options.disabled"
     >

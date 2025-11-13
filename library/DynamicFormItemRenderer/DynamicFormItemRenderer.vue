@@ -76,7 +76,7 @@ export default defineComponent({
     function onUpdateValue(v: unknown) {
       //通知更新
       if (item.value?.watch)
-        item.value.watch(value.value, v, getRef);
+        item.value.watch(value.value, v, rawModel.value, getRef);
       context.emit('update:value', v);
     }
     function registerInternalDynamicFormItemControls() : void {
@@ -131,13 +131,13 @@ export default defineComponent({
       //注册事件中心
       messageCenter?.addInstance(name.value!, onMessage)
       //通知钩子
-      item.value?.mounted?.(value.value, getRef);
+      item.value?.mounted?.(value.value, rawModel.value, getRef);
     });
     onBeforeUnmount(() => {
       //移除事件中心
       messageCenter?.removeInstance(name.value!)
       //通知钩子
-      item.value?.beforeUnmount?.(getRef());
+      item.value?.beforeUnmount?.(value.value, rawModel.value, getRef());
     });
 
     function onMessage(messageName: string, data: unknown) {

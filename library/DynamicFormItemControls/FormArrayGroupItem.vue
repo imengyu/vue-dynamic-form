@@ -9,6 +9,8 @@
       :kname="name+keyName+'.'+child.name"
       :model="(childData as IDynamicFormObject)[child.name]"
       :onUpdateValue="(v: any) => (childData as IDynamicFormObject)[child.name] = v"
+      :isFirst="k === 0"
+      :isLast="k === (item.children?.length || 0) - 1"
     />
   </div>
   <div v-else-if="item.children" class="form-container">
@@ -20,6 +22,8 @@
       :kname="name+keyName"
       :model="childData"
       :onUpdateValue="(v: any) => $emit('update:childData', v)"
+      :isFirst="isFirst"
+      :isLast="isLast"
     />
   </div>
 
@@ -44,8 +48,7 @@
 
 <script lang="ts" setup>
 import type { PropType } from "vue";
-import type { IDynamicFormItem } from "../DynamicForm";
-import type { IDynamicFormObject } from "../DynamicForm";
+import type { IDynamicFormItem, IDynamicFormObject } from "../DynamicForm";
 import IconUp from "../Images/IconUp.vue";
 import IconDown from "../Images/IconDown.vue";
 import IconDelete from "../Images/IconDelete.vue";
@@ -86,6 +89,14 @@ defineProps({
   showUpDownButton: {
     type: Boolean,
     default: true,
+  },
+  isFirst: {
+    type: Boolean,
+    default: false,
+  },
+  isLast: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

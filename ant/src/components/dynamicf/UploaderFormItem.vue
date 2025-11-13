@@ -1,21 +1,19 @@
 <template>
   <a-upload 
-    v-bind="customProps"
     :disabled="disabled"
     v-model:file-list="uploadSubImgList"
     list-type="picture-card"
     :class="uploadClass"
     :max-count="maxCount"
     :show-upload-list="!single"
+    v-bind="customProps"
     :customRequest="handleUpload"
     :beforeUpload="handleBeforeUpload"
     @reject="handleUploadSubImgReject"
     @change="handleUploadSubImgChange"
   >
     <template v-if="single">
-      
-      <div v-if="Boolean(value)" class="ant-upload-image">
-        <span v-if="!disabled">点击替换图片</span>
+      <div v-if="Boolean(value)" class="ant-upload-image">=
         <a-image
           :src="(value as string)"
           alt="avatar"

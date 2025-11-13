@@ -183,10 +183,18 @@ export default defineComponent({
     const formRef : IDynamicFormRef = {
       initDefaultValuesToModel,
       getVisibleFormNames,
-      getFormRef: () => formEditor.value,
+      getFormRef() {
+        if (!formEditor.value)
+          throw new Error('Form instance is not create. At form: ' + name.value);
+        return formEditor.value
+      },
       getFormItemControlRef: getFormItemControlRef as any,
-      submit: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit'](),
-      validate: () => formEditor.value[finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate'](),
+      submit() {
+        return this.getFormRef<any>()[finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit']();
+      },
+      validate() {
+        return this.getFormRef<any>()[finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate']();
+      },
       setValueByPath: (path: string|string[], value: unknown) => {
         if (Array.isArray(path))
           path = path.join('.');

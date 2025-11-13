@@ -40,6 +40,14 @@ export type IDynamicFormItemCallback<T> = {
      * 当前条目校验数据
      */
     formRules?: Record<string, Rule>,
+    /**
+     * 是否是所在层级的第一个表单项
+     */
+    isFirst: boolean,
+    /**
+     * 是否是所在层级的最后一个表单项
+     */
+    isLast: boolean,
   }, ) => T;
 }
 
@@ -129,13 +137,13 @@ export interface IDynamicFormItem {
    * @param getComponentRef 当前组件的实例
    * @returns 
    */
-  mounted?: (nowValue: unknown, getComponentRef: () => unknown) => void;
+  mounted?: (nowValue: unknown, rawModel: unknown, getComponentRef: () => unknown) => void;
   /**
    * 当前表单组件卸载之前的钩子函数
    * @param componentRef 当前组件的实例
    * @returns 
    */
-  beforeUnmount?: (componentRef: () => unknown) => void;
+  beforeUnmount?: (nowValue: unknown, rawModel: unknown, componentRef: () => unknown) => void;
   /**
    * 监听当前表单项数据更改
    * @param oldValue 旧数据
@@ -143,7 +151,7 @@ export interface IDynamicFormItem {
    * @param getComponentRef 当前组件的实例
    * @returns 
    */
-  watch?: (oldValue: unknown, newValue: unknown, getComponentRef: () => unknown) => void,
+  watch?: (oldValue: unknown, newValue: unknown, rawModel: unknown, getComponentRef: () => unknown) => void,
   /**
    * 监听从外部或者其他表单发送过来的消息事件
    * @param messageName 消息名称
