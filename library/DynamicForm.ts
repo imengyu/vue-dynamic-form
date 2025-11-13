@@ -73,9 +73,15 @@ export interface IDynamicFormItem {
    */
   type: string;
   /**
-   * 是否隐藏当前表单项
+   * 是否隐藏当前表单项。当返回true隐藏当前条目。为undefined或者返回其他值时，默认显示。
+   * * 注意：hidden 与 show 不能同时设置。
    */
   hidden?: boolean|IDynamicFormItemCallback<boolean>;
+  /**
+   * 是否显示当前表单项。当返回false隐藏当前条目。为undefined或者返回其他值时，默认显示。
+   * * 注意：hidden 与 show 不能同时设置。
+   */
+  show?: boolean|IDynamicFormItemCallback<boolean>;
   /**
    * 是否禁用当前表单项
    */

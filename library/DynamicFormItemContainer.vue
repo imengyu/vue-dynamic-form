@@ -1,11 +1,11 @@
 
 <template>
   <Col 
-    v-if="editmode || evaluateCallback(item.hidden) !== true"
+    v-if="editmode || isShow"
     :class="[
       'dynamic-form-item-wrapper',
       finalOptions?.nestObjectMargin !== false && item.nestObjectMargin !== false ? 'nest-with-margin' : '',
-      editmode && evaluateCallback(item.hidden) === true ? 'editor-hidden' : ''
+      editmode && !isShow ? 'editor-hidden' : ''
     ]"
     :data-dynamic-form-item="item.name"
     :data-dynamic-form-item-type="item.type"
@@ -421,6 +421,23 @@ const globalParams = inject<Ref<IDynamicFormObject>>('globalParams');
 const formRef = inject<IDynamicFormRef>('formRef');
 const editmode = inject('editmode', false);
 
+//判断是否显示当前条目
+const isShow = computed(() => {
+  if (props.item.show && props.item.hidden) {
+    console.warn('[DynamicFormItemContainer] The item has both hidden and show properties set. It will be shown. ', props.name);
+    return true;
+  }
+  if (props.item.hidden !== undefined) {
+    const hidden = evaluateCallback(props.item.hidden);
+    if (hidden !== undefined && hidden === true)
+      return false;
+  } else if (props.item.show !== undefined) {
+    const show = evaluateCallback(props.item.show);
+    if (show === false)
+      return false;
+  }
+  return true;
+});
 
 //处理默认值
 const finalModel = computed(() => {
