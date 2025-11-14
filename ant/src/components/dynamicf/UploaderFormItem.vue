@@ -4,7 +4,7 @@
     v-model:file-list="uploadSubImgList"
     list-type="picture-card"
     :class="uploadClass"
-    :max-count="maxCount"
+    :max-count="maxUploadCount"
     :show-upload-list="!single"
     v-bind="customProps"
     :customRequest="handleUpload"
@@ -68,7 +68,7 @@ const props = defineProps({
   /**
    * 上传工厂类
    */
-  uploadCo: {
+  upload: {
     type: Object as PropType<UploadCoInterface>,
     default: null,
   },
@@ -93,9 +93,16 @@ const props = defineProps({
     default: false
   },
   /**
+   * 上传文件大小限制，单位字节
+   */
+  maxFileSize: {
+    type: Number,
+    default: 0,
+  },
+  /**
    * single 为false时，限制最多上传图片的数量
    */
-  maxCount: {
+  maxUploadCount: {
     type: Number,
     default: 0,
   },
@@ -159,10 +166,14 @@ function handleBeforeUpload(file: FileItem) {
   const result = props.beforeUpload?.(file) ?? true;
   if (!result)
     needRemoveItem.push(file.uid);
+  if (props.maxFileSize > 0 && file.size > props.maxFileSize) {
+    message.error('文件大小不能超过' + props.maxFileSize + '字节！');
+    return false;
+  }
   return result;
 }
 async function handleUpload(requestOption: AntUploadRequestOption) {
-  props.uploadCo?.uploadRequest(requestOption);
+  props.upload?.uploadRequest(requestOption);
 }
 function handleUploadSubImgReject(e: FileInfo) {
   console.log(e);
@@ -180,7 +191,7 @@ function handleUploadSubImgChange(info: FileInfo) {
     return;
   }
   if (info.file.status === 'done') {
-    const url = props.uploadCo?.getUrlByUploadResponse(info.file.response) || '';
+    const url = props.upload?.getUrlByUploadResponse(info.file.response) || '';
     if (props.single)
       emits('update:value', url);
     else

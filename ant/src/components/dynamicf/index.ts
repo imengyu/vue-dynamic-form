@@ -1,6 +1,6 @@
 import { markRaw } from "vue";
 import { 
-  Alert, Checkbox, DatePicker, Form, 
+  Alert, Button, Checkbox, DatePicker, Form, 
   FormItem, Image, Input, InputNumber, 
   Rate, Select, Switch, Textarea, TimePicker
 } from "ant-design-vue";
@@ -113,8 +113,10 @@ export function registerAllFormComponents() {
     .register('uploader', markRaw(UploaderFormItem), {}, 'modelValue')
     //Extra
     .register('actions', markRaw(ActionRender))
-    //Display
+    .register('image', markRaw(Image), {}, "src")
+    .register('button', markRaw(Button))
     .register('alert', markRaw(Alert))
+    //Display
     .register('space', markRaw(WhiteSpaceVue))
     //Static
     .register('static-image', markRaw(Image), {}, "src")
