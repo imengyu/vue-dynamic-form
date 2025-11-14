@@ -68,9 +68,26 @@ const initOptions = computed<RawEditorOptions>(() => ({
     'blockquote | indent2em | indent outdent | lineheight | alignjustify alignleft aligncenter alignright alignnone |' + 
     'link anchor image media table insertdatetime | hr pagebreak | fullscreen',
   setup(editor: EditorType) {
-    editor.ui.registry.addButton('indent2em', {
+    editor.ui.registry.addSplitButton('indent2em', {
       tooltip: '首行缩进2字符',
       text: '首行空2',
+      columns: 2,
+      onItemAction(api, value) {
+        if (value === 'indentAll2em') {
+          const dom = editor.dom;
+          const blocks = editor.selection.getSelectedBlocks(); // 拿到所有选区块
+          if (!blocks.length) return;
+          const needAdd = Array.from(blocks).some(
+            b => dom.getStyle(b, 'text-indent') !== '2em'
+          );
+          if (!needAdd) 
+            return;
+          blocks.forEach(b => {
+            if (needAdd) dom.setStyle(b, 'text-indent', '2em');
+            else dom.setStyle(b, 'text-indent', '');
+          });
+        }
+      },
       onAction() {
         const dom = editor.dom;
         const blocks = editor.selection.getSelectedBlocks(); // 拿到所有选区块
@@ -81,8 +98,15 @@ const initOptions = computed<RawEditorOptions>(() => ({
         );
         blocks.forEach(b => {
           if (needAdd) dom.setStyle(b, 'text-indent', '2em');
-          else dom.setStyle(b, 'text-indent', '');          // 取消
+          else dom.setStyle(b, 'text-indent', ''); // 取消
         });
+      },
+      fetch(callback) {
+        callback([{
+          type: 'choiceitem',
+          value: 'indentAll2em',
+          label: '一键排版',
+        }]);
       }
     });
   },
@@ -115,6 +139,12 @@ const initOptions = computed<RawEditorOptions>(() => ({
 
 onMounted(() => {
   tinymce.init(initOptions.value);
+
+  setTimeout(() => {
+    document.querySelectorAll('button[data-mce-name="indent2em"]').forEach(item => {
+      (item as HTMLElement).style.width = '74px';
+    })
+  }, 800)
 })
 </script>
 
