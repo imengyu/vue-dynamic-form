@@ -25,7 +25,7 @@
 import { onMounted, ref, type PropType } from 'vue';
 
 export interface CheckBoxListItem {
-  label: string;
+  text: string;
   value: any;
   disable?: boolean;
 }
@@ -55,7 +55,11 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 const loadStatus = ref<'loading' | 'error' | 'success'>('loading');
 const loadError = ref('');
-const data2 = ref<CheckBoxListItem[]>([]);
+const data2 = ref<{
+  label: string;
+  value: any;
+  disabled?: boolean;
+}[]>([]);
 
 const handleChange = (checkedValues: any[]) => {
   emit('update:modelValue', checkedValues);
@@ -66,7 +70,11 @@ const handleLoadData = () => {
   loadError.value = '';
   
   props.loadData().then((v) => {
-    data2.value = v;
+    data2.value = v.map(item => ({
+      label: item.text,
+      value: item.value,
+      disabled: item.disable
+    }));
     loadStatus.value = 'success';
   }).catch((e) => {
     loadError.value = e.message || '加载失败';

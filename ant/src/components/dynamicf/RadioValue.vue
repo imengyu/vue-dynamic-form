@@ -11,7 +11,7 @@
       :value="it.value"
       v-bind="customProps"
     >
-      {{it.label}}
+      {{it.text}}
     </a-radio>
   </a-radio-group>
 </template>

@@ -12,6 +12,11 @@
     :filterOption="showSearch && filterDirectly ? filterOption : false"
     @update:value="handleChange"
     @search="handleSearch"
+    :fieldNames="{
+      label: 'text',
+      value: 'value',
+      options: 'options',
+    }"
     v-bind="customProps"
     style="min-width: 150px"
   >
@@ -32,7 +37,7 @@ import type { DataModel } from "@imengyu/js-request-transform";
 
 type RenderOption<T> = (data: {
   value: unknown,
-  label: string,
+  text: string,
   raw: T
 }) => VNode;
 
@@ -138,14 +143,14 @@ const doLoadData = (val: string | null) => {
   }
 };
 const filterOption = (input: string, option: {
-  label: string;
+  text: string;
 }) => {
-  return !props.filterDirectly || option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+  return !props.filterDirectly || option.text.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
 const getLableByValue = (value: number) => {
   for (let i = 0; i < data.value.length; i++) {
     if (data.value[i]?.value == value) {
-      return data.value[i]?.label;
+      return data.value[i]?.text;
     }
   }
   return "";

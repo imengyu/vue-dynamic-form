@@ -7,7 +7,7 @@ export interface BaseRadioProps {
    * 选项数据
    */
   items: {
-    label: string,
+    text: string,
     value: string|number,
   }[];
   /**

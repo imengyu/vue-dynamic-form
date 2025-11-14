@@ -9,7 +9,10 @@
   ]">
     <h5 v-if="title" @click="collapsible ? collapsed = !collapsed : null">
       <span>{{ title }}</span>
-      <IconDown v-if="collapsible" class="collapsible-icon" />
+      <span class="right">
+        点击这里展开
+        <IconDown v-if="collapsible" class="collapsible-icon" />
+      </span>
     </h5>
     <Row v-if="!collapsed" :justify="(justify as any)" :gutter="gutter">
       <slot />
@@ -74,13 +77,11 @@ const collapsed = ref(props.collapsed);
 
 <style lang="scss">
 .dynamic-form-group {
-  padding: 10px;
+  padding: 15px;
   background-color: var(--dynamic-form-background-color);
   border-radius: var(--dynamic-form-border-radius);
 
   &.collapsed {
-    padding: 0;
-
     .collapsible-icon {
       transform: rotate(0deg);
     }
@@ -105,6 +106,12 @@ const collapsed = ref(props.collapsed);
     color: var(--dynamic-form-text-color);
     margin: 0;
     margin-bottom: 12px;
+
+    .right {
+      font-size: 12px;
+      color: var(--dynamic-form-text-color);
+      margin-right: 6px;
+    }
   }
 
   &.plain {

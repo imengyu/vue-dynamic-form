@@ -10,7 +10,7 @@
         :checked="value==item.value"
         @change="() => onValueUpdate(item.value)"
       />
-      <label :for="name+item.value">{{item.label}}</label>
+      <label :for="name+item.value">{{item.text}}</label>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ defineProps({
   items: {
     type: Object as PropType<Array<{
       value: string,
-      label: string,
+      text: string,
     }>>,
     default: () => ([] as Object),
   }

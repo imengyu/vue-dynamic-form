@@ -103,7 +103,7 @@ function handleSearch() {
 // 定义select组件的选项
 const selectOptions = computed<SelectProps['options']>(() => {
   return addressList.value.map(item => ({
-    label: item.name,
+    text: item.name,
     value: item.address,
     data: item
   }));
@@ -135,7 +135,7 @@ const selectOptions = computed<SelectProps['options']>(() => {
             <template #renderItem="{ item }">
               <div class="list-item" @click="handleSelectAddress(item.data)">
                 <div class="list-item-content">
-                  <div class="list-item-title">{{ item.label }}</div>
+                  <div class="list-item-title">{{ item.text }}</div>
                   <div class="list-item-desc">{{ item.value }}</div>
                 </div>
               </div>

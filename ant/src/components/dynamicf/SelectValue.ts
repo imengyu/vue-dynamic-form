@@ -1,7 +1,7 @@
 import type { SelectProps } from "ant-design-vue";
 
 export interface SelectValueOption {
-  label: string,
+  text: string,
   value: unknown,
 }
 

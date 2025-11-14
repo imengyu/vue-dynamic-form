@@ -1,4 +1,4 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, resolve, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(), 
     dts({
-      
+      include: ['./**/*.ts'],
     }),
   ],
   resolve: {

@@ -16,6 +16,11 @@
     :placeholder="placeholder"
     :allow-clear="allowClear"
     :multiple="multiple"
+    :fieldNames="{
+      label: 'text',
+      value: 'value',
+      children:'children',
+    }"
     v-bind="customProps"
     @blur="handleSelectBlur"
     @update:value="handleChange"

@@ -4,6 +4,7 @@
   "main": "lib/vue-dynamic-form-ant.umd.js",
   "module": "lib/vue-dynamic-form-ant.es.js",
   "type": "module",
+  "types": "lib/index.d.ts",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },

@@ -1,7 +1,7 @@
 import type { RadioGroupProps, RadioProps } from "ant-design-vue";
 
 export interface RadioIdOption {
-  label: string,
+  text: string,
   value: unknown,
 }
 

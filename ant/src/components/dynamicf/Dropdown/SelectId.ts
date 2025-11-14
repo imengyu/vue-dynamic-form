@@ -6,7 +6,7 @@ import type { VNode } from "vue";
  * 通用下拉框返回结构定义
  */
 export interface DropdownValues<T> {
-  label: string,
+  text: string,
   value: number,
   raw: T;
 }
@@ -84,5 +84,5 @@ export interface SelectIdProps<T extends DataModel> {
 }
 export type RenderOption = (data: {
   value: unknown,
-  label: string,
+  text: string,
 }) => VNode;

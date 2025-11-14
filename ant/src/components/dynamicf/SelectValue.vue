@@ -10,7 +10,7 @@
     :key="it.value" 
     :value="it.value"
     >
-      {{ it.label }}
+      {{ it.text }}
     </a-select-option>
   </a-select>
 </template>
