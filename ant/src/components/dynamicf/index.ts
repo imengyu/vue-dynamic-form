@@ -98,11 +98,11 @@ export function registerAllFormComponents() {
 
     //Date
     .register('date', markRaw(DatePicker))
-    .register('time', markRaw(TimePicker))
-    .register('date-time', markRaw(DatePicker), { showTime: true })
     .register('date-range', markRaw(WrapperRangePicker))
+    .register('time', markRaw(TimePicker))
     .register('time-range', markRaw(WrapperTimeRangePicker))
-    .register('date-time-range', markRaw(WrapperRangePicker), { showTime: true })
+    .register('datetime', markRaw(DatePicker), { showTime: true })
+    .register('datetime-range', markRaw(WrapperRangePicker), { showTime: true })
     
     //Map
     .register('select-lonlat', markRaw(MapPointPicker), {}, 'modelValue')
