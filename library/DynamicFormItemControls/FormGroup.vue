@@ -8,9 +8,9 @@
     }
   ]">
     <h5 v-if="title" @click="collapsible ? collapsed = !collapsed : null">
-      <span>{{ title }}</span>
+      <span class="title">{{ title }}</span>
       <span class="right">
-        点击这里展开
+        <span v-if="collapsible">点击这里展开</span>
         <IconDown v-if="collapsible" class="collapsible-icon" />
       </span>
     </h5>

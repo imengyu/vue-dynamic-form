@@ -428,7 +428,7 @@ const props = defineProps({
 
 const containerTypes = ['object', 'object-group', 'array-single','group-array','flat-simple','flat-group'];
 const isContainer = computed(() => containerTypes.includes(props.item.type));
-const showContainerEmptyNote = computed(() => isContainer.value && (!props.item.children || props.item.children.length === 0));
+const showContainerEmptyNote = computed(() => editmode && isContainer.value && (!props.item.children || props.item.children.length === 0));
 
 defineEmits([	'update:model' ]);
 defineSlots<{

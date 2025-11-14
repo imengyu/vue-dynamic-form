@@ -153,20 +153,41 @@ export default defineComponent({
 
     //初始化默认值到模型
     function initDefaultValuesToModel() {
-      function loopItems(key: string, items: IDynamicFormItem[]) {
+      function loopItems(key: string, parentKey: string, type: string, items: IDynamicFormItem[]) {
+        let i = 0;
         for (const item of items) {
-          const currentKey = (key ? key + '.' : '') + item.name;
-          if (item.children)
-            loopItems(currentKey, item.children);
+          let currentKey = key;
+          switch (type) {
+            case 'flat-simple':
+            case 'flat-group':
+              currentKey = (parentKey ? parentKey + '.' : '') + item.name;
+              break;
+            default:
+            case 'object':
+            case 'object-group':
+              currentKey = (key ? key + '.' : '') + item.name;
+              break
+            case 'array':
+              currentKey = (parentKey ? parentKey + '.' : '') + `[${i}]`;
+              break;
+            case 'array-object':
+              currentKey = (parentKey ? parentKey + '.' : '') + `[${i}]` + item.name;
+              break;
+          }
+          if (item.children) {
+            loopItems(currentKey, key, item.type || '', item.children);
+          }
+          //console.log(currentKey);
           if (item.defaultValue !== undefined) {
             const oldValue = accessFormModel(currentKey, false, undefined);
             if (oldValue !== undefined && oldValue !== null)
               continue;
             accessFormModel(currentKey, true, item.defaultValue);
           }
+          i++;
         }
       }
-      loopItems('', finalOptions.value.formItems);
+      loopItems('', '', '', finalOptions.value.formItems);
     }
 
     //获取当前表单中可见的所有字段名
