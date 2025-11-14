@@ -165,9 +165,9 @@ const reload = (clearValue = false) => {
 };
 
 
-watch(() => props.loadData, () => {
-  doLoadData(props.intitialSearchValue);
-});
+// watch(() => props.loadData, () => {
+//   doLoadData(props.intitialSearchValue);
+// });
 watch(() => props.intitialSearchValue, (v) => {
   if (!props.filterDirectly && !StringUtils.isNullOrEmpty(v)) {
     doLoadData(v);
