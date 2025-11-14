@@ -23,7 +23,7 @@
   "homepage": "https://github.com/imengyu/vue-dynamic-form",
   "author": "imengyu",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite dev editor",
     "test:unit": "vitest --environment jsdom --root src/",
     "build": "vite build library",
     "build-ant": "vite build ant",

@@ -90,7 +90,13 @@ export function registerAllFormComponents() {
     .register('number-range', markRaw(NumberRange))
 
     //Select
-    .register('select', markRaw(Select))
+    .register('select', markRaw(Select), {
+      fieldNames: {
+        label: 'text',
+        value: 'value',
+        options: 'options',
+      }
+    })
     .register('select-value', markRaw(SelectValue))
     .register('select-id', markRaw(SelectId))
     .register('select-tree-id', markRaw(SelectTreeId))

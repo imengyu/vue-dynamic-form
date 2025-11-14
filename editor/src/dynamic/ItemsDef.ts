@@ -1,5 +1,8 @@
 import type { FormGroupProps, IDynamicFormItem } from "@imengyu/vue-dynamic-form"
 import type { RadioValueFormItemProps, SelectValueFormItemProps } from "@imengyu/vue-dynamic-form-ant";
+import type { InputNumberProps } from "ant-design-vue";
+import type { RuleItem } from "async-validator";
+import { reactive } from "vue";
 
 export interface FormItemDef {
   label: string,
@@ -50,11 +53,11 @@ export const FormConfig : IDynamicFormItem[] = [
     additionalProps: {
       options: [
         {
-          label: '垂直布局',
+          text: '垂直布局',
           value: 'vertical',
         },
         {
-          label: '水平布局',
+          text: '水平布局',
           value: 'horizontal',
         },
       ],
@@ -69,15 +72,15 @@ export const FormConfig : IDynamicFormItem[] = [
     additionalProps: {
       options: [
         {
-          label: '左侧',
+          text: '左侧',
           value: 'left',
         },
         {
-          label: '居中',
+          text: '居中',
           value: 'center',
         },
         {
-          label: '右侧',
+          text: '右侧',
           value: 'right',
         },
       ],
@@ -89,7 +92,9 @@ export const FormConfig : IDynamicFormItem[] = [
     type: 'number',
     additionalProps: {
       placeholder: '请输入标签宽度',
-    },
+      min: 0,
+      addonAfter: 'px',
+    } as InputNumberProps,
   },
   {
     label: '标签占比',
@@ -100,15 +105,26 @@ export const FormConfig : IDynamicFormItem[] = [
       collapsed: true,
       plain: true,
     } as FormGroupProps,
+    childrenColProps: { span: 12 },
     children: [
       {
         label: '占比',
         name: 'span',
         type: 'number',
         additionalProps: {
-          placeholder: '请输入标签占比',
+          min: 0,
+          max: 24,
         },
       },
+      {
+        label: '偏移',
+        name: 'offset',
+        type: 'number',
+        additionalProps: {
+          min: 0,
+          max: 24,
+        },
+      }
     ]
   },
   {
@@ -120,15 +136,26 @@ export const FormConfig : IDynamicFormItem[] = [
       collapsed: true,
       plain: true,
     } as FormGroupProps,
+    childrenColProps: { span: 12 },
     children: [
       {
         label: '占比',
         name: 'span',
         type: 'number',
         additionalProps: {
-          placeholder: '请输入内容占比',
+          min: 0,
+          max: 24,
         },
       },
+      {
+        label: '偏移',
+        name: 'offset',
+        type: 'number',
+        additionalProps: {
+          min: 0,
+          max: 24,
+        },
+      }
     ]
   },
 
@@ -148,6 +175,165 @@ export const FormItemCommonConfig : IDynamicFormItem[] = [
     type: 'switch',
     additionalProps: {},
   },
+]
+export const FormItemLastCommonConfig : IDynamicFormItem[] = [
+  {
+    label: '表单验证',
+    name: 'validator',
+    type: 'flat-group',
+    additionalProps: {
+      collapsible: true,
+      plain: true,
+    } as FormGroupProps,
+    children: [
+      {
+        label: '验证规则',
+        name: 'rules',
+        type: 'array-object',
+        formLabelCol: { span: 24 },
+        formWrapperCol: { span: 24 },
+        suppressEmptyError: true,
+        defaultValue: () => reactive([]),
+        newChildrenObject(arrayNow) {
+          arrayNow.push({
+            required: true,
+            message: '请输入值',
+            enum: [],
+          } as RuleItem)
+        },
+        colProps: { span: 24 },
+        childrenColProps: { span: 24 },
+        children: [
+          {
+            label: '必填',
+            name: 'required',
+            type: 'switch',
+            additionalProps: {},
+          },
+          {
+            label: '验证消息',
+            name: 'message',
+            type: 'text',
+            additionalProps: {
+              placeholder: '请输入验证消息',
+            },
+          },
+          {
+            label: '类型',
+            name: 'type',
+            type: 'select',
+            additionalProps: {
+              options: [
+                {
+                  text: '字符串',
+                  value: 'string',
+                },
+                {
+                  text: '数字',
+                  value: 'number',
+                },
+                {
+                  text: '布尔值',
+                  value: 'boolean',
+                },
+                {
+                  text: '数组',
+                  value: 'array',
+                },
+                {
+                  text: '对象',
+                  value: 'object',
+                },
+              ],
+              value: 'string',
+              customProps: {},
+            } as SelectValueFormItemProps,
+          },
+          {
+            label: '长度',
+            name: 'length',
+            type: 'number',
+            additionalProps: {
+              min: 0,
+              max: 1000,
+              placeholder: '请输入长度',
+            },
+          },
+          {
+            label: '正则表达式',
+            name: 'pattern',
+            type: 'text',
+            additionalProps: {
+              placeholder: '请输入正则表达式',
+            },
+          },
+          {
+            label: '最小值',
+            name: 'min',
+            type: 'number',
+            additionalProps: {
+              min: 0,
+              max: 1000,
+            },
+          },
+          {
+            label: '最大值',
+            name: 'max',
+            type: 'number',
+            additionalProps: {
+              min: 0,
+              max: 1000,
+            },
+          },
+          {
+            label: '枚举值',
+            name: 'enum',
+            type: 'array-single',
+            additionalProps: {
+              placeholder: '请输入枚举值',
+            },
+            newChildrenObject(arrayNow) {
+              arrayNow.push('')
+            },
+            children: [
+              {
+                label: '值',
+                name: 'enum',
+                type: 'text',
+                additionalProps: {
+                  placeholder: '请输入枚举值',
+                },
+              },
+            ]
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: '样式',
+    name: 'style',
+    type: 'flat-group',
+    additionalProps: {
+      collapsible: true,
+      plain: true,
+    } as FormGroupProps,
+    children: [
+
+    ],
+  },
+  {
+    label: '事件',
+    name: 'events',
+    type: 'flat-group',
+    additionalProps: {
+      collapsible: true,
+      plain: true,
+    } as FormGroupProps,
+    children: [
+
+    ],
+  }
 ]
 
 export const FormItems : {

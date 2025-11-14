@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { FormConfig, FormItemCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
+import { FormConfig, FormItemCommonConfig, FormItemLastCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
 import { ScrollRect } from '@imengyu/vue-scroll-rect'; 
 import type { FormProps } from 'ant-design-vue';
 import type { IDynamicFormItem, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
@@ -53,6 +53,7 @@ import FormEditorPreview from './FormEditorPreview.vue';
 const tabLeft = ref('list');
 const tabRight = ref('form');
 
+//当前编辑中的表单配置
 const currentFormOptions = ref<IDynamicFormOptions>({
   formAdditionaProps: {
     layout: 'horizontal',
@@ -79,11 +80,11 @@ const currentFormOptions = ref<IDynamicFormOptions>({
     
   ],
 });
+
+//组件使用：当前选中的表单条目和对应的属性表单配置
 const currentFormSelectedFormItems = ref<IDynamicFormItem[]>([]);
 const currentFormItemProps = computed<IDynamicFormOptions>(() => {
-  
   const formItemConfig : IDynamicFormItem[] = [];
-
   if (currentFormSelectedFormItems.value.length > 0) {
     if (
       currentFormSelectedFormItems.value.length === 1 
@@ -94,22 +95,22 @@ const currentFormItemProps = computed<IDynamicFormOptions>(() => {
       );
     }
   }
-
   return {
-    formAdditionaProps: {
-      layout: 'vertical',
-    } as FormProps,
-    formItems: FormItemCommonConfig.concat(formItemConfig),
+    formAdditionaProps: propsFormAdditionaProps,
+    formItems: FormItemCommonConfig.concat(formItemConfig, FormItemLastCommonConfig),
   }
 });
 
+//组件使用：属性表单
+const propsFormAdditionaProps : FormProps = {
+  layout: 'horizontal',
+  labelCol: { span: 8 },
+  labelAlign: 'left',
+  wrapperCol: { span: 16 },
+  size: 'small',
+}
 const propsDynamicFormOptions : IDynamicFormOptions = {
-  formAdditionaProps: {
-    layout: 'horizontal',
-    labelCol: { span: 8 },
-    labelAlign: 'left',
-    wrapperCol: { span: 16 },
-  } as FormProps,
+  formAdditionaProps: propsFormAdditionaProps,
   formItems: FormConfig,
 }
 
@@ -123,6 +124,8 @@ watch(currentFormSelectedFormItems, (v) => {
 
 <style lang="scss">
 $navBarHeight: 46px;
+$leftWidth: 300px;
+$rightWidth: 400px;
 
 :root {
   --form-editor-border: #f0f0f0;
@@ -140,7 +143,7 @@ $navBarHeight: 46px;
 
   .form-editor-left {
     position: relative;
-    flex: 0 0 300px;
+    flex: 0 0 $leftWidth;
     height: 100%;
 
     .vue-scroll-rect {
@@ -160,7 +163,7 @@ $navBarHeight: 46px;
     }
   }
   .form-editor-props {
-    flex: 0 0 300px;
+    flex: 0 0 $rightWidth;
     background-color: var(--form-editor-area-background);
   }
 }
@@ -169,6 +172,11 @@ $navBarHeight: 46px;
 
   form {
     padding: 25px;
+  }
+  .ant-form-item {
+    margin-bottom: 6px!important;
+    padding-bottom: 6px!important;
+    border-bottom: 1px solid var(--form-editor-border);
   }
   h4 {
     background-color: var(--form-editor-bar-background);

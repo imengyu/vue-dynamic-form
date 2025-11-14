@@ -10,7 +10,7 @@
     <h5 v-if="title" @click="collapsible ? collapsed = !collapsed : null">
       <span class="title">{{ title }}</span>
       <span class="right">
-        <span v-if="collapsible">点击这里展开</span>
+        <span v-if="collapsible && collapsed">点击这里展开</span>
         <IconDown v-if="collapsible" class="collapsible-icon" />
       </span>
     </h5>
@@ -69,14 +69,13 @@ const props = defineProps({
     default: false,
   },
 });
-
 const collapsed = ref(props.collapsed);
-
 
 </script>
 
 <style lang="scss">
 .dynamic-form-group {
+  position: relative;
   padding: 15px;
   background-color: var(--dynamic-form-background-color);
   border-radius: var(--dynamic-form-border-radius);
@@ -108,9 +107,14 @@ const collapsed = ref(props.collapsed);
     margin-bottom: 12px;
 
     .right {
-      font-size: 12px;
-      color: var(--dynamic-form-text-color);
-      margin-right: 6px;
+      display: flex;
+      align-items: center;
+
+      span {
+        font-size: 11px;
+        color: var(--dynamic-form-text-color);
+        margin-right: 6px;
+      }
     }
   }
 
