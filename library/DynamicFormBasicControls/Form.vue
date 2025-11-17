@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, provide, ref, onMounted, toRefs, type Ref } from 'vue';
+import { provide, ref, onMounted, toRefs, type Ref } from 'vue';
 import type { FormContext, FormItemInternalContext, ValidTrigger } from './FormContext';
 import Schema, { type Rules, type Rule } from 'async-validator';
 import scrollIntoView from 'scroll-into-view-if-needed';

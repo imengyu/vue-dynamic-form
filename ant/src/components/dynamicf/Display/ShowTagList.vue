@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps, withDefaults } from "vue";
+import { ref, computed } from "vue";
 
 export interface ShowTagListProps {
   size?: string;

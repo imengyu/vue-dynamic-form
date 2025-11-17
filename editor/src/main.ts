@@ -1,7 +1,7 @@
 import { createApp, type Plugin } from 'vue';
 import 'ant-design-vue/dist/reset.css';
 import '@imengyu/vue-scroll-rect/lib/vue-scroll-rect.css'
-import '../../dist/vue-dynamic-form.css';
+//import '../../dist/vue-dynamic-form.css';
 import './assets/fonts/iconfont.css';
 import './style.scss';
 import App from './App.vue';

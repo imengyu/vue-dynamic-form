@@ -66,6 +66,7 @@ const currentFormOptions = ref<IDynamicFormOptions>({
       label: '用户名',
       name: 'username',
       type: 'text',
+      rules: [{ required: true, message: '请输入用户名' }],
     },
     {
       label: '密码',

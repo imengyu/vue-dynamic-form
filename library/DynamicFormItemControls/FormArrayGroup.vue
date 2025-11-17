@@ -1,10 +1,10 @@
 <template>
   <div class="dynamic-form-array-group">
     <!--列表-->
-    <div :class="['list', direction ]">
+    <div :class="['list', direction, plain ? 'plain' : '' ]">
       <!--循环数据条目-->
-      <!--对象类型-->
       <template v-if="isObject">
+        <!--对象类型-->
         <div v-for="(childData, key) in model"
           :key="key" 
           class="item-container"
@@ -19,6 +19,9 @@
             :showAddButton="showAddButton"
             :showDeleteButton="showDeleteButton"
             :showUpDownButton="showUpDownButton"
+            :index="key"
+            :collapsible="collapsible"
+            :startCollapsed="collapsed"
             @delete="handleRemove"
             @down="handleDown"
             @up="handleUp"
@@ -32,8 +35,8 @@
           </FormArrayGroupItem>
         </div>
       </template>
-      <!--普通变量类型-->
       <template v-else>
+        <!--普通变量类型-->
         <div v-for="(childData, key) in model"
           :key="key" 
           class="item-container single"
@@ -50,6 +53,9 @@
             :showUpDownButton="showUpDownButton"
             :isFirst="key === 0"
             :isLast="key === model.length - 1"
+            :index="key"
+            :collapsible="collapsible"
+            :startCollapsed="collapsed"
             @update:childData="(v) => (model as unknown as IDynamicFormObject)[key] = v"
             @delete="handleRemove"
             @down="handleDown"
@@ -68,7 +74,7 @@
 
     <!--添加按钮-->
     <slot name="addButton" :onClick="handleAdd">
-      <button v-if="showAddButton" class="add dynamic-form-base-control base-button" type="button" @click="handleAdd">
+      <button v-if="showAddButton" class="add dynamic-form-base-control base-button small" type="button" @click="handleAdd">
         <IconAdd /> 
         <span>添加</span>
       </button>
@@ -83,25 +89,56 @@ import FormArrayGroupItem from "./FormArrayGroupItem.vue";
 import IconAdd from "../Images/IconAdd.vue";
 
 export interface FormArrayGroupProps {
+  /**
+   * 列表方向，默认垂直方向。
+   */
+  direction?: 'vertical' | 'horizontal',
+  /**
+   * 是否显示添加按钮，默认显示。
+   */
+  showAddButton?: boolean;
+  /**
+   * 是否显示删除按钮，默认显示。
+   */
+  showDeleteButton?: boolean;
+  /**
+   * 是否显示上下移动按钮，默认显示。
+   */
+  showUpDownButton?: boolean;
+  /**
+   * 是否为朴素样式
+   * @default false
+   */
+  plain?: boolean,
+  /**
+   * 是否默认折叠
+   * @default false
+   */
+  collapsed?: boolean,
+  /**
+   * 是否可折叠
+   * @default true
+   */
+  collapsible?: boolean,
+}
+
+const props = withDefaults(defineProps<FormArrayGroupProps & {
   model: unknown[];
   item: IDynamicFormItem;
   parent?: IDynamicFormItem;
   name: string;
   isObject?: boolean;
-  direction?: 'vertical' | 'horizontal',
-  showAddButton?: boolean;
-  showDeleteButton?: boolean;
-  showUpDownButton?: boolean;
   deleteCallback?: (arr: unknown[], data: unknown) => void;
   addCallback?: (arr: unknown[]) => unknown;
-}
-
-const props = withDefaults(defineProps<FormArrayGroupProps>(), {
+}>(), {
   isObject: true,
   showAddButton: true,
   showDeleteButton: true,
   showUpDownButton: true,
   direction: 'vertical',
+  plain: false,
+  collapsed: false,
+  collapsible: true,
 })
 
 function handleAdd() {
@@ -137,19 +174,20 @@ function handleDown(data: unknown) {
 </script>
 
 <style lang="scss">
+@use 'sass:math';
+
 .dynamic-form-array-group {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
 
   > .list {
-
     &.vertical {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: flex-start;
+      align-items: stretch;
+      width: 100%;
         
       .item-container {
         flex: 1;
@@ -162,39 +200,92 @@ function handleDown(data: unknown) {
       justify-content: flex-start;
       align-items: flex-start;
     }
+
+    &.plain {
+      .item-container {
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+      }
+    }
   }
 
   .item-container {
+    $nav-button-size: 24px;
+    $nav-button-margin: 6px;
+
+    position: relative;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    border-radius: var(--dynamic-form-group-radius);
+    border: 1px dashed var(--dynamic-form-border-color);
     background-color: var(--dynamic-form-background-color);
-    padding: 10px;
+    padding: var(--dynamic-form-group-padding);
     padding-bottom: 0;
-    border-radius: var(--dynamic-form-border-radius);
-    margin-bottom: 10px;
-  }
+    margin-bottom: var(--dynamic-form-group-margin);
 
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
+    .nav-button-conntainer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      z-index: 10;
+      gap: $nav-button-margin;
 
-  .nav-button-conntainer {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-    .base-button {
-      padding: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-
-      svg {
-        width: 16px;
-        height: 16px;
+      .number {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--dynamic-form-text-color);
+        background-color: var(--dynamic-form-background-color);
+        border: 1px dashed var(--dynamic-form-border-color);
+        height: $nav-button-size;
+        line-height: $nav-button-size;
+        text-align: center;
+        border-radius: math.div($nav-button-size, 2);
+        padding: 0 $nav-button-margin;
       }
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: $nav-button-size;
+        border: 1px dashed var(--dynamic-form-border-color);
+        background-color: var(--dynamic-form-background-color);
+        gap: $nav-button-margin;
+      }
+
+      .base-button {
+        padding: 0;
+        margin: 0;
+        width: $nav-button-size;
+        height: $nav-button-size;
+        border-radius: 50%;
+        background-color: var(--dynamic-form-background-color);
+        box-shadow: none;
+
+        &:hover {
+          background-color: var(--dynamic-form-background-hover-color);
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .form-divider {
+      margin: 0 math.div($nav-button-size, -2);
+      border-bottom: 1px dashed var(--dynamic-form-border-color);
+      margin-bottom: var(--dynamic-form-group-padding);
+    }
+    .form-space {
+      height: 12px;
+    }
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
     }
   }
 
@@ -202,30 +293,22 @@ function handleDown(data: unknown) {
     cursor: pointer;
     min-width: 20px !important;
 
+    &.small {
+      padding: 0 6px;
+      height: 24px;
+      font-size: 12px;
+      align-self: flex-start;
+      box-shadow: none;
+      color: var(--dynamic-form-primary-color);
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
     &.margin {
       margin-left: 6px;
-    }
-
-    &.add {
-      --dynamic-form-button-shadow-color: var(--dynamic-form-shadow-primary-color);
-      
-      color: var(--dynamic-form-text-light-color);
-      background-color: var(--dynamic-form-primary-color);
-
-      &:hover {
-        background-color: var(--dynamic-form-primary-color2);
-      }
-    }
-
-    &.delete {
-      --dynamic-form-button-shadow-color: var(--dynamic-form-shadow-error-color);
-
-      color: var(--dynamic-form-text-light-color);
-      background-color: var(--dynamic-form-error-color);
-
-      &:hover {
-        background-color: var(--dynamic-form-error-color2);
-      }
     }
   }
 }

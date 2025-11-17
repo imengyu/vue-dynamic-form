@@ -3,6 +3,11 @@
   --dynamic-form-border-radius: 8px;
   --dynamic-form-control-size: 2rem;
   --dynamic-form-check-control-size: 1.4rem;
+
+  
+  --dynamic-form-group-radius: var(--dynamic-form-border-radius);
+  --dynamic-form-group-padding: 10px;
+  --dynamic-form-group-margin: 20px;
 }
 
 //输入框

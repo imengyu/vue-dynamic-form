@@ -197,6 +197,18 @@ export interface IDynamicFormItem {
    */
   childrenColProps?: ColProps,
   /**
+   * 应用到当前子级表单label栅格宽度。优先级低于条目自己的 formLabelCol。
+   */
+  childrenFormLabelCol?: { span: number, offset?: number }|string|number,
+  /**
+   * 应用到当前子级表单组件栅格宽度。优先级低于条目自己的 formWrapperCol。
+   */
+  childrenFormWrapperCol?: { span: number, offset?: number }|string|number,
+  /**
+   * 应用到当前子级项目的 FormItem 组件属性。仅在 object 或者其他容器条目中有效。
+   */
+  childrenFormProps?: unknown,
+  /**
    * 当前条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
   colProps?: ColProps,

@@ -7,13 +7,12 @@
       'plain': plain,
     }
   ]">
-    <h5 v-if="title" @click="collapsible ? collapsed = !collapsed : null">
-      <span class="title">{{ title }}</span>
-      <span class="right">
-        <span v-if="collapsible && collapsed">点击这里展开</span>
-        <IconDown v-if="collapsible" class="collapsible-icon" />
-      </span>
-    </h5>
+    <FormGroupTitle
+      v-if="title"
+      v-model:collapsed="collapsed"
+      :title="title"
+      :collapsible="collapsible"
+    />
     <Row v-if="!collapsed" :justify="(justify as any)" :gutter="gutter">
       <slot />
     </Row>
@@ -23,51 +22,44 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import Row from "../DynamicFormBasicControls/Layout/Row.vue";
-import IconDown from "../Images/IconDown.vue";
+import FormGroupTitle from "./FormGroupTitle.vue";
 
-const props = defineProps({
+export interface FormGroupProps {
   /**
    * 标题
    */
-  title: {
-    type: String,
-    default: "",
-  },
+  title?: string
   /**
-   * 栅格间隔 px
+   * 列元素之间的间距（单位为 px）
    */
-  gutter: {
-    type: Number,
-    default: null,
-  },
+  gutter?: number,
   /**
-   * flex 布局下的水平排列方式：start end center space-around space-between
+   * flex 布局下的水平排列方式：
    */
-  justify: {
-    type: String,
-    default: "start",
-  },
-  /**
-   * 是否可折叠
-   */
-  collapsible: {
-    type: Boolean,
-    default: false,
-  },
+  justify?: 'start'|'end'|'center'|'space-around'|'space-between';
   /**
    * 是否为朴素样式
+   * @default false
    */
-  plain: {
-    type: Boolean,
-    default: false,
-  },
+  plain?: boolean,
   /**
    * 是否默认折叠
+   * @default false
    */
-  collapsed: {
-    type: Boolean,
-    default: false,
-  },
+  collapsed?: boolean,
+  /**
+   * 是否可折叠
+   * @default false
+   */
+  collapsible?: boolean,
+}
+
+const props = withDefaults(defineProps<FormGroupProps>(), {
+  title: '',
+  justify: "start",
+  collapsible: false,
+  plain: false,
+  collapsed: false,
 });
 const collapsed = ref(props.collapsed);
 
@@ -79,44 +71,6 @@ const collapsed = ref(props.collapsed);
   padding: 15px;
   background-color: var(--dynamic-form-background-color);
   border-radius: var(--dynamic-form-border-radius);
-
-  &.collapsed {
-    .collapsible-icon {
-      transform: rotate(0deg);
-    }
-  }
-  &.collapsible {
-    h5 {
-      cursor: pointer;
-    }
-  }
-
-  .collapsible-icon {
-    transform: rotate(180deg);
-    transition: transform 0.3s ease-in-out;
-    width: 16px;
-    height: 16px;
-  }
-
-  h5 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--dynamic-form-text-color);
-    margin: 0;
-    margin-bottom: 12px;
-
-    .right {
-      display: flex;
-      align-items: center;
-
-      span {
-        font-size: 11px;
-        color: var(--dynamic-form-text-color);
-        margin-right: 6px;
-      }
-    }
-  }
 
   &.plain {
     padding: 0;

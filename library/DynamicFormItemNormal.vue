@@ -199,17 +199,19 @@ export default defineComponent({
       if (internalWidgetsFormItem) {
         try {
           return h(internalWidgetsFormItem.component as any, {
-            ...item.value.formProps as {},
+            ...parent.value?.childrenFormProps as {},
             colon: noLabel.value !== true,
+            ...item.value.formProps as {},
             [internalWidgetsFormItem.propsMap.label || 'label']: noLabel.value ? '' : evaluateCallback(item.value.label),
             [internalWidgetsFormItem.propsMap.name || 'name']: finalName,
-            [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? formLabelColDefault.value,
-            [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? formWrapperColDefault.value,
+            [internalWidgetsFormItem.propsMap.labelCol || 'labelCol']: item.value.formLabelCol ?? parent.value?.childrenFormLabelCol ?? formLabelColDefault.value,
+            [internalWidgetsFormItem.propsMap.wrapperCol || 'wrapperCol']: item.value.formWrapperCol ?? parent.value?.childrenFormWrapperCol ?? formWrapperColDefault.value,
             [internalWidgetsFormItem.propsMap.rules || 'rules']: item.value.rules,
           }, {
             default: renderChildrenSlot,
           })
         } catch (error) {
+          console.error(error);
           return h(Alert, {
             type: 'error',
             message: 'DynamicForm render error: ' + (error instanceof Error ? error.message : 'Unknown Error'),
@@ -222,9 +224,10 @@ export default defineComponent({
       return (
         h(FormItem, {
           colon: noLabel.value !== true,
+          ...parent.value.childrenFormProps as {},
           ...item.value.formProps as {},
-          labelCol: item.value.formLabelCol ?? formLabelColDefault.value as any,
-          wrapperCol: item.value.formWrapperCol ?? formWrapperColDefault.value as any,
+          labelCol: item.value.formLabelCol ?? parent.value?.childrenFormLabelCol ?? formLabelColDefault.value as any,
+          wrapperCol: item.value.formWrapperCol ?? parent.value?.childrenFormWrapperCol ?? formWrapperColDefault.value as any,
           label: noLabel.value ? '' : evaluateCallback(item.value.label) as string,
           rules: item.value.rules,
           name: finalName,

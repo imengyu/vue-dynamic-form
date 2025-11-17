@@ -203,6 +203,8 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
         },
         colProps: { span: 24 },
         childrenColProps: { span: 24 },
+        childrenFormLabelCol: { span: 8 },
+        childrenFormWrapperCol: { span: 14 },
         children: [
           {
             label: '必填',
@@ -289,6 +291,8 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
             label: '枚举值',
             name: 'enum',
             type: 'array-single',
+            defaultValue: () => reactive([]),
+            suppressEmptyError: true,
             additionalProps: {
               placeholder: '请输入枚举值',
             },
