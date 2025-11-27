@@ -31,6 +31,44 @@ export interface FormItemDef {
   isContainerSingle?: boolean,
 }
 
+function makeColProps(title: string, key: string) {
+  return {
+    label: title,
+    name: key,
+    type: 'object-group',
+    defaultValue: () => reactive({
+      span: undefined,
+      offset: undefined,
+    }),
+    additionalProps: {
+      collapsible: true,
+      collapsed: true,
+      plain: true,
+    } as FormGroupProps,
+    childrenColProps: { span: 12 },
+    children: [
+      {
+        label: '占比',
+        name: 'span',
+        type: 'number',
+        additionalProps: {
+          min: 0,
+          max: 24,
+        },
+      },
+      {
+        label: '偏移',
+        name: 'offset',
+        type: 'number',
+        additionalProps: {
+          min: 0,
+          max: 24,
+        },
+      }
+    ]
+  };
+}
+
 export const FormConfig : IDynamicFormItem[] = [
   {
     label: '表单标题',
@@ -96,69 +134,8 @@ export const FormConfig : IDynamicFormItem[] = [
       addonAfter: 'px',
     } as InputNumberProps,
   },
-  {
-    label: '标签占比',
-    name: 'labelCol',
-    type: 'object-group',
-    additionalProps: {
-      collapsible: true,
-      collapsed: true,
-      plain: true,
-    } as FormGroupProps,
-    childrenColProps: { span: 12 },
-    children: [
-      {
-        label: '占比',
-        name: 'span',
-        type: 'number',
-        additionalProps: {
-          min: 0,
-          max: 24,
-        },
-      },
-      {
-        label: '偏移',
-        name: 'offset',
-        type: 'number',
-        additionalProps: {
-          min: 0,
-          max: 24,
-        },
-      }
-    ]
-  },
-  {
-    label: '内容占比',
-    name: 'wrapperCol',
-    type: 'object-group',
-    additionalProps: {
-      collapsible: true,
-      collapsed: true,
-      plain: true,
-    } as FormGroupProps,
-    childrenColProps: { span: 12 },
-    children: [
-      {
-        label: '占比',
-        name: 'span',
-        type: 'number',
-        additionalProps: {
-          min: 0,
-          max: 24,
-        },
-      },
-      {
-        label: '偏移',
-        name: 'offset',
-        type: 'number',
-        additionalProps: {
-          min: 0,
-          max: 24,
-        },
-      }
-    ]
-  },
-
+  makeColProps('默认标签占比', 'labelCol'),
+  makeColProps('默认内容占比', 'wrapperCol'),
 ]
 export const FormItemCommonConfig : IDynamicFormItem[] = [
   {
@@ -184,6 +161,7 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
     additionalProps: {
       collapsible: true,
       plain: true,
+      titleStyle: 'large',
     } as FormGroupProps,
     children: [
       {
@@ -192,7 +170,6 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
         type: 'array-object',
         formLabelCol: { span: 24 },
         formWrapperCol: { span: 24 },
-        suppressEmptyError: true,
         defaultValue: () => reactive([]),
         newChildrenObject(arrayNow) {
           arrayNow.push({
@@ -292,7 +269,6 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
             name: 'enum',
             type: 'array-single',
             defaultValue: () => reactive([]),
-            suppressEmptyError: true,
             additionalProps: {
               placeholder: '请输入枚举值',
             },
@@ -321,10 +297,15 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
     additionalProps: {
       collapsible: true,
       plain: true,
+      titleStyle: 'large',
     } as FormGroupProps,
+    childrenColProps: { span: 24 },
     children: [
-
+      makeColProps('占比父级', 'colProps'),
+      makeColProps('标签占比', 'formLabelCol'),
+      makeColProps('内容占比', 'formWrapperCol'),
     ],
+    
   },
   {
     label: '事件',
@@ -333,6 +314,7 @@ export const FormItemLastCommonConfig : IDynamicFormItem[] = [
     additionalProps: {
       collapsible: true,
       plain: true,
+      titleStyle: 'large',
     } as FormGroupProps,
     children: [
 

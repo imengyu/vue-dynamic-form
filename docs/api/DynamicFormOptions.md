@@ -21,7 +21,7 @@ title: API 参考 - IDynamicFormOptions
 | disabled | 表单是否禁用 | `boolean` | — |
 | emptyText | 当表单中无可用编辑条目时，显示的提示，为空则不显示提示。默认为空 | `string` | — |
 | suppressRootError | 是否屏蔽顶层对象错误。默认否 | `boolean` | — |
-| suppressEmptyError | 是否屏蔽所有子条目空错误。默认否 | `boolean` | — |
+| suppressEmptyError | 是是否屏蔽所有子条目空错误。默认是。屏蔽所有子条目空错误后当遇到空值，会尝试使用默认值填充。 | `boolean` | — |
 | nestObjectMargin | 当显示嵌套的表单对象条目时是否在前部显示缩进，缩进大小可使用 CSS 变量 `--dynamic-form-item-nest-margin` 自定义。默认是 20px | `boolean` | — |
 
 ## IDynamicFormItem

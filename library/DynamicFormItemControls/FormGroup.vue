@@ -12,6 +12,7 @@
       v-model:collapsed="collapsed"
       :title="title"
       :collapsible="collapsible"
+      :titleStyle="titleStyle"
     />
     <Row v-if="!collapsed" :justify="(justify as any)" :gutter="gutter">
       <slot />
@@ -42,6 +43,10 @@ export interface FormGroupProps {
    * @default false
    */
   plain?: boolean,
+  /**
+   * 标题样式
+   */
+  titleStyle?: 'small'|'large',
   /**
    * 是否默认折叠
    * @default false

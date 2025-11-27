@@ -4,7 +4,10 @@
       'dynamic-form-group-title', 
       {
         'collapsed': collapsed, 
-        'collapsible': collapsible
+        'collapsible': collapsible,
+        'border-bottom': borderBottom && titleStyle === 'large',
+        'small': titleStyle === 'small',
+        'large': titleStyle === 'large',
       }
     ]"
   >
@@ -28,9 +31,13 @@ const props = withDefaults(defineProps<{
   title?: string,
   collapsible?: boolean,
   collapsed?: boolean,
+  borderBottom?: boolean,
+  titleStyle?: 'small'|'large',
 }>(), {
   collapsible: false,
   collapsed: false,
+  borderBottom: true,
+  titleStyle: 'small',
   title: '',
 });
 const emit = defineEmits(['update:collapsed']);
@@ -39,6 +46,7 @@ const emit = defineEmits(['update:collapsed']);
 
 <style lang="scss">
 .dynamic-form-group-title {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,13 +54,23 @@ const emit = defineEmits(['update:collapsed']);
   margin: 0;
   margin-bottom: var(--dynamic-form-group-padding);
 
+  &.border-bottom {
+    padding-bottom: var(--dynamic-form-group-padding);
+    border-bottom: 1px dashed var(--dynamic-form-border-color);
+  }
+
+  &.small {
+    font-size: 14px;
+  }
+  &.large {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
   &.collapsed {
     .collapsible-icon {
       transform: rotate(0deg);
     }
-  }
-  &.collapsible {
-    cursor: pointer;
   }
 
   .collapsible-icon {
@@ -65,6 +83,10 @@ const emit = defineEmits(['update:collapsed']);
   .right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    min-width: 30%;
+    cursor: pointer;
 
     span {
       font-size: 11px;

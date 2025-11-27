@@ -19,6 +19,8 @@
             :showAddButton="showAddButton"
             :showDeleteButton="showDeleteButton"
             :showUpDownButton="showUpDownButton"
+            :isFirst="key === 0"
+            :isLast="key === model.length - 1"
             :index="key"
             :collapsible="collapsible"
             :startCollapsed="collapsed"
@@ -206,7 +208,6 @@ function handleDown(data: unknown) {
         border: none;
         background-color: transparent;
         padding: 0;
-        margin: 0;
       }
     }
   }
@@ -279,9 +280,6 @@ function handleDown(data: unknown) {
       border-bottom: 1px dashed var(--dynamic-form-border-color);
       margin-bottom: var(--dynamic-form-group-padding);
     }
-    .form-space {
-      height: 12px;
-    }
     .form-container {
       display: flex;
       flex-direction: column;
@@ -293,6 +291,10 @@ function handleDown(data: unknown) {
     cursor: pointer;
     min-width: 20px !important;
 
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
     &.small {
       padding: 0 6px;
       height: 24px;
@@ -306,7 +308,6 @@ function handleDown(data: unknown) {
         height: 16px;
       }
     }
-
     &.margin {
       margin-left: 6px;
     }

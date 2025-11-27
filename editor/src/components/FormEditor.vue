@@ -177,7 +177,7 @@ $rightWidth: 400px;
   .ant-form-item {
     margin-bottom: 6px!important;
     padding-bottom: 6px!important;
-    border-bottom: 1px solid var(--form-editor-border);
+    border-bottom: none;
   }
   h4 {
     background-color: var(--form-editor-bar-background);

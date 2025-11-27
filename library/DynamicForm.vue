@@ -182,7 +182,10 @@ export default defineComponent({
             const oldValue = accessFormModel(currentKey, false, undefined);
             if (oldValue !== undefined && oldValue !== null)
               continue;
-            accessFormModel(currentKey, true, item.defaultValue);
+            let v = item.defaultValue;
+            if (typeof v === 'function')
+              v = v();
+            accessFormModel(currentKey, true, v);
           }
           i++;
         }

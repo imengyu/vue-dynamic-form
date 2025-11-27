@@ -419,8 +419,8 @@ export interface IDynamicFormOptions {
    */
   suppressRootError?: boolean,
   /**
-   * 是否屏蔽所有子条目空错误。默认否
-   * @default false
+   * 是否屏蔽所有子条目空错误。默认是。屏蔽所有子条目空错误后当遇到空值，会尝试使用默认值填充。
+   * @default true
    */
   suppressEmptyError?: boolean,
   /**
@@ -436,7 +436,9 @@ export interface IDynamicFormOptions {
 /**
  * 默认的动态表单属性
  */
-export let defaultDynamicFormOptions = {} as IDynamicFormOptions;
+export let defaultDynamicFormOptions = {
+  suppressEmptyError: true,
+} as IDynamicFormOptions;
 
 /**
  * 配置默认的动态表单属性，配置后将会对所有动态表单生效。

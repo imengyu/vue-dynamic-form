@@ -3,6 +3,7 @@
     v-model:collapsed="collapsed"
     :title="`子条目${index + 1}`"
     :collapsible="collapsible"
+    :borderBottom="false"
   >
     <slot name="itemButton" 
       :onDeleteClick="() => $emit('delete', childData)"
@@ -14,13 +15,33 @@
           #{{ index + 1 }}
         </div>
         <div class="buttons">
-          <button v-if="showUpDownButton" title="上移" class="dynamic-form-base-control base-button margin" type="button" @click="$emit('up', childData)">
+          <button 
+            v-if="showUpDownButton" 
+            title="上移" 
+            class="dynamic-form-base-control base-button margin" 
+            type="button" 
+            :disabled="isFirst"
+            @click="$emit('up', childData)"
+          >
             <IconUp />
           </button>
-          <button v-if="showUpDownButton" title="下移" class="dynamic-form-base-control base-button margin" type="button" @click="$emit('down', childData)">
+          <button 
+            v-if="showUpDownButton" 
+            title="下移" 
+            class="dynamic-form-base-control base-button margin" 
+            type="button" 
+            :disabled="isLast"
+            @click="$emit('down', childData)"
+          >
             <IconDown />
           </button>
-          <button v-if="showDeleteButton" title="删除" class="dynamic-form-base-control base-button delete margin" type="button" @click="$emit('delete', childData)">
+          <button 
+            v-if="showDeleteButton" 
+            title="删除" 
+            class="dynamic-form-base-control base-button delete margin" 
+            type="button" 
+            @click="$emit('delete', childData)"
+          >
             <IconDelete />
           </button>
         </div>
