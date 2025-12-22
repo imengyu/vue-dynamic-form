@@ -30,3 +30,5 @@ types/
 *.sw?
 docs/.vitepress/cache/
 docs/.vitepress/dist/
+
+.npmrc
