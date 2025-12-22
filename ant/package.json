@@ -1,6 +1,6 @@
 {
   "name": "@imengyu/vue-dynamic-form-ant",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/vue-dynamic-form-ant.umd.js",
   "module": "lib/vue-dynamic-form-ant.es.js",
   "type": "module",

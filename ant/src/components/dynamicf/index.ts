@@ -20,7 +20,7 @@ import WrapperTimeRangePicker from "./WrapperTimeRangePicker.vue";
 import WrapperRangePicker from "./WrapperRangePicker.vue";
 import ActionRender from "./ActionRender.vue";
 import CheckBoxToInt from "./CheckBoxToInt.vue";
-import RadioValueVue from "./RadioValue.vue";
+import RadioValue from "./RadioValue.vue";
 import StateRenderer from "./Display/StateRenderer.vue";
 import ShowDateOrNull from "./Display/ShowDateOrNull.vue";
 import ShowImageList from "./Display/ShowImageList.vue";
@@ -35,7 +35,7 @@ import ShowInList from "./Display/ShowInList.vue";
 import ShowImageOrNull from "./Display/ShowImageOrNull.vue";
 import ShowTagList from "./Display/ShowTagList.vue";
 import CheckBoxList from "./CheckBoxList.vue";
-import RadioIdVue from "./RadioId.vue";
+import RadioId from "./RadioId.vue";
 
 export {
   StateRenderer,
@@ -45,6 +45,20 @@ export {
   ShowInList,
   ShowImageOrNull,
   ShowTagList,
+  SelectId,
+  SelectTreeId,
+  IdAsValueTree,
+  Sign,
+  PasswordWithStrengthInput,
+  ActionRender,
+  CheckBoxToInt,
+  RadioValue,
+  CascaderFormItem,
+  NumberRange,
+  MapPointPicker,
+  RichText,
+  CheckBoxList,
+  RadioId,
 }
 
 export const defaultConfig = {
@@ -85,8 +99,8 @@ export function registerAllFormComponents() {
     .register('check-box-int', markRaw(CheckBoxToInt))
     .register('check-box-value', markRaw(CheckBoxValue))
     .register('check-box-list', markRaw(CheckBoxList), {}, 'modelValue')
-    .register('radio-id', markRaw(RadioIdVue))
-    .register('radio-value', markRaw(RadioValueVue))
+    .register('radio-id', markRaw(RadioId))
+    .register('radio-value', markRaw(RadioValue))
     .register('number-range', markRaw(NumberRange))
 
     //Select

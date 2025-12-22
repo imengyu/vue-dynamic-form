@@ -16,11 +16,24 @@ import {
   ShowInList,
   ShowImageOrNull,
   ShowTagList,
+  SelectId,
+  SelectTreeId,
+  IdAsValueTree,
+  Sign,
+  PasswordWithStrengthInput,
+  ActionRender,
+  CheckBoxToInt,
+  RadioValue,
+  CascaderFormItem,
+  NumberRange,
+  MapPointPicker,
+  RichText,
+  CheckBoxList,
+  RadioId,
   registerAllFormComponents,
 } from './components/dynamicf/index';
 import type { App, Plugin } from 'vue';
 import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap';
-import RichText from './components/dynamicf/Editor/RichText.vue';
 export * from './components/dynamicf/Display/ShowImageList.vue';
 export * from './components/dynamicf/Display/ShowDateOrNull.vue';
 export * from './components/dynamicf/Display/ShowImageOrNull.vue';
@@ -55,7 +68,20 @@ export {
   ShowInList,
   ShowImageOrNull,
   ShowTagList,
+  SelectId,
+  SelectTreeId,
+  IdAsValueTree,
+  Sign,
+  PasswordWithStrengthInput,
+  ActionRender,
+  CheckBoxToInt,
+  RadioValue,
+  CascaderFormItem,
+  NumberRange,
+  MapPointPicker,
   RichText,
+  CheckBoxList,
+  RadioId,
 }
 
 const plugin : Plugin = {
