@@ -14,14 +14,11 @@
   ],
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://registry.npmjs.com"
   },
   "scripts": {
     "dev": "vite serve examples",
-    "build-demo": "vite build examples",
-    "build-lib": "vite build",
-    "docs:dev": "cd docs && vitepress dev",
-    "docs:build": "vitepress build ./docs"
+    "build": "vite build"
   },
   "author": "imengyu",
   "license": "MIT",
