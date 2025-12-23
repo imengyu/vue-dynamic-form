@@ -86,12 +86,12 @@ export {
   RadioId,
 }
 
-const plugin : Plugin = {
-  install(app: App, options: {
-    aMapApiKey: string,
-    aMapApiSecurityJsCode: string,
-    fullAntd?: boolean,
-  }) {
+const plugin : Plugin<{
+  aMapApiKey: string,
+  aMapApiSecurityJsCode: string,
+  fullAntd?: boolean,
+}> = {
+  install(app, options) {
     app.component('StateRenderer', StateRenderer);
     app.component('ShowDateOrNull', ShowDateOrNull);
     app.component('ShowImageList', ShowImageList);
@@ -100,15 +100,17 @@ const plugin : Plugin = {
     app.component('ShowImageOrNull', ShowImageOrNull);
     app.component('ShowTagList', ShowTagList);
     app.use(VueAMap)
-    if (options.aMapApiKey && options.aMapApiSecurityJsCode) {
-      initAMapApiLoader({
-        key: options.aMapApiKey,
-        securityJsCode: options.aMapApiSecurityJsCode,
-        plugins: ['AMap.MarkerCluster'],
-      })
-    }
-    if (options.fullAntd !== false) {
-      app.use(Antd);
+    if (options)  {
+      if (options.aMapApiKey && options.aMapApiSecurityJsCode) {
+        initAMapApiLoader({
+          key: options.aMapApiKey,
+          securityJsCode: options.aMapApiSecurityJsCode,
+          plugins: ['AMap.MarkerCluster'],
+        })
+      }
+      if (options.fullAntd !== false) {
+        app.use(Antd);
+      }
     }
     registerAllFormComponents();
   }
