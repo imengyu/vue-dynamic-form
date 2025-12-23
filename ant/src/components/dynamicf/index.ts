@@ -10,6 +10,7 @@ import {
   configDefaultDynamicFormOptions 
 } from "@imengyu/vue-dynamic-form";
 import PasswordWithStrengthInput from "./PasswordWithStrengthInput.vue";
+import PasswordStrengthMeter from "./PasswordStrengthMeter.vue";
 import CheckBoxValue from "./CheckBoxValue.vue";
 import SelectId from "./Dropdown/SelectId.vue";
 import SelectTreeId from "./Dropdown/SelectTreeId.vue";
@@ -50,6 +51,7 @@ export {
   IdAsValueTree,
   Sign,
   PasswordWithStrengthInput,
+  PasswordStrengthMeter,
   ActionRender,
   CheckBoxToInt,
   RadioValue,

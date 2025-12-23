@@ -20,6 +20,7 @@ import {
   SelectTreeId,
   IdAsValueTree,
   Sign,
+  PasswordStrengthMeter,
   PasswordWithStrengthInput,
   ActionRender,
   CheckBoxToInt,
