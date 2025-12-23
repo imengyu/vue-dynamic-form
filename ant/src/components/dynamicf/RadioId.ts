@@ -1,8 +1,18 @@
 import type { RadioGroupProps, RadioProps } from "ant-design-vue";
 
 export interface RadioIdOption {
+  /**
+   * 选项文本
+   */
   text: string,
-  value: unknown,
+  /**
+   * 选项值
+   */
+  value: any,
+  /**
+   * 其他自定义属性
+   */
+  [key: string]: unknown,
 }
 
 export interface RadioIdFormItemProps {

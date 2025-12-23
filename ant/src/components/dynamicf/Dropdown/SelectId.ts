@@ -6,12 +6,23 @@ import type { VNode } from "vue";
  * 通用下拉框返回结构定义
  */
 export interface DropdownValues<T> {
+  /**
+   * 选项文本
+   */
   text: string,
+  /**
+   * 选项值
+   */
   value: number,
+  /**
+   * 原始数据
+   */
   raw: T;
 }
 
 export type LoadDataFun<T extends DataModel> = (val: string | null) => Promise<DropdownValues<T>[]>;
+
+export type SelectIdLoadDataFun<T extends DataModel> = LoadDataFun<T>;
 
 /**
  * SelectId 的公共接口

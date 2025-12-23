@@ -74,6 +74,7 @@ export {
   IdAsValueTree,
   Sign,
   PasswordWithStrengthInput,
+  PasswordStrengthMeter,
   ActionRender,
   CheckBoxToInt,
   RadioValue,
