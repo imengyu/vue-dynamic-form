@@ -15,7 +15,7 @@ import CheckBoxValue from "./CheckBoxValue.vue";
 import SelectId from "./Dropdown/SelectId.vue";
 import SelectTreeId from "./Dropdown/SelectTreeId.vue";
 import SelectValue from "./SelectValue.vue";
-import IdAsValueTree from "./IdAsValueTree.vue";
+import TreeValue from "./TreeValue.vue";
 import UploaderFormItem from "./UploaderFormItem.vue";
 import WrapperTimeRangePicker from "./WrapperTimeRangePicker.vue";
 import WrapperRangePicker from "./WrapperRangePicker.vue";
@@ -48,7 +48,7 @@ export {
   ShowTagList,
   SelectId,
   SelectTreeId,
-  IdAsValueTree,
+  TreeValue,
   Sign,
   PasswordWithStrengthInput,
   PasswordStrengthMeter,
@@ -116,7 +116,7 @@ export function registerAllFormComponents() {
     .register('select-value', markRaw(SelectValue))
     .register('select-id', markRaw(SelectId))
     .register('select-tree-id', markRaw(SelectTreeId))
-    .register('tree-id', markRaw(IdAsValueTree))
+    .register('tree-id', markRaw(TreeValue))
 
     //Date
     .register('date', markRaw(DatePicker))

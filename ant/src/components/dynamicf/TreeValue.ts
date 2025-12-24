@@ -1,10 +1,10 @@
 import type { SelectProps } from "ant-design-vue";
 
-export type IdAsValueTreeLoadDataFun = (pid: string|number, level: number) => Promise<TreeNode[]>;
-export type IdAsValueTreeCheckClickableFun = (item: TreeNode) => Promise<boolean>;
+export type TreeValueLoadDataFun = (pid: string|number, level: number) => Promise<TreeNode[]>;
+export type TreeValueCheckClickableFun = (item: TreeNode) => Promise<boolean>;
 
-export type IdAsValueTreeGetDiaplayValue = (ref: IdAsValueTreeInterface) => string;
-export type IdAsValueTreeGetRef = (ref: IdAsValueTreeInterface) => void;
+export type TreeValueGetDiaplayValue = (ref: TreeValueInterface) => string;
+export type TreeValueGetRef = (ref: TreeValueInterface) => void;
 export interface TreeDataItem {
   id: string | number;
   pId?: number;
@@ -69,9 +69,9 @@ export interface TreeNode {
 }
 
 /**
- * IdAsValueTree 的公共接口
+ * TreeValue 的公共接口
  */
-export interface IdAsValueTreeInterface {
+export interface TreeValueInterface {
   /**
    * 获取某个ID的树(正排列)
    * @param value 要获取的ID
@@ -88,9 +88,9 @@ export interface IdAsValueTreeInterface {
   reload(): void;
 }
 /**
- * IdAsValueTree 的公共接口
+ * TreeValue 的公共接口
  */
-export interface IdAsValueTreeProps {
+export interface TreeValueProps {
   /**
    * 允许清除
    */
@@ -107,11 +107,11 @@ export interface IdAsValueTreeProps {
   /**
    * 加载数据
    */
-  loadData?: IdAsValueTreeLoadDataFun,
+  loadData?: TreeValueLoadDataFun,
   /**
    * 自定义检查条目是否可点击回调
    */
-  checkClickable?: IdAsValueTreeCheckClickableFun,
+  checkClickable?: TreeValueCheckClickableFun,
   /**
    * 子数据最大层级
    */

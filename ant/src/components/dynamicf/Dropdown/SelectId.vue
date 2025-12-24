@@ -32,7 +32,7 @@ import { ref, watch, onMounted, type PropType, type VNode, type Ref } from "vue"
 import { Debounce, StringUtils } from "@imengyu/imengyu-utils";
 import VNodeRenderer from "../../../components/VNodeRenderer.vue";
 import type { SelectProps } from "ant-design-vue";
-import type { DropdownValues, LoadDataFun } from "./SelectId";
+import type { DropdownValues, LoadDataFun, SelectIdProps } from "./SelectId";
 import type { DataModel } from "@imengyu/js-request-transform";
 
 type RenderOption<T> = (data: {
@@ -44,78 +44,27 @@ type RenderOption<T> = (data: {
 /**
  * 使用数据的ID作为value的下拉框包装
  */
-
-
-const props = defineProps({
-  showNull: {
-    default: false,
-    type: Boolean
-  },
-  renderOption: {
-    default: null,
-    type: Function as PropType<RenderOption<DataModel>>
-  },
-  allowClear: {
-    default: false,
-    type: Boolean
-  },
-  multiple: {
-    default: false,
-    type: Boolean
-  },
-  disabled: {
-    default: false,
-    type: Boolean
-  },
-  showSearch: {
-    default: true,
-    type: Boolean
-  },
-  placeholder: {
-    default: "输入可进行搜索",
-    type: String
-  },
-  notFoundContent: {
-    default: "未找到数据，请换个搜索词再试",
-    type: String
-  },
-  loadAtStart: {
-    default: true,
-    type: Boolean
-  },
-  filterDirectly: {
-    default: true,
-    type: Boolean
-  },
-  value: {
-    default: null,
-  },
-  intitialSearchValue: {
-    default: null,
-    type: String
-  },
-  loadData: {
-    type: Function as PropType<LoadDataFun<DataModel>>,
-    default: null,
-  },
-  /**
-   * a-select 其他自定义参数
-   */
-  customProps: {
-    type: Object as PropType<SelectProps>,
-    default: null,
-  },
+const props = withDefaults(defineProps<SelectIdProps<DataModel> & {
+  value?: string|number|null
+}>(), {
+  allowClear: false,
+  multiple: false,
+  disabled: false,
+  showSearch: true,
+  placeholder: "输入可进行搜索",
+  notFoundContent: "未找到数据，请换个搜索词再试",
+  loadAtStart: true,
+  filterDirectly: true,
 });
 const emit = defineEmits([
   "update:value",
   "change",
   "loaded",
 ]);
-const valueV = ref(null);
+const valueV = ref<string|number|null|undefined>(null);
 const data = ref<DropdownValues<DataModel>[]>([]) as Ref<DropdownValues<DataModel>[]>;
 const lastLoadValue = ref(null);
 const lastSearchValue = ref('');
-
 
 const searchDebunce = new Debounce(500, () => {
   if (!props.filterDirectly)
@@ -170,7 +119,7 @@ const reload = (clearValue = false) => {
 // });
 watch(() => props.intitialSearchValue, (v) => {
   if (!props.filterDirectly && !StringUtils.isNullOrEmpty(v)) {
-    doLoadData(v);
+    doLoadData(v!);
   }
 });
 watch(() => props.value, (v) => {

@@ -18,7 +18,7 @@ import {
   ShowTagList,
   SelectId,
   SelectTreeId,
-  IdAsValueTree,
+  TreeValue,
   Sign,
   PasswordStrengthMeter,
   PasswordWithStrengthInput,
@@ -50,7 +50,7 @@ export * from './components/dynamicf/ActionRender';
 export * from './components/dynamicf/CascaderFormItem';
 export * from './components/dynamicf/CheckBoxValue';
 export * from './components/dynamicf/CheckBoxToInt.vue';
-export * from './components/dynamicf/IdAsValueTree';
+export * from './components/dynamicf/TreeValue';
 export * from './components/dynamicf/RadioValue';
 export * from './components/dynamicf/RadioId';
 export * from './components/dynamicf/SelectValue';
@@ -71,7 +71,7 @@ export {
   ShowTagList,
   SelectId,
   SelectTreeId,
-  IdAsValueTree,
+  TreeValue,
   Sign,
   PasswordWithStrengthInput,
   PasswordStrengthMeter,

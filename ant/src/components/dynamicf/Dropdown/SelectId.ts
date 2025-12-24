@@ -79,7 +79,7 @@ export interface SelectIdProps<T extends DataModel> {
   /**
    * 初始化时的搜索数据
    */
-  intitialSearchValue?: Record<string, unknown>,
+  intitialSearchValue?: string,
   /**
    * 加载数据回调
    */
