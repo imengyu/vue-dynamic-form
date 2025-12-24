@@ -5,7 +5,7 @@
   "module": "dist/vue-dynamic-form.es.js",
   "types": "dist/main.d.ts",
   "name": "@imengyu/vue-dynamic-form",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A data driven form component for vue3",
   "type": "module",
   "files": [
