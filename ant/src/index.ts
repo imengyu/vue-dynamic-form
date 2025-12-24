@@ -87,8 +87,8 @@ export {
 }
 
 const plugin : Plugin<{
-  aMapApiKey: string,
-  aMapApiSecurityJsCode: string,
+  aMapApiKey?: string,
+  aMapApiSecurityJsCode?: string,
   fullAntd?: boolean,
 }> = {
   install(app, options) {
