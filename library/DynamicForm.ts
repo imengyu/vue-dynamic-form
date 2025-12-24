@@ -305,12 +305,12 @@ export interface IDynamicFormRef {
    * 获取表单组件的 Ref
    * @returns 
    */
-  getFormRef: <T>() => T;
+  getFormRef: <T>() => T|undefined;
   /**
    * 获取指定表单项组件的 Ref
    * @returns 
    */
-  getFormItemControlRef: <T>(key: string) => T;
+  getFormItemControlRef: <T>(key: string) => T|undefined;
   /**
    * 触发提交。同 getFormRef().submit() 。
    * @returns 

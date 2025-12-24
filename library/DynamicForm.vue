@@ -12,6 +12,7 @@ import {
 import type { Rule } from 'async-validator';
 import type { ColProps } from './DynamicFormBasicControls';
 import type { IDynamicFormEditorContext } from './DynamicFormItemEditor/DynamicFormItemEditor';
+import { requireNotNull } from '@imengyu/imengyu-utils';
 
 /**
  * 动态表单组件。
@@ -207,17 +208,15 @@ export default defineComponent({
     const formRef : IDynamicFormRef = {
       initDefaultValuesToModel,
       getVisibleFormNames,
-      getFormRef() {
-        if (!formEditor.value)
-          throw new Error('Form instance is not create. At form: ' + name.value);
-        return formEditor.value
-      },
+      getFormRef: () => formEditor.value,
       getFormItemControlRef: getFormItemControlRef as any,
       submit() {
-        return this.getFormRef<any>()[finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit']();
+        return requireNotNull(this.getFormRef<any>(), 'Form instance not create!')
+          [finalOptions.value.internalWidgets?.Form?.propsMap.submit || 'submit']();
       },
       validate() {
-        return this.getFormRef<any>()[finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate']();
+        return requireNotNull(this.getFormRef<any>(), 'Form instance not create!')
+          [finalOptions.value.internalWidgets?.Form?.propsMap.validate || 'validate']();
       },
       setValueByPath: (path: string|string[], value: unknown) => {
         if (Array.isArray(path))
