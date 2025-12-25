@@ -28,18 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, type PropType, type VNode, type Ref } from "vue";
+import { ref, watch, onMounted, type Ref } from "vue";
 import { Debounce, StringUtils } from "@imengyu/imengyu-utils";
 import VNodeRenderer from "../../../components/VNodeRenderer.vue";
-import type { SelectProps } from "ant-design-vue";
 import type { DropdownValues, LoadDataFun, SelectIdProps } from "./SelectId";
 import type { DataModel } from "@imengyu/js-request-transform";
-
-type RenderOption<T> = (data: {
-  value: unknown,
-  text: string,
-  raw: T
-}) => VNode;
 
 /**
  * 使用数据的ID作为value的下拉框包装

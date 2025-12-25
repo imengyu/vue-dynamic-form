@@ -17,7 +17,7 @@ export interface DropdownValues<T> {
   /**
    * 原始数据
    */
-  raw: T;
+  raw?: T|undefined;
 }
 
 export type LoadDataFun<T extends DataModel> = (val: string | null) => Promise<DropdownValues<T>[]>;
