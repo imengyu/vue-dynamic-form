@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts">
-import type { DataModel } from '@imengyu/js-request-transform';
 import type { ActionRenderItem } from './ActionRender';
 import { defineComponent, type PropType } from "vue";
 
@@ -26,7 +25,7 @@ export default defineComponent({
   methods: {
     actionClick(action: ActionRenderItem) {
       if (typeof action.onClick === 'function')
-        action.onClick(action.key, this.rawModel as DataModel);
+        action.onClick(action.key, this.rawModel ?? {});
       else
         console.warn('action ' + action.key + ' onClick is not a function!');
     },

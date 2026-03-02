@@ -32,12 +32,11 @@ import { ref, watch, onMounted, type Ref } from "vue";
 import { Debounce, StringUtils } from "@imengyu/imengyu-utils";
 import VNodeRenderer from "../../../components/VNodeRenderer.vue";
 import type { DropdownValues, LoadDataFun, SelectIdProps } from "./SelectId";
-import type { DataModel } from "@imengyu/js-request-transform";
 
 /**
  * 使用数据的ID作为value的下拉框包装
  */
-const props = withDefaults(defineProps<SelectIdProps<DataModel> & {
+const props = withDefaults(defineProps<SelectIdProps<any> & {
   value?: string|number|null
 }>(), {
   allowClear: false,
@@ -55,7 +54,7 @@ const emit = defineEmits([
   "loaded",
 ]);
 const valueV = ref<string|number|null|undefined>(null);
-const data = ref<DropdownValues<DataModel>[]>([]) as Ref<DropdownValues<DataModel>[]>;
+const data = ref<DropdownValues<any>[]>([]) as Ref<DropdownValues<any>[]>;
 const lastLoadValue = ref(null);
 const lastSearchValue = ref('');
 
@@ -75,7 +74,7 @@ const doLoadData = (val: string | null) => {
   if (typeof props.loadData === "function") {
     const oldValue = valueV.value;
     valueV.value = null;
-    (props.loadData as LoadDataFun<DataModel>)(val).then((d) => {
+    (props.loadData as LoadDataFun<any>)(val).then((d) => {
       data.value = d;
       setTimeout(() => {
         valueV.value = oldValue;

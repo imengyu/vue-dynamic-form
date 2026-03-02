@@ -1,4 +1,3 @@
-import type { DataModel } from "@imengyu/js-request-transform";
 import type { SelectProps } from "ant-design-vue";
 import type { VNode } from "vue";
 
@@ -20,9 +19,9 @@ export interface DropdownValues<T> {
   raw?: T|undefined;
 }
 
-export type LoadDataFun<T extends DataModel> = (val: string | null) => Promise<DropdownValues<T>[]>;
+export type LoadDataFun<T> = (val: string | null) => Promise<DropdownValues<T>[]>;
 
-export type SelectIdLoadDataFun<T extends DataModel> = LoadDataFun<T>;
+export type SelectIdLoadDataFun<T> = LoadDataFun<T>;
 
 /**
  * SelectId 的公共接口
@@ -42,7 +41,7 @@ export interface SelectIdInterface {
 /**
  * SelectId 的公共接口
  */
-export interface SelectIdProps<T extends DataModel> {
+export interface SelectIdProps<T> {
   /**
    * 允许清除
    */
