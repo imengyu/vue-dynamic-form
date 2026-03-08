@@ -12,7 +12,7 @@ export interface DropdownValues<T> {
   /**
    * 选项值
    */
-  value: number,
+  value: number|string|null,
   /**
    * 原始数据
    */
