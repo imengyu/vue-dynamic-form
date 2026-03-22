@@ -1,8 +1,10 @@
 import type { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
 import type { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
-import type { Rule } from 'async-validator';
-import { Form, FormItem, type RowProps } from "./DynamicFormBasicControls";
+import type { Rule, RuleItem } from 'async-validator';
+import { Form, FormItem, type FormItemProps, type FormProps, type NextTabButtonProps, type RowProps } from "./DynamicFormBasicControls";
 import { type Ref, type Slot, type VNode, h, markRaw } from "vue";
+import type { BaseCheckProps, BaseDividerProps, BaseInputProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps } from "DynamicFormItemControls";
+import type { BaseButtonProps } from "DynamicFormItemControls/BaseButton";
 
 export type IDynamicFormObject = Record<string, unknown>;
 /**
@@ -75,11 +77,11 @@ export const MESSAGE_TAB_PREV = 'tab-prev';
  */
 export const MESSAGE_TAB_ACTIVE = 'tab-active';
 
-export interface IDynamicFormItem {
+export interface IDynamicFormItem<T = string, P = unknown, E = Record<string, Function>> {
   /**
    * 当前表单类型
    */
-  type: string;
+  type: T;
   /**
    * 是否隐藏当前表单项。当返回true隐藏当前条目。为undefined或者返回其他值时，默认显示。
    * * 注意：hidden 与 show 不能同时设置。
@@ -97,7 +99,7 @@ export interface IDynamicFormItem {
   /**
    * 附加组件属性。支持动态回调(只支持第一级传入回调)。
    */
-  additionalProps?: Record<string, unknown|IDynamicFormItemCallback<unknown>>|unknown;
+  additionalProps?: P|IDynamicFormItemCallback<P>;
   /**
    * 附加组件插槽。
    * 
@@ -110,7 +112,7 @@ export interface IDynamicFormItem {
    * 附加组件事件绑定。事件名称不需要加 on 前缀。
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
-  additionalEvents?: Record<string, Function>;
+  additionalEvents?: E;
   /**
    * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
    */
@@ -129,7 +131,7 @@ export interface IDynamicFormItem {
   /**
    * 当前条目的校验规则，赋值至 FormItem 上。
    */
-  rules?: any[];
+  rules?: RuleItem[];
 
   /**
    * 加载时的钩子函数
@@ -163,7 +165,7 @@ export interface IDynamicFormItem {
   /**
    * 附加 FormItem 组件属性
    */
-  formProps?: unknown;
+  formProps?: IDynamicFormPropsMap['FormItem'];
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
@@ -207,7 +209,7 @@ export interface IDynamicFormItem {
   /**
    * 应用到当前子级项目的 FormItem 组件属性。仅在 object 或者其他容器条目中有效。
    */
-  childrenFormProps?: unknown,
+  childrenFormProps?: IDynamicFormPropsMap['FormItem'],
   /**
    * 当前条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
@@ -299,6 +301,36 @@ export interface IDynamicFormInternalWidgets {
   },
 }
 
+//默认的表单项类型
+export interface IDynamicFormWidgetPropsMap {
+  'base-textarea': BaseTextAreaProps;
+  'base-text': BaseInputProps;
+  'base-select': BaseSelectProps;
+  'base-check': BaseCheckProps;
+  'base-radio': BaseRadioProps;
+  'base-divider': BaseDividerProps;
+  'base-next-tab-button': NextTabButtonProps;
+  'base-button': BaseButtonProps;
+};
+//表单组件属性映射
+export interface IDynamicFormPropsMap {
+  Form: FormProps;
+  FormItem: FormItemProps;
+  Rules: Record<string, Rule>;
+}
+
+
+export type IDynamicFormDefaultDynamicFormItemTypes = {
+  [K in keyof IDynamicFormWidgetPropsMap]: Omit<
+    IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], Record<string, Function>>,
+    'type' | 'additionalProps'
+  > & { 
+    type: K 
+    additionalProps?: IDynamicFormWidgetPropsMap[K]|IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K]>;
+  };
+}[keyof IDynamicFormWidgetPropsMap];
+
+
 // DynamicForm 实例方法接口
 export interface IDynamicFormRef {
   /**
@@ -357,15 +389,20 @@ export interface IDynamicFormRef {
    */
   initDefaultValuesToModel: () => void;
 }
-export interface IDynamicFormOptions {
+export interface IDynamicFormOptions<
+  T = IDynamicFormDefaultDynamicFormItemTypes,
+  R = IDynamicFormPropsMap['Rules'],
+  P = IDynamicFormPropsMap['Form'],
+  E = Record<string, Function>
+> {
   /**
    * 表单条目数据
    */
-  formItems: IDynamicFormItem[];
+  formItems: T[];
   /**
    * 表单的校验规则
    */
-  formRules?: Record<string, unknown>;
+  formRules?: R;
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
@@ -381,12 +418,12 @@ export interface IDynamicFormOptions {
   /**
    * 表单组件附加属性
    */
-  formAdditionaProps?: Record<string, unknown>;
+  formAdditionaProps?: P;
   /**
    * 表单组件附加事件绑定
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
-  formAdditionalEvents?: Record<string, Function>;
+  formAdditionalEvents?: E;
   /**
    * 表单嵌套名称生成类型。默认是 dot 。
    * 该选项用于生成嵌套表单对象的名称，例如 `a.b.c` 或者 `['a','b','c']` ，

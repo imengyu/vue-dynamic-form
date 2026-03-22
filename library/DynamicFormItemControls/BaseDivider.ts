@@ -1,5 +1,4 @@
-import type { StyleHTMLAttributes } from "vue";
+import type { HTMLAttributes } from "vue";
 
-export interface BaseDividerProps {
-  style?: StyleHTMLAttributes;
+export interface BaseDividerProps extends HTMLAttributes {
 }

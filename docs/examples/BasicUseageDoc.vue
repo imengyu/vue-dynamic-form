@@ -10,7 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, defaultDynamicFormInternalWidgets, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
+import {
+  defaultDynamicFormInternalWidgets, DynamicForm, type BaseTextAreaProps, type FormItemProps, type IDynamicFormDefaultDynamicFormItemTypes, type IDynamicFormItem, type IDynamicFormOptions 
+} from '@imengyu/vue-dynamic-form';
 import { computed, reactive, ref, } from 'vue'
 
 const resultJson = computed(() => {
@@ -40,7 +42,7 @@ const formOptions = ref<IDynamicFormOptions>({
         rows: 6,
         cols: 100,
         style: { width: '400px' }
-      } as BaseTextAreaProps
+      }
     },
     { 
       type: 'base-select', label: '选择', name: 'numberProp', 
@@ -50,23 +52,23 @@ const formOptions = ref<IDynamicFormOptions>({
           { text: '香蕉', value: 2 },
           { text: '葡萄', value: 3 },
         ]
-      } as BaseSelectProps
+      }
     },
     {
       type: 'base-check', label: '复选框', name: 'booleanProp',
       additionalProps: {
         text: '我是复选框的说明',
-      } as BaseCheckProps,
+      },
     },
     { 
       type: 'base-radio', label: '单选框', name: 'numberProp2', 
       additionalProps: {
         items: [
-          { label: '苹果', value: 1 },
-          { label: '香蕉', value: 2 },
-          { label: '葡萄', value: 3 },
+          { text: '苹果', value: 1 },
+          { text: '香蕉', value: 2 },
+          { text: '葡萄', value: 3 },
         ]
-      } as BaseRadioProps,
+      },
     },
     { 
       type: 'base-button', label: '提交', name: 'submit',

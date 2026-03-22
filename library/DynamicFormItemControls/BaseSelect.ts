@@ -1,3 +1,4 @@
+import type { SelectHTMLAttributes } from "vue";
 
 export interface IDynamicFormItemSelectOption {
   /**
@@ -14,11 +15,11 @@ export interface IDynamicFormItemSelectOption {
   [key: string]: unknown;
 }
 
-export interface BaseSelectProps {
+export interface BaseSelectProps extends SelectHTMLAttributes {
   /**
    * 是否禁用
    */
-  disabled: boolean;
+  disabled?: boolean;
   /**
    * 选项数据
    */
@@ -26,5 +27,5 @@ export interface BaseSelectProps {
   /**
    * 选择值
    */
-  value: unknown;
+  value?: unknown;
 }
