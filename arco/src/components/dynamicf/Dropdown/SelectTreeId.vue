@@ -77,13 +77,13 @@ function handleChange(value: unknown) {
     }
   })
 }
-function  handleLoadData(treeNode: { dataRef: TreeDataItem }) {
+function handleLoadData(treeNode: { dataRef: TreeDataItem }) {
   return new Promise((resolve: (value?: unknown) => void) => {
     const { id, level } = treeNode.dataRef;
     doLoadData(id, level as number).then(() => resolve()).catch(() => resolve());
   });
 }
-function  handleDisplayValueClick() {
+function handleDisplayValueClick() {
   showDisplayValue.value = false;
   setTimeout(() => {
     (selectRef.value as {
@@ -91,7 +91,7 @@ function  handleDisplayValueClick() {
     }).focus();
   }, 200);
 }
-function  handleSelectBlur() {
+function handleSelectBlur() {
   if(props.showDisplayValueBeforeEdit) {
     if(valueV.value != null && valueV.value != 0 && props.defaultDisplayValue != '')
       showDisplayValue.value = true;
@@ -99,7 +99,7 @@ function  handleSelectBlur() {
       showDisplayValue.value = true;
   }
 }
-function  doLoadData(pid: string|number|null, level: number) {
+function doLoadData(pid: string|number|null, level: number) {
   const loadData = props.loadData;
   if(typeof loadData === 'function') {
     return loadData(pid as string, level).then((d) => {

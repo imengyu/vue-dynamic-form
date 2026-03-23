@@ -7,8 +7,11 @@
       :width="imgSize"
       :height="imgSize"
       :src="image"
-      :fallback="failImage"
-    />
+    >
+      <template #error>
+        <img :src="failImage" :width="imgSize" :height="imgSize" />
+      </template>
+    </a-image>
     <div v-if="images.length > maxCount" class="overflow-count" :style="{ 
       width: `${imgSize}px`, 
       height: `${imgSize}px`,

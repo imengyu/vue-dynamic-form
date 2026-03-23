@@ -1,5 +1,6 @@
 import type { SelectProps } from "@arco-design/web-vue";
 import type { TreeDataItem } from "../TreeValue";
+import type { CSSProperties } from "vue";
 
 export type SelectTreeIdLoadDataFun = (pid: string|number, level: number) => Promise<TreeDataItem[]>;
 export type SelectTreeIdCheckClickableFun = (item: TreeDataItem) => Promise<boolean>;
@@ -38,7 +39,7 @@ export interface SelectTreeIdProps {
    * 多选？
    */
   multiple?: boolean,
-  dropdownStyle?: Record<string, unknown>,
+  dropdownStyle?: CSSProperties,
   disabled?: boolean,
   placeholder?: string,
   /**

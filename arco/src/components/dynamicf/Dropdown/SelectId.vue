@@ -8,7 +8,7 @@
     :placeholder="placeholder"
     :default-active-first-option="false"
     :notFoundContent="notFoundContent"
-    :options="data"
+    :options="finalData"
     :filterOption="showSearch && filterDirectly ? filterOption : false"
     @update:value="handleChange"
     @search="handleSearch"
@@ -28,10 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, type Ref } from "vue";
+import { ref, watch, onMounted, type Ref, computed } from "vue";
 import { Debounce, StringUtils } from "@imengyu/imengyu-utils";
 import VNodeRenderer from "../../../components/VNodeRenderer.vue";
 import type { DropdownValues, LoadDataFun, SelectIdProps } from "./SelectId";
+import type { SelectOptionData } from "@arco-design/web-vue";
 
 /**
  * 使用数据的ID作为value的下拉框包装
@@ -55,6 +56,12 @@ const emit = defineEmits([
 ]);
 const valueV = ref<string|number|null|undefined>(null);
 const data = ref<DropdownValues<any>[]>([]) as Ref<DropdownValues<any>[]>;
+const finalData = computed<SelectOptionData[]>(() => {
+  return data.value.map(item => ({
+    label: item.text as string,
+    value: item.value as string|number,
+  }));
+});
 const lastLoadValue = ref(null);
 const lastSearchValue = ref('');
 
@@ -83,10 +90,8 @@ const doLoadData = (val: string | null) => {
     });
   }
 };
-const filterOption = (input: string, option: {
-  text: string;
-}) => {
-  return !props.filterDirectly || option.text.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+const filterOption = (input: string, option: SelectOptionData) => {
+  return !props.filterDirectly || (option.label || '').toLowerCase().indexOf(input.toLowerCase()) >= 0;
 };
 const getLableByValue = (value: number) => {
   for (let i = 0; i < data.value.length; i++) {

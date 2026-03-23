@@ -2,7 +2,7 @@
   <span>
     <a-badge 
       v-if="currentState"
-      :status="currentState.badgeState" 
+      :status="currentStateBadgeState" 
       :color="currentState.badgeColor" 
       :text="currentState.text"
     />
@@ -29,7 +29,13 @@ const props = defineProps<StateRendererProps & {
   value: unknown;
 }>();
 const currentState = computed(() => {
-  return (props.stateValues as IStateOption[])
-    .find(k => k.value === props.value || k.text === props.value);
+  return (props.stateValues as IStateOption[]).find(k => k.value === props.value || k.text === props.value);
+});
+const currentStateBadgeState = computed(() => {
+  switch (currentState.value?.badgeState) {
+    case 'default': return 'normal';
+    case 'error': return 'danger';
+    default: return currentState.value?.badgeState;
+  }
 });
 </script>
