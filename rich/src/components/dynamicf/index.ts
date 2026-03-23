@@ -9,52 +9,14 @@ import {
   type IDynamicFormOptions, 
   configDefaultDynamicFormOptions 
 } from "@imengyu/vue-dynamic-form";
-import PasswordWithStrengthInput from "./PasswordWithStrengthInput.vue";
-import PasswordStrengthMeter from "./PasswordStrengthMeter.vue";
-import CheckBoxValue from "./CheckBoxValue.vue";
-import SelectId from "./Dropdown/SelectId.vue";
-import SelectTreeId from "./Dropdown/SelectTreeId.vue";
-import SelectValue from "./SelectValue.vue";
-import TreeValue from "./TreeValue.vue";
-import UploaderFormItem from "./UploaderFormItem.vue";
-import WrapperTimeRangePicker from "./WrapperTimeRangePicker.vue";
-import WrapperRangePicker from "./WrapperRangePicker.vue";
-import ActionRender from "./ActionRender.vue";
-import CheckBoxToInt from "./CheckBoxToInt.vue";
-import RadioValue from "./RadioValue.vue";
-import StateRenderer from "./Display/StateRenderer.vue";
-import ShowDateOrNull from "./Display/ShowDateOrNull.vue";
-import ShowImageList from "./Display/ShowImageList.vue";
-import ShowValueOrNull from "./Display/ShowValueOrNull.vue";
-import CascaderFormItem from "./CascaderFormItem.vue";
-import WhiteSpaceVue from "./WhiteSpace.vue";
-import NumberRange from "./NumberRange.vue";
-import ShowInList from "./Display/ShowInList.vue";
-import ShowImageOrNull from "./Display/ShowImageOrNull.vue";
-import ShowTagList from "./Display/ShowTagList.vue";
-import CheckBoxList from "./CheckBoxList.vue";
-import RadioId from "./RadioId.vue";
+import MapPointPicker from "./Map/MapPointPicker.vue";
+import RichText from "./Editor/RichText.vue";
+import Sign from "./Sign.vue";
 
 export {
-  StateRenderer,
-  ShowDateOrNull,
-  ShowImageList,
-  ShowValueOrNull,
-  ShowInList,
-  ShowImageOrNull,
-  ShowTagList,
-  SelectId,
-  SelectTreeId,
-  TreeValue,
-  PasswordWithStrengthInput,
-  PasswordStrengthMeter,
-  ActionRender,
-  CheckBoxToInt,
-  RadioValue,
-  CascaderFormItem,
-  NumberRange,
-  CheckBoxList,
-  RadioId,
+  Sign,
+  MapPointPicker,
+  RichText,
 }
 
 export const defaultConfig = {
@@ -119,6 +81,12 @@ export function registerAllFormComponents() {
     .register('time-range', markRaw(WrapperTimeRangePicker))
     .register('datetime', markRaw(DatePicker), { showTime: true })
     .register('datetime-range', markRaw(WrapperRangePicker), { showTime: true })
+    
+    //Map
+    .register('select-lonlat', markRaw(MapPointPicker), {}, 'modelValue')
+    //Editor
+    .register('richtext', markRaw(RichText), {}, 'modelValue')
+    .register('sign', markRaw(Sign), {}, 'modelValue')
     //Upload
     .register('uploader', markRaw(UploaderFormItem), {}, 'modelValue')
     //Extra

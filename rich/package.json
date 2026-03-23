@@ -1,8 +1,8 @@
 {
-  "name": "@imengyu/vue-dynamic-form-ant",
-  "version": "0.0.6",
-  "main": "lib/vue-dynamic-form-ant.umd.js",
-  "module": "lib/vue-dynamic-form-ant.es.js",
+  "name": "@imengyu/vue-dynamic-form-rich",
+  "version": "0.0.1",
+  "main": "lib/vue-dynamic-form-rich.umd.js",
+  "module": "lib/vue-dynamic-form-rich.es.js",
   "type": "module",
   "types": "lib/index.d.ts",
   "engines": {
@@ -26,8 +26,9 @@
     "@imengyu/imengyu-utils": "^0.0.16",
     "@imengyu/vue-dynamic-form": "^0.1.8",
     "@imengyu/vue-scroll-rect": "^0.1.7",
-    "ant-design-vue": "^4.2.6",
+    "@vuemap/vue-amap": "^2.1.17",
     "vue": "^3.5.22",
+    "vue-esign": "^1.1.4",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
@@ -36,7 +37,6 @@
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vue/tsconfig": "^0.8.1",
-    "npm-run-all2": "^8.0.4",
     "sass-embedded": "^1.93.2",
     "typescript": "~5.9.0",
     "vite": "^7.1.7",

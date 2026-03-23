@@ -1,8 +1,8 @@
 {
-  "name": "@imengyu/vue-dynamic-form-ant",
-  "version": "0.0.6",
-  "main": "lib/vue-dynamic-form-ant.umd.js",
-  "module": "lib/vue-dynamic-form-ant.es.js",
+  "name": "@imengyu/vue-dynamic-form-arco",
+  "version": "0.0.1",
+  "main": "lib/vue-dynamic-form-arco.umd.js",
+  "module": "lib/vue-dynamic-form-arco.es.js",
   "type": "module",
   "types": "lib/index.d.ts",
   "engines": {
@@ -23,10 +23,10 @@
   "author": "imengyu",
   "license": "MIT",
   "dependencies": {
+    "@arco-design/web-vue": "^2.57.0",
     "@imengyu/imengyu-utils": "^0.0.16",
     "@imengyu/vue-dynamic-form": "^0.1.8",
     "@imengyu/vue-scroll-rect": "^0.1.7",
-    "ant-design-vue": "^4.2.6",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },

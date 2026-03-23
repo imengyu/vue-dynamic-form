@@ -30,7 +30,7 @@ import VueEsign from 'vue-esign';
 import { onMounted, ref, type PropType } from 'vue';
 import { InfoCircleOutlined, ExclamationCircleOutlined, CheckOutlined } from '@ant-design/icons-vue';
 import { Form, message, Modal } from 'ant-design-vue';
-import type { UploadCoInterface } from './UploaderFormItem';
+import type { UploadCoInterface } from '../../../../ant/src/components/dynamicf/UploaderFormItem';
 
 export interface SignProps {
   /**

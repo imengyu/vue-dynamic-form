@@ -1,6 +1,6 @@
 export * from './components/dynamicf/index';
-import 'ant-design-vue/dist/reset.css';
-import Antd from 'ant-design-vue';
+import '@arco-design/web-vue/dist/arco.css';
+import ArcoDesign from '@arco-design/web-vue';
 import VNodeRenderer from './components/VNodeRenderer.vue';
 
 import {
@@ -25,7 +25,7 @@ import {
   RadioId,
   registerAllFormComponents,
 } from './components/dynamicf/index';
-import type { App, Plugin } from 'vue';
+import type { Plugin } from 'vue';
 export * from './components/dynamicf/Display/ShowImageList.vue';
 export * from './components/dynamicf/Display/ShowDateOrNull.vue';
 export * from './components/dynamicf/Display/ShowImageOrNull.vue';
@@ -74,7 +74,7 @@ export {
 }
 
 const plugin : Plugin<{
-  fullAntd?: boolean,
+  fullArcoDesign?: boolean,
 }> = {
   install(app, options) {
     app.component('StateRenderer', StateRenderer);
@@ -85,8 +85,8 @@ const plugin : Plugin<{
     app.component('ShowImageOrNull', ShowImageOrNull);
     app.component('ShowTagList', ShowTagList);
     if (options)  {
-      if (options.fullAntd !== false) {
-        app.use(Antd);
+      if (options.fullArcoDesign !== false) {
+        app.use(ArcoDesign);
       }
     }
     registerAllFormComponents();

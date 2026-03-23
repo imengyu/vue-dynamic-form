@@ -15,8 +15,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/index.ts',
-      name: 'vue-dynamic-form-ant',
-      fileName: (format) => `vue-dynamic-form-ant.${format}.js`,
+      name: 'vue-dynamic-form-arco',
+      fileName: (format) => `vue-dynamic-form-arco.${format}.js`,
     },
     rollupOptions: {
       external: [
@@ -28,10 +28,10 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
           'vue-router': 'VueRouter',
-          'ant-design-vue': 'antd',
+          '@arco-design/web-vue': 'ArcoDesign',
           '@imengyu/vue-dynamic-form': 'VueDynamicForm',
         },
-        assetFileNames: 'vue-dynamic-form-ant.[ext]',
+        assetFileNames: 'vue-dynamic-form-arco.[ext]',
       },
     },
     sourcemap: true,

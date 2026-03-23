@@ -3,7 +3,7 @@ import {
   Alert, Button, Checkbox, DatePicker, Form, 
   FormItem, Image, Input, InputNumber, 
   Rate, Select, Switch, Textarea, TimePicker
-} from "ant-design-vue";
+} from "@arco-design/web-vue";
 import { 
   DynamicFormItemRegistry, 
   type IDynamicFormOptions, 
