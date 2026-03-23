@@ -11,9 +11,9 @@
 
 <script setup lang="ts">
 import {
-  defaultDynamicFormInternalWidgets, defineDynamicFormItem, defineDynamicFormOptions, DynamicForm,
+  defaultDynamicFormInternalWidgets, defineDynamicFormOptions, DynamicForm,
 } from '@imengyu/vue-dynamic-form';
-import { computed, reactive, ref, } from 'vue'
+import { computed, reactive, } from 'vue'
 
 const resultJson = computed(() => {
   return JSON.stringify(formModel, undefined, 2);
@@ -77,9 +77,6 @@ const formOptions = defineDynamicFormOptions({
     },
     { 
       type: 'base-button', label: '提交', name: 'submit',
-      additionalProps: {
-        aa: ''
-      }
     },
   ],
   formRules: {

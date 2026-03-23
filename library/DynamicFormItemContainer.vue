@@ -254,7 +254,7 @@
             :isObject="false"
             :addCallback="item.newChildrenObject"
             :deleteCallback="item.deleteChildrenCallback"
-            v-bind="(item.additionalProps as IDynamicFormObject)"
+            v-bind="(item.additionalProps as FormArrayGroupProps)"
           >
             <template #addButton="props">
               <slot name="arrayButtonAdd" v-bind="props" />
@@ -313,7 +313,7 @@
             :isObject="true"
             :addCallback="item.newChildrenObject"
             :deleteCallback="item.deleteChildrenCallback"
-            v-bind="(item.additionalProps as IDynamicFormObject)"
+            v-bind="(item.additionalProps as FormArrayGroupProps)"
           >
             <template #addButton="props">
               <slot name="arrayButtonAdd" v-bind="props" />
@@ -363,11 +363,11 @@
 
 <script lang="ts" setup>
 import { inject, type PropType, type Ref, toRefs, computed, provide } from 'vue';
-import type { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef, IEvaluateCallback } from './DynamicForm';
+import type { IDynamicFormObject, IEvaluateCallback } from './DynamicForm';
 import type { Rules } from 'async-validator';
 import DynamicFormItemNormal, { type FormCeilProps } from './DynamicFormItemNormal.vue';
 import FormGroup from './DynamicFormItemControls/FormGroup.vue';
-import FormArrayGroup from './DynamicFormItemControls/FormArrayGroup.vue';
+import FormArrayGroup, { type FormArrayGroupProps } from './DynamicFormItemControls/FormArrayGroup.vue';
 import DynamicFormTab from './DynamicFormTab/DynamicFormTab.vue';
 import DynamicFormTabPage from './DynamicFormTab/DynamicFormTabPage.vue';
 import FormCustomLayout from './DynamicFormItemControls/FormCustomLayout.vue';
@@ -376,6 +376,8 @@ import Row from './DynamicFormBasicControls/Layout/Row.vue';
 import DynamicFormCheckEmpty from './DynamicFormCheckEmpty.vue';
 import DynamicFormItemEditor from './DynamicFormItemEditor/DynamicFormItemEditor.vue';
 import DynamicFormItemEditorContainerEmptyNote from './DynamicFormItemEditor/DynamicFormItemEditorContainerEmptyNote.vue';
+import type { IDynamicFormItem, IDynamicFormItemCallback } from './DynamicFormDefs/DynamicFormItem';
+import type { IDynamicFormOptions, IDynamicFormRef } from './DynamicFormDefs/DynamicFormOptions';
 
 /**
  * 动态表单条目包装组件，处理基础类型分支、数据传入、回调处理、事件传递。

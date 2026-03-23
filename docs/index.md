@@ -25,11 +25,11 @@ features:
     details: 加快开发速度，解放双手！
 ---
 
-<ClientOnly>
-  <DocHome />
-</ClientOnly>
-
 <script setup>
 import './assets/root.scss'
 import DocHome from './examples/DocHome.vue';
 </script>
+
+<ClientOnly>
+  <DocHome />
+</ClientOnly>

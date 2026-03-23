@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps, DynamicForm, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
+import { defineDynamicFormOptions, DynamicForm } from '@imengyu/vue-dynamic-form';
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { json } from '@codemirror/lang-json';
 
@@ -48,7 +48,7 @@ const formModel = reactive({
   numberProp2: 3,
   booleanProp: false,
 });
-const formOptions = ref<IDynamicFormOptions>({
+const formOptions = ref(defineDynamicFormOptions({
   formLabelCol: { span: 4 },
   formWrapperCol: { span: 20 },
   formItems: [
@@ -63,7 +63,7 @@ const formOptions = ref<IDynamicFormOptions>({
         rows: 6,
         cols: 100,
         style: { width: '300px' }
-      } as BaseTextAreaProps
+      }
     },
     { 
       type: 'base-select', label: '选择', name: 'numberProp', 
@@ -73,23 +73,23 @@ const formOptions = ref<IDynamicFormOptions>({
           { text: '香蕉', value: 2 },
           { text: '葡萄', value: 3 },
         ]
-      } as BaseSelectProps
+      }
     },
     {
       type: 'base-check', label: '复选框', name: 'booleanProp',
       additionalProps: {
         text: '我是复选框的说明',
-      } as BaseCheckProps,
+      },
     },
     { 
       type: 'base-radio', label: '单选框', name: 'numberProp2', 
       additionalProps: {
         items: [
-          { label: '苹果', value: 1 },
-          { label: '香蕉', value: 2 },
-          { label: '葡萄', value: 3 },
+          { text: '苹果', value: 1 },
+          { text: '香蕉', value: 2 },
+          { text: '葡萄', value: 3 },
         ]
-      } as BaseRadioProps,
+      },
     },
     { 
       type: 'base-button', label: '提交', name: 'submit',
@@ -105,7 +105,7 @@ const formOptions = ref<IDynamicFormOptions>({
       { max: 200, message: '文本域最长200个字符' },
     ],
   },
-});
+}));
 
 function onSubmit() {
   alert('你提交的数据：' + JSON.stringify(formModel, undefined, 2));

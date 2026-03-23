@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormObject, IDynamicFormOptions, renderTextDefaultSlot } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, type IDynamicFormObject, type IDynamicFormOptions, renderTextDefaultSlot } from '@imengyu/vue-dynamic-form';
 import { reactive } from 'vue'
 
 const formModel = reactive({

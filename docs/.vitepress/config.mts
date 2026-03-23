@@ -36,7 +36,7 @@ export default defineConfig({
               { text: 'Arco Design Vue', link: '/guide/ingrate-arco-design' },
               { text: 'Element Plus', link: '/guide/ingrate-element' },
             ] },
-            
+            { text: 'TypeScript 定义', link: '/guide/ingrate-type' },
             { text: '基础用法', link: '/guide/basic-useage' },
           ]
         },

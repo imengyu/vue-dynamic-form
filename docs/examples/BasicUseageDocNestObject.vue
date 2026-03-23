@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseCheckProps, BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, type IDynamicFormOptions, defaultDynamicFormInternalWidgets, defineDynamicFormItemChildren } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -53,13 +53,13 @@ const formOptions : IDynamicFormOptions = {
                   { text: '香蕉', value: 2 },
                   { text: '葡萄', value: 3 },
                 ]
-              } as BaseSelectProps
+              }
             },
             {
               type: 'base-check', label: '商品信息-是否启用', name: 'enabled',
               additionalProps: {
                 text: '是',
-              } as BaseCheckProps,
+              },
             },
           ]
         },

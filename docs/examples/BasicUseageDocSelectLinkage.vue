@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseRadioProps, BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { type BaseSelectProps, DynamicForm, type IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { ref, reactive, watch } from 'vue'
 
 const formModel = ref({
@@ -25,11 +25,11 @@ const formOptions = reactive<IDynamicFormOptions>({
       type: 'base-radio', label: '会员类型', name: 'type', 
       additionalProps: {
         items: [
-          { label: '短期', value: 1 },
-          { label: '长期', value: 2 },
-          { label: '试用', value: 3 },
+          { text: '短期', value: 1 },
+          { text: '长期', value: 2 },
+          { text: '试用', value: 3 },
         ]
-      } as BaseRadioProps,
+      },
     },
     {
       type: 'base-select', label: '选择套餐', name: 'item_id', 
@@ -38,29 +38,30 @@ const formOptions = reactive<IDynamicFormOptions>({
           { text: '短期合作套餐', value: 0 },
           { text: '短期高级套餐', value: 1 },
         ],
-      } as BaseSelectProps,
+      },
     },
   ],
 });
 
 function loadPackageSelect(newType: number) {
   //这里是写死手动判断了，实际在这里你可以去请求后端数据
+  const props = formOptions.formItems[1].additionalProps as BaseSelectProps;
   switch (newType) {
     case 1:
-      (formOptions.formItems[1].additionalProps as BaseSelectProps).options = [
+      props.options = [
         { text: '短期合作套餐', value: 0 },
         { text: '短期高级套餐', value: 1 },
       ];
       break;
     case 2:
-      (formOptions.formItems[1].additionalProps as BaseSelectProps).options = [
+      props.options = [
         { text: '基础套餐', value: 0 },
         { text: '商业套餐', value: 1 },
         { text: '贵宾套餐', value: 2 },
       ];
       break;
     case 3:
-      (formOptions.formItems[1].additionalProps as BaseSelectProps).options = [
+      props.options = [
         { text: '试用套餐', value: 0 },
       ];
       break;

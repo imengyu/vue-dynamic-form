@@ -1,8 +1,21 @@
 <script lang="ts">
-import { type PropType, type Ref, defineComponent, h, inject, onBeforeUnmount, onMounted, ref } from 'vue';
-import { type IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, MESSAGE_TAB_PREV, type IDynamicFormItem, type IDynamicFormOptions, type IDynamicFormTabProps } from '../DynamicForm';
+import { type PropType, type Ref, type Slot, type VNode, defineComponent, h, inject, onBeforeUnmount, onMounted, ref } from 'vue';
+import { 
+  type IDynamicFormMessageCenter, MESSAGE_TAB_ACTIVE, MESSAGE_TAB_NEXT, MESSAGE_TAB_PREV, 
+} from '../DynamicForm';
 import Tab from '../DynamicFormBasicControls/Tabs/Tab.vue';
+import type { IDynamicFormItem } from '../DynamicFormDefs/DynamicFormItem';
+import type { IDynamicFormOptions } from '../DynamicFormDefs/DynamicFormOptions';
 
+export interface IDynamicFormTabProps {
+  defaultActiveKey?: string,
+  tabProps?: any,
+  renderTab?: (item: IDynamicFormItem, props: {
+    activeKey: string,
+    defaultActiveKey: string|undefined,
+    'onUpdate:activeKey': (newValue: string) => void,
+  }, defaultSlot: Slot) => VNode[];
+}
 export default defineComponent({
   props: {
     item: {

@@ -1,6 +1,10 @@
 <script lang="ts">
-import { type PropType, defineComponent } from 'vue';
-import type { IDynamicFormItem, FormCustomLayoutProps } from '../DynamicForm';
+import { type PropType, type Slot, type VNode, defineComponent } from 'vue';
+import type { IDynamicFormItem } from '../DynamicFormDefs/DynamicFormItem';
+
+export interface FormCustomLayoutProps {
+  render: (item: IDynamicFormItem, defaultSlot: Slot) => VNode[];
+}
 
 export default defineComponent({
   props: {

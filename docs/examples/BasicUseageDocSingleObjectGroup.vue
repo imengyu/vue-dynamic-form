@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, defaultDynamicFormInternalWidgets, defineDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -21,7 +21,7 @@ const formModel = ref({
   otherProp: '这是正常条目',
   otherProp2: '这是正常条目2',
 });
-const formOptions : IDynamicFormOptions = {
+const formOptions = defineDynamicFormOptions({
   internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
@@ -44,14 +44,14 @@ const formOptions : IDynamicFormOptions = {
               { text: '香蕉', value: 2 },
               { text: '葡萄', value: 3 },
             ]
-          } as BaseSelectProps
+          }
         },
       ]
     },
     { type: 'base-text', label: '正常条目2', name: 'otherProp2' },
   ],
   formRules: {},
-};
+});
 
 const resultJson = computed(() => {
   return JSON.stringify(formModel.value, undefined, 2);

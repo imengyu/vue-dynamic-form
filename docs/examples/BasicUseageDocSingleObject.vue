@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { BaseSelectProps, DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, defaultDynamicFormInternalWidgets, type IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
 import { computed, ref } from 'vue'
 
 const formModel = ref({
@@ -43,7 +43,7 @@ const formOptions : IDynamicFormOptions = {
               { text: '香蕉', value: 2 },
               { text: '葡萄', value: 3 },
             ]
-          } as BaseSelectProps
+          }
         },
       ]
     },

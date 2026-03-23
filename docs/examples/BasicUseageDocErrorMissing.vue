@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { DynamicForm, IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
+import { DynamicForm, type IDynamicFormOptions, defaultDynamicFormInternalWidgets } from '@imengyu/vue-dynamic-form';
 import { ref } from 'vue'
 
 const formModel = ref({

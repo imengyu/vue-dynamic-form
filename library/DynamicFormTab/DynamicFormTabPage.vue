@@ -1,7 +1,16 @@
 <script lang="ts">
-import { type PropType, type Ref, defineComponent, h, inject } from 'vue';
-import type { IDynamicFormOptions, IDynamicFormItem, IDynamicFormTabPageProps, IEvaluateCallback } from '../DynamicForm';
+import { type PropType, type Ref, type Slot, type VNode, defineComponent, h, inject } from 'vue';
+import type { IEvaluateCallback } from '../DynamicForm';
+import type { IDynamicFormItem } from '../DynamicFormDefs/DynamicFormItem';
+import type { IDynamicFormOptions } from '../DynamicFormDefs/DynamicFormOptions';
 import TabPage from '../DynamicFormBasicControls/Tabs/TabPage.vue';
+
+export interface IDynamicFormTabPageProps {
+  renderTabPage?: (item: IDynamicFormItem, props: {
+    key: string,
+    title: string,
+  }, defaultSlot: Slot) => VNode[];
+}
 
 export default defineComponent({
   props: {
