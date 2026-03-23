@@ -83,7 +83,8 @@
 
 <script lang="ts" setup>
 import { ref, type PropType } from "vue";
-import type { IDynamicFormItem, IDynamicFormObject } from "../DynamicForm";
+import type { IDynamicFormItem } from "../DynamicFormDefs/DynamicFormItem";
+import type { IDynamicFormObject } from "../DynamicForm";
 import IconUp from "../Images/IconUp.vue";
 import IconDown from "../Images/IconDown.vue";
 import IconDelete from "../Images/IconDelete.vue";
