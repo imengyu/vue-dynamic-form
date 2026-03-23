@@ -1,6 +1,8 @@
 <script lang="ts">
 import { defineComponent, h, inject, type PropType, type Ref, ref, renderSlot, toRefs } from 'vue';
-import type { IDynamicFormItem, IDynamicFormItemCallback, IDynamicFormObject, IDynamicFormOptions, IDynamicFormRef } from './DynamicForm';
+import type { IDynamicFormObject } from './DynamicForm';
+import type { IDynamicFormItem, IDynamicFormItemCallback } from './DynamicFormDefs/DynamicFormItem';
+import type { IDynamicFormOptions, IDynamicFormRef } from './DynamicFormDefs/DynamicFormOptions';
 import type { Rules } from 'async-validator';
 import type { VNode } from 'vue';
 import DynamicFormItemRenderer, { type DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
@@ -224,7 +226,7 @@ export default defineComponent({
       return (
         h(FormItem, {
           colon: noLabel.value !== true,
-          ...parent.value.childrenFormProps as {},
+          ...parent.value?.childrenFormProps as {},
           ...item.value.formProps as {},
           labelCol: item.value.formLabelCol ?? parent.value?.childrenFormLabelCol ?? formLabelColDefault.value as any,
           wrapperCol: item.value.formWrapperCol ?? parent.value?.childrenFormWrapperCol ?? formWrapperColDefault.value as any,

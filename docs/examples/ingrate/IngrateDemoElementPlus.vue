@@ -17,8 +17,8 @@ import {
   ElAlert, ElCheckbox, ElDatePicker, 
   ElImage, ElInput, ElInputNumber, 
   ElRate, ElSwitch, ElTimePicker, ElButton,
-  FormInstance,
-  InputProps
+  type FormInstance,
+  type InputProps
 } from "element-plus";
 import { defaultConfig } from './ElementPlus'
 

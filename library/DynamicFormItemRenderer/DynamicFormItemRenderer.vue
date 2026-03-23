@@ -2,8 +2,10 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <script lang="ts">
 import { defineComponent, h, inject, markRaw, onBeforeUnmount, onMounted, type PropType, type Ref, ref, toRefs, watch } from "vue";
-import { type IDynamicFormItem, type IDynamicFormOptions, MESSAGE_RELOAD } from "../DynamicForm";
+import { MESSAGE_RELOAD } from "../DynamicForm";
 import { type IDynamicFormMessageCenter } from "../DynamicForm";
+import type { IDynamicFormItem } from "../DynamicFormDefs/DynamicFormItem";
+import type { IDynamicFormOptions } from "../DynamicFormDefs/DynamicFormOptions";
 import { DynamicFormItemRegistry, type DynamicFormItemRegistryItem } from "./DynamicFormItemRegistry";
 import BaseCheckVue from "../DynamicFormItemControls/BaseCheck.vue";
 import BaseDivider from "../DynamicFormItemControls/BaseDivider.vue";

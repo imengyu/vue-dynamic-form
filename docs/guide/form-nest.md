@@ -59,7 +59,9 @@ const formOptions : IDynamicFormOptions = {
 
 效果：
 
-<DynamicFormBasicUseage6 />
+<ClientOnly>
+  <DynamicFormBasicUseage6 />
+</ClientOnly>
 
 ## 嵌套对象...对象
 
@@ -126,7 +128,9 @@ const formOptions : IDynamicFormOptions = {
 
 效果：
 
-<DynamicFormBasicUseage7 />
+<ClientOnly>
+  <DynamicFormBasicUseage7 />
+</ClientOnly>
 
 ## 嵌套基本数组
 
@@ -341,7 +345,9 @@ const resultJson = computed(() => {
 
 同 object，但是会在外层添加一个外壳样式，可以用于分组表单，帮助用户阅读更清晰。
 
-<BasicUseageDocSingleObjectGroup />
+<ClientOnly>
+  <BasicUseageDocSingleObjectGroup />
+</ClientOnly>
 
 ### flat-group
 

@@ -7,7 +7,6 @@
     @finish="emits('finish')"
     @finishFailed="emits('finishFailed', $event)"
     @submit="emits('submit', $event)"
-    @ready="emits('ready')"
   />
 </template>
 
@@ -63,7 +62,7 @@ const finalOptions = computed<IDynamicFormOptions>(() => ({
 provide('rawModel', model);
 provide('globalParams', toRef(props, 'globalParams'));
 provide('finalOptions', finalOptions);
-provide('editmode', props.editorContext !== null);
+provide('editmode', Boolean(props.editorContext));
 provide('editorContext', props.editorContext);
 
 const widgetsRefMap = ref<Record<string,() => unknown>>({});

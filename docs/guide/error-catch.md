@@ -19,7 +19,9 @@ import BasicUseageDocErrorItems from '../examples/BasicUseageDocErrorItems.vue'
 
 此错误允许屏蔽，通过设置 `options.suppressRootError` 为 `true` 可以屏蔽此错误，这时表单会使用一个空对象作为模型。
 
-<BasicUseageDocErrorBasicObject />
+<ClientOnly>
+  <BasicUseageDocErrorBasicObject />
+</ClientOnly>
 
 ### 条目数据错误
 
@@ -27,13 +29,17 @@ import BasicUseageDocErrorItems from '../examples/BasicUseageDocErrorItems.vue'
 
 为空（null或者undefined）时，允许屏蔽，通过设置 `options.suppressEmptyError` 或 `formItem.suppressEmptyError` 为 `true` 可以屏蔽此错误，这时表单会使用 `defaultValue` 填充数据。
 
-<BasicUseageDocErrorItems />
+<ClientOnly>
+  <BasicUseageDocErrorItems />
+</ClientOnly>
 
 ### 缺失组件错误
 
 出现于条目中，当指定的组件类型不存在时，会显示警告提示。
 
-<BasicUseageDocErrorMissing />
+<ClientOnly>
+  <BasicUseageDocErrorMissing />
+</ClientOnly>
 
 ## 数据默认值
 
@@ -92,4 +98,3 @@ onMounted(() => {
 </script>
 
 ```
-

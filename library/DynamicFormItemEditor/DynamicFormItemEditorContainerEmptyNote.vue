@@ -5,8 +5,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import type { IDynamicFormItem } from '../DynamicForm';
 </script>
 
 <style lang="scss">

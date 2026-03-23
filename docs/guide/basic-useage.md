@@ -55,7 +55,9 @@ const formOptions = ref<IDynamicFormOptions>({
 
 最终显示效果如下所示：
 
-<DynamicFormBasicUseage1 />
+<ClientOnly>
+  <DynamicFormBasicUseage1 />
+</ClientOnly>
 
 一个完整的表单就是由上面的表单描述数据多条组合而成的，因此，只要你的脑海中有了表单的结构数据，一个
 表单就可以快速搭建出来。
@@ -144,7 +146,9 @@ const formOptions = ref<IDynamicFormOptions>({
 
 效果：
 
-<DynamicFormBasicUseage2 />
+<ClientOnly>
+  <DynamicFormBasicUseage2 />
+</ClientOnly>
 
 表单数据还支持设置 Form 组件的其他属性，如果你使用自定义 Form 组件，可以使用 formAdditionaProps 设置自定义属性。
 

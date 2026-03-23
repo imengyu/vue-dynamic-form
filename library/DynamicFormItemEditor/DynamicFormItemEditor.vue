@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { inject, ref, computed } from 'vue';
 import { getDropData, getStoragedDropData, storageDropData, type IDynamicFormEditorContext } from './DynamicFormItemEditor';
-import type { IDynamicFormItem } from '../DynamicForm';
+import type { IDynamicFormItem } from '../DynamicFormDefs/DynamicFormItem';
 
 const props = defineProps<{
   item: IDynamicFormItem,

@@ -69,5 +69,8 @@ export default defineConfig({
   },
   vite: {
     plugins: [ MarkdownPreview() as any ],
+    ssr: {
+      noExternal: ["@imengyu/imengyu-utils"],
+    },
   },
 });

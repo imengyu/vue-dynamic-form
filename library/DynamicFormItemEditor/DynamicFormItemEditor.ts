@@ -1,6 +1,6 @@
 import { RandomUtils } from "@imengyu/imengyu-utils";
-import type { IDynamicFormItem } from "DynamicForm";
 import type { Ref } from "vue";
+import type { IDynamicFormItem } from "../DynamicFormDefs/DynamicFormItem";
 
 export interface IDynamicFormEditorContext {
   currentFocusItem: Ref<IDynamicFormItem[]>,

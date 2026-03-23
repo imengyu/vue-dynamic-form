@@ -54,7 +54,9 @@ const formOptions = ref<IDynamicFormOptions>({
 
 效果：
 
-<DynamicFormBasicUseage3 />
+<ClientOnly>
+  <DynamicFormBasicUseage3 />
+</ClientOnly>
 
 ## 复杂案例
 
@@ -119,7 +121,9 @@ const formOptions : IDynamicFormOptions = {
 
 效果：
 
-<DynamicFormBasicUseage4 />
+<ClientOnly>
+  <DynamicFormBasicUseage4 />
+</ClientOnly>
 
 ## 完全自定义
 
@@ -202,4 +206,6 @@ watch(() => formModel.value.type, (newType) => {
 
 效果：
 
-<DynamicFormBasicUseage5 />
+<ClientOnly>
+  <DynamicFormBasicUseage5 />
+</ClientOnly>

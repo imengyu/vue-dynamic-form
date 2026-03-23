@@ -44,7 +44,8 @@
 
 <script lang="ts" setup>
 import { computed, inject, type PropType } from 'vue';
-import { type IDynamicFormOptions, type IDynamicFormObject } from './DynamicForm';
+import type { IDynamicFormObject } from './DynamicForm';
+import type { IDynamicFormOptions } from './DynamicFormDefs/DynamicFormOptions';
 import DynamicFormItemContainer from './DynamicFormItemContainer.vue';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
 import DynamicFormItemEditorContainerEmptyNote from './DynamicFormItemEditor/DynamicFormItemEditorContainerEmptyNote.vue';

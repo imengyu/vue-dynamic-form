@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent, toRefs, h, type PropType, computed, ref } from 'vue';
+import { defineComponent, toRefs, h, type PropType, ref } from 'vue';
 import DynamicFormRoot from './DynamicFormRoot.vue';
 import DynamicFormDefaultForm from './DynamicFormBasicControls/Form.vue';
-import { type IDynamicFormObject } from './DynamicForm';
+import type { IDynamicFormObject } from './DynamicForm';
 import type { Rule } from 'async-validator';
 import type { ColProps } from './DynamicFormBasicControls';
 import type { IDynamicFormOptions } from './DynamicFormDefs/DynamicFormOptions';
@@ -29,7 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: [ 'finish', 'finishFailed', 'submit', 'ready' ],
+  emits: [ 'finish', 'finishFailed', 'submit' ],
   setup(props, ctx) {
 
     const { finalOptions, model, name } = toRefs(props);
@@ -43,7 +43,7 @@ export default defineComponent({
     return () => {
 
       const renderChildren = () => h(DynamicFormRoot as any, { 
-        options: finalOptions, 
+        options: finalOptions.value, 
         model: model.value,
         name: name.value,
       }, ctx.slots);

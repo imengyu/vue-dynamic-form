@@ -14,7 +14,7 @@
 import { markRaw, ref } from "vue";
 import { DynamicForm, type IDynamicFormRef, type IDynamicFormOptions, makeWidget } from "@imengyu/vue-dynamic-form";
 import { Alert, Checkbox, DatePicker, Image, Input, InputNumber, Rate, Switch, Textarea, TimePicker } from "ant-design-vue";
-import { Button, FormInstance, InputProps } from "ant-design-vue";
+import { Button, type FormInstance, type InputProps } from "ant-design-vue";
 import { defaultConfig } from './AntDesgin'
 
 const formOptions : IDynamicFormOptions = {
