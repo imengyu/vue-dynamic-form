@@ -1,8 +1,18 @@
 <template>
   <div class="vc-number-range d-flex flex-row align-items-center">
-    <a-input-number placeholder="最小值" :disabled="disabled" :value="realValue[0]" @update:value="(v: number) => onUpdateValue(v, 0)" v-bind="customProps" />
+    <a-input-number 
+      :placeholder="leftPlaceholder" 
+      :disabled="disabled" 
+      :value="realValue[0]" 
+      @update:value="(v: number) => onUpdateValue(v, 0)" v-bind="customProps" 
+    />
     <span class="p-2">-</span>
-    <a-input-number placeholder="最大值" :disabled="disabled" :value="realValue[1]" @update:value="(v: number) => onUpdateValue(v, 1)" v-bind="customProps" />
+    <a-input-number 
+      :placeholder="rightPlaceholder" 
+      :disabled="disabled" 
+      :value="realValue[1]" 
+      @update:value="(v: number) => onUpdateValue(v, 1)" v-bind="customProps" 
+    />
   </div>
 </template>
 
@@ -11,28 +21,33 @@
  * 下拉框表单控件，用于解决 a-select 不能选择对象的问题
  */
 import { Form, type InputNumberProps } from 'ant-design-vue';
-import { type PropType, ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
-const props = defineProps({
+export interface NumberRangeProps {
   /**
    * 是否禁用
    */
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  /**
-   * 选择值
-   */
-  value: {
-  },
+  disabled?: boolean;
   /**
    * a-number-input 其他自定义参数
    */
-  customProps: {
-    type: Object as PropType<InputNumberProps>,
-    default: null,
-  },
+  customProps?: InputNumberProps;
+  /**
+   * 最小值占位符
+   */
+  leftPlaceholder?: string;
+  /**
+   * 最大值占位符
+   */
+  rightPlaceholder?: string;
+}
+
+const props = withDefaults(defineProps<NumberRangeProps & {
+  value: number[] | null;
+}>(), {
+  disabled: false,
+  leftPlaceholder: '最小值',
+  rightPlaceholder: '最大值',
 });
 
 const emits = defineEmits([

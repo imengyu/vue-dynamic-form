@@ -31,26 +31,13 @@ export interface CheckBoxListItem {
 }
 export interface CheckBoxListProps {
   loadData: () => Promise<CheckBoxListItem[]>;
+  disabled?: boolean;
+  className?: string;
 }
 
-const props = defineProps({
-  modelValue: {
-    type: [Array, null] as PropType<any[] | null>,
-    default: () => null
-  },
-  loadData: {
-    type: Function as PropType<CheckBoxListProps['loadData']>,
-    default: () => Promise.resolve([])
-  },
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  className: {
-    type: String,
-    default: ''
-  }
-})
+const props = defineProps<CheckBoxListProps & {
+  modelValue: any[] | null;
+}>();
 const emit = defineEmits(['update:modelValue', 'change'])
 
 const loadStatus = ref<'loading' | 'error' | 'success'>('loading');

@@ -26,31 +26,23 @@ import { onMounted, ref, watch, type PropType, type Ref } from 'vue';
 import { defaultCenter } from './MapConfig';
 import AddressSercher, { type AddressItem } from './AddressSercher.vue';
 
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  modelValue: {
-    type: Object as PropType<(number|string)[]>,
-    default: () => defaultCenter.concat()
-  },
-  zoom: {
-    type: Number,
-    default: 12
-  },
-  width: {
-    type: [Number, String],
-    default: '100%'
-  },
-  height: {
-    type: [Number, String],
-    default: '300px'
-  },
-  showSearch: {
-    type: Boolean,
-    default: true
-  }
+export interface MapPointPickerProps {
+  disabled?: boolean;
+  zoom?: number;
+  width?: string;
+  height?: string;
+  showSearch?: boolean;
+}
+
+const props = withDefaults(defineProps<MapPointPickerProps & {
+  modelValue?: (number|string)[];
+}>(), {
+  disabled: false,
+  modelValue: () => defaultCenter.concat(),
+  zoom: 12,
+  width: '100%',
+  height: '300px',
+  showSearch: true,
 });
 
 const emit = defineEmits(['update:modelValue' ])

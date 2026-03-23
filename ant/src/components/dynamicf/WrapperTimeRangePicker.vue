@@ -1,24 +1,22 @@
 <template>
   <a-time-range-picker
-    :value="value"
+    v-bind="$props"
     @update:value="(v: unknown) => $emit('update:value', v)"
-    v-bind="additionalProps"
   />
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, type PropType } from "vue";
+import type { TimeRangePickerProps } from "ant-design-vue/es/time-picker";
 
-export default defineComponent({
-  props: {
-    additionalProps: {
-      type: Object as PropType<Record<string, unknown>>,
-    },
-    value: {
-    },
-  },
-  emist: [
-    'update:value'
-  ],
+export interface WrapperTimeRangePickerProps {
+}
+
+const props = withDefaults(defineProps<WrapperTimeRangePickerProps & TimeRangePickerProps & {
+  value?: unknown;
+}>(), {
 });
+const emit = defineEmits([
+  'update:value'
+]);
 </script>

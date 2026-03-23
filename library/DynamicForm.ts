@@ -2,7 +2,7 @@ import type { ColProps } from "./DynamicFormBasicControls/Layout/Col.vue";
 import type { DynamicFormItemRegistryItem } from "./DynamicFormItemRenderer/DynamicFormItemRegistry";
 import type { Rule, RuleItem } from 'async-validator';
 import { Form, FormItem, type FormItemProps, type FormProps, type NextTabButtonProps, type RowProps } from "./DynamicFormBasicControls";
-import { type Ref, type Slot, type VNode, h, markRaw } from "vue";
+import { type Ref, type Slot, type VNode, h, markRaw, ref } from "vue";
 import type { BaseCheckProps, BaseDividerProps, BaseInputProps, BaseRadioProps, BaseSelectProps, BaseTextAreaProps } from "DynamicFormItemControls";
 import type { BaseButtonProps } from "DynamicFormItemControls/BaseButton";
 
@@ -11,10 +11,6 @@ export type IDynamicFormObject = Record<string, unknown>;
  * 表单动态属性定义
  */
 export type IDynamicFormItemCallback<T> = {
-  /**
-   * 预留，暂未使用
-   */
-  type?: string,
   /**
    * @param model 当前表单条目的值
    * @param rawModel 整个 form 的值 （最常用，当两个关联组件距离较远时，可以从顶层的 rawModel 里获取）
@@ -94,6 +90,7 @@ export interface IDynamicFormItem<T = string, P = unknown, E = Record<string, Fu
   show?: boolean|IDynamicFormItemCallback<boolean>;
   /**
    * 是否禁用当前表单项
+   * @default false
    */
   disabled?: boolean|IDynamicFormItemCallback<boolean>;
   /**
@@ -111,7 +108,6 @@ export interface IDynamicFormItem<T = string, P = unknown, E = Record<string, Fu
   /**
    * 附加组件事件绑定。事件名称不需要加 on 前缀。
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
   additionalEvents?: E;
   /**
    * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
@@ -131,7 +127,7 @@ export interface IDynamicFormItem<T = string, P = unknown, E = Record<string, Fu
   /**
    * 当前条目的校验规则，赋值至 FormItem 上。
    */
-  rules?: RuleItem[];
+  rules?: IDynamicFormPropsMap['ItemRules'];
 
   /**
    * 加载时的钩子函数
@@ -317,17 +313,17 @@ export interface IDynamicFormPropsMap {
   Form: FormProps;
   FormItem: FormItemProps;
   Rules: Record<string, Rule>;
+  ItemRules: Rule[];
 }
 
-
-export type IDynamicFormDefaultDynamicFormItemTypes = {
-  [K in keyof IDynamicFormWidgetPropsMap]: Omit<
-    IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], Record<string, Function>>,
-    'type' | 'additionalProps'
-  > & { 
-    type: K 
+type DynamicFormWidgetType = keyof IDynamicFormWidgetPropsMap;
+type DynamicFormItemByType<K extends DynamicFormWidgetType> =
+  Omit<IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], Record<string, Function>>, 'additionalProps'> & {
+    type: K;
     additionalProps?: IDynamicFormWidgetPropsMap[K]|IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K]>;
   };
+export type IDynamicFormItemUnion = {
+  [K in keyof IDynamicFormWidgetPropsMap]: DynamicFormItemByType<K>
 }[keyof IDynamicFormWidgetPropsMap];
 
 
@@ -390,7 +386,7 @@ export interface IDynamicFormRef {
   initDefaultValuesToModel: () => void;
 }
 export interface IDynamicFormOptions<
-  T = IDynamicFormDefaultDynamicFormItemTypes,
+  T = IDynamicFormItemUnion[],
   R = IDynamicFormPropsMap['Rules'],
   P = IDynamicFormPropsMap['Form'],
   E = Record<string, Function>
@@ -398,7 +394,7 @@ export interface IDynamicFormOptions<
   /**
    * 表单条目数据
    */
-  formItems: T[];
+  formItems: T;
   /**
    * 表单的校验规则
    */
@@ -519,4 +515,28 @@ export type IDynamicFormMessageCenterCallback = (messageName: string, data: unkn
 export interface IDynamicFormMessageCenter {
   addInstance: (name: string, fn: IDynamicFormMessageCenterCallback) => void,
   removeInstance: (name: string) => void,
+}
+
+/**
+ * 定义表单选项的工具函数。
+ * @param options 表单选项
+ * @returns 
+ */
+export function defineDynamicFormOptions<
+  const T extends readonly IDynamicFormItemUnion[]
+>(options: Omit<IDynamicFormOptions<T>, 'formItems'> & { formItems: T }) {
+  return options;
+}
+/**
+ * 定义表单项的工具函数。
+ * @param options 表单项选项
+ * @returns 
+ */
+export function defineDynamicFormItem<T extends keyof IDynamicFormWidgetPropsMap>(
+  options: { 
+    type: T,
+    additionalProps?: IDynamicFormWidgetPropsMap[T],
+  }
+) {
+  return options;
 }

@@ -6,8 +6,9 @@ import dts from 'vite-plugin-dts'
 export default defineConfig({
   plugins: [
     vue(), 
+    // 必须包含 .vue，否则 main.ts 引用 .vue 时会在生成 d.ts 阶段报 TS6307（文件不在项目 file list 内）
     dts({
-      include: ['./**/*.ts'],
+      include: ['./**/*.ts', './**/*.vue'],
     }),
   ],
   resolve: {

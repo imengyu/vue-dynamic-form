@@ -13,9 +13,9 @@
     @change="handleUploadSubImgChange"
   >
     <template v-if="single">
-      <div v-if="Boolean(value)" class="ant-upload-image">=
+      <div v-if="Boolean(value)" class="ant-upload-image">
         <a-image
-          :src="(value as string)"
+          :src="value ?? ''"
           alt="avatar"
           :width="singleImageSize.width"
           :height="singleImageSize.height"
@@ -42,88 +42,25 @@
  * 上传图片表单控件
  */
 import { 
-  stringUrlsToUploadedItems, type UploadCoInterface, 
-  type AntUploadRequestOption, type FileInfo, type FileItem 
+  stringUrlsToUploadedItems,
+  type AntUploadRequestOption, type FileInfo, type FileItem, 
+  type UploaderFormItemProps
 } from './UploaderFormItem';
-import { message, type UploadProps } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
-import { type PropType, ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import FailImage from '../../common/ImageFailed.png';
 
-const props = defineProps({
-  /**
-   * 是否禁用
-   */
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  /**
-   * 预览图加载失败时显示图片
-   */
-  failImage: {
-    type: String,
-    default: () => FailImage,
-  },
-  /**
-   * 上传工厂类
-   */
-  upload: {
-    type: Object as PropType<UploadCoInterface>,
-    default: null,
-  },
-  /**
-   * 上传之前的自定义检查回调
-   * (file: FileItem) => boolean
-   * 如果返回false，将停止上传
-   */
-  beforeUpload: {
-    type: Function,
-    default: null,
-  },
-  /**
-   * 类样式
-   */
-  uploadClass: {},
-  /**
-   * 是否限制单图上传
-   */
-  single: {
-    type: Boolean,
-    default: false
-  },
-  /**
-   * 上传文件大小限制，单位字节
-   */
-  maxFileSize: {
-    type: Number,
-    default: 0,
-  },
-  /**
-   * single 为false时，限制最多上传图片的数量
-   */
-  maxUploadCount: {
-    type: Number,
-    default: 0,
-  },
-  /**
-   * single 模式下图片显示大小
-   */
-  singleImageSize: {
-    type: Object as PropType<{ width: number, height: number }>,
-    default: () => ({ width: 100, height: 100 })
-  },
-  /**
-   * 参数，可以是单张 string，多张 string[]
-   */
-  value: {},
-  /**
-   * a-upload 其他自定义参数
-   */
-  customProps: {
-    type: Object as PropType<UploadProps>,
-    default: null,
-  },
+const props = withDefaults(defineProps<UploaderFormItemProps & {
+  value?: unknown;
+}>(), {
+  disabled: false,
+  failImage: FailImage,
+  single: false,
+  maxFileSize: 0,
+  maxUploadCount: 0,
+  singleImageSize: () => ({ width: 100, height: 100 }),
+  value: undefined,
 });
 
 const emits = defineEmits([
@@ -166,7 +103,7 @@ function handleBeforeUpload(file: FileItem) {
   const result = props.beforeUpload?.(file) ?? true;
   if (!result)
     needRemoveItem.push(file.uid);
-  if (props.maxFileSize > 0 && file.size > props.maxFileSize) {
+  if (props.maxFileSize && props.maxFileSize > 0 && file.size > props.maxFileSize) {
     message.error('文件大小不能超过' + props.maxFileSize + '字节！');
     return false;
   }

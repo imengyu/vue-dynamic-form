@@ -18,14 +18,16 @@ export interface IStateOption extends IDynamicFormItemSelectOption {
   badgeState?: 'success' | 'processing' | 'error' | 'default' | 'warning';
   badgeColor?: string;
 }
+export interface StateRendererProps {
+  /**
+   * 状态值列表
+   */
+  stateValues: Array<IStateOption>;
+}
 
-const props = defineProps({
-  value: {
-  },
-  stateValues: {
-    type: Object as PropType<Array<IStateOption>>,
-  },
-})
+const props = defineProps<StateRendererProps & {
+  value: unknown;
+}>();
 const currentState = computed(() => {
   return (props.stateValues as IStateOption[])
     .find(k => k.value === props.value || k.text === props.value);

@@ -9,7 +9,7 @@ export interface UploaderFormItemProps {
   /**
    * 上传工厂类
    */
-  uploadCo: UploadCoInterface;
+  upload: UploadCoInterface;
   /**
    * 上传之前的自定义检查回调
    * 如果返回false，将停止上传
@@ -22,15 +22,23 @@ export interface UploaderFormItemProps {
   /**
    * single 为false时，限制最多上传图片的数量
    */
-  maxCount?: number
+  maxUploadCount?: number
+  /**
+   * 上传文件大小限制，单位字节
+   */
+  maxFileSize?: number;
   /**
    * 类样式
    */
-   uploadClass?: unknown;
+  uploadClass?: unknown;
   /**
    * single 模式下图片显示大小
    */
   singleImageSize?: { width: number, height: number },
+  /**
+   * 预览图加载失败时显示图片
+   */
+  failImage?: string;
   /**
    * 参数，可以是单张 string，多张 string[]
    */

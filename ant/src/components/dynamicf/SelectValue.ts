@@ -15,7 +15,7 @@ export interface SelectValueOption {
   [key: string]: unknown,
 }
 
-export interface SelectValueFormItemProps {
+export interface SelectValueProps {
   /**
    * 是否禁用
    */

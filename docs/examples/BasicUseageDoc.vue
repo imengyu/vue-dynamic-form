@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import {
-  defaultDynamicFormInternalWidgets, DynamicForm, type BaseTextAreaProps, type FormItemProps, type IDynamicFormDefaultDynamicFormItemTypes, type IDynamicFormItem, type IDynamicFormOptions 
+  defaultDynamicFormInternalWidgets, defineDynamicFormItem, defineDynamicFormOptions, DynamicForm,
 } from '@imengyu/vue-dynamic-form';
 import { computed, reactive, ref, } from 'vue'
 
@@ -26,12 +26,17 @@ const formModel = reactive({
   numberProp2: 3,
   booleanProp: false,
 });
-const formOptions = ref<IDynamicFormOptions>({
+const formOptions = defineDynamicFormOptions({
   internalWidgets: defaultDynamicFormInternalWidgets,
   formLabelCol: { span: 6 },
   formWrapperCol: { span: 18 },
   formItems: [
-    { type: 'base-text', label: '文本', name: 'stringProp', additionalProps: { placeholder: '请输入文本' } },
+    { 
+      type: 'base-text', 
+      label: '文本', 
+      name: 'stringProp', 
+      additionalProps: { placeholder: '请输入文本' } 
+    },
     { 
       type: 'base-textarea', label: '文本域', name: 'stringProp2', 
       formProps: {
@@ -72,6 +77,9 @@ const formOptions = ref<IDynamicFormOptions>({
     },
     { 
       type: 'base-button', label: '提交', name: 'submit',
+      additionalProps: {
+        aa: ''
+      }
     },
   ],
   formRules: {

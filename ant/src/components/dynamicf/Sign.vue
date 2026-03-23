@@ -33,27 +33,23 @@ import { Form, message, Modal } from 'ant-design-vue';
 import type { UploadCoInterface } from './UploaderFormItem';
 
 export interface SignProps {
-  disabled: boolean;
-  modelValue: string;
-  uploadCo: UploadCoInterface;
-}
-
-const props = defineProps({
-  disabled: { 
-    type: Boolean, 
-    default: false 
-  },
-  modelValue: {
-    type: String,
-    default: ''
-  },
+  /**
+   * 是否禁用
+   * @default false
+   */
+  disabled?: boolean;
   /**
    * 上传工厂类
+   * @default null
    */
-  uploadCo: {
-    type: Object as PropType<UploadCoInterface>,
-    default: null,
-  },
+  uploadCo?: UploadCoInterface;
+}
+
+const props = withDefaults(defineProps<SignProps & {
+  modelValue: string;
+}>(), {
+  disabled: false,
+  modelValue: '',
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -96,7 +92,7 @@ const confirm = () => {
       return new Promise((resolve, reject) => {
         const blob = base64ToBlob(res, 'image/png');
         const file = new File([blob], 'image.png', { type: 'image/png' });
-        props.uploadCo.uploadRequest({
+        props.uploadCo!.uploadRequest({
           file: file,
           filename: 'sign.png',
           action: '',
