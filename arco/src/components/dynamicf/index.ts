@@ -70,7 +70,7 @@ export const defaultConfig = {
     FormItem: {
       component: markRaw(FormItem),
       propsMap: {
-        name: 'name',
+        name: 'field',
         wrapperCol: 'wrapperCol',
         labelCol: 'labelCol',
       },
@@ -85,7 +85,10 @@ export function registerAllFormComponents() {
 
     //Basic
     .register('text', markRaw(Input), {}, 'modelValue')
-    .register('password', markRaw(PasswordWithStrengthInput))
+    .register('password', markRaw(Input), {
+      type: 'password',
+    }, 'modelValue')
+    .register('password-with-strength', markRaw(PasswordWithStrengthInput))
     .register('number', markRaw(InputNumber), {}, 'modelValue')
     .register('textarea', markRaw(Textarea), {}, 'modelValue')
     .register('rate', markRaw(Rate), {}, 'modelValue')

@@ -14,7 +14,7 @@
   </DynamicFormRender>
 </template>
 
-<script setup lang="ts" generic="T extends IDynamicFormOptions">
+<script setup lang="ts" generic="T extends IDynamicFormOptions, M extends IDynamicFormPropsMap = IDynamicFormPropsMap">
 import { provide, toRefs, ref, onMounted, toRef, computed } from 'vue';
 import { 
   MESSAGE_RELOAD, 
@@ -27,6 +27,7 @@ import type { IDynamicFormOptions, IDynamicFormRef } from './DynamicFormDefs/Dyn
 import type { IDynamicFormItem } from './DynamicFormDefs/DynamicFormItem';
 import DynamicFormRender from './DynamicFormRender.vue';
 import type { FormCeilProps } from './DynamicFormItemNormal.vue';
+import type { IDynamicFormPropsMap } from 'DynamicFormDefs/DynamicFormWidgets';
 
 /**
  * 动态表单组件。
@@ -93,7 +94,7 @@ const slots = defineSlots<{
    * 表单条目自定义渲染插槽
    * @param props 
    */
-  formCeil(props: FormCeilProps): any;
+  formCeil(props: FormCeilProps<M>): any;
 }>()
 
 const { options, model, name } = toRefs(props);

@@ -8,18 +8,21 @@ import type { VNode } from 'vue';
 import DynamicFormItemRenderer, { type DynamicFormItemRendererInterface } from './DynamicFormItemRenderer/DynamicFormItemRenderer.vue';
 import FormItem from './DynamicFormBasicControls/FormItem.vue';
 import Alert from './DynamicFormBasicControls/Blocks/Alert.vue';
+import type { IDynamicFormPropsMap } from './DynamicFormDefs/DynamicFormWidgets';
 
-export interface FormCeilProps {
-  ref: Ref<DynamicFormItemRendererInterface | undefined>,
-  value: unknown,
-  rawModel: unknown,
-  parent?: IDynamicFormItem,
-  parentModel: unknown,
-  'onUpdate:value': (v: unknown) => void,
-  item: IDynamicFormItem,
+export interface FormCeilProps<M extends IDynamicFormPropsMap = IDynamicFormPropsMap> {
   name: string,
+  item: IDynamicFormItem<string, unknown, M>,
+  model: any,
+  onModelUpdate: (v: unknown) => void,
+  rawModel: Record<string, unknown>,
+  parent?: IDynamicFormItem<string, unknown, M>,
+  parentModel: unknown,
   disabled: boolean,
-  additionalProps: Record<string, unknown>,
+  rules: Record<string, any>,
+  rule: any,
+  isFirst: boolean,
+  isLast: boolean,
 }
 
 /**
@@ -181,7 +184,7 @@ export default defineComponent({
           name: name.value,
           disabled: disabled.value,
           additionalProps: evaluateCallbackObj(item.value.additionalProps as Record<string, unknown>),
-        } as FormCeilProps));
+        }));
       }
 
       //后缀渲染

@@ -1,9 +1,12 @@
 import type { ColProps } from "../DynamicFormBasicControls/Layout/Col.vue";
 import type { IDynamicFormItemUnion } from "./DynamicFormItem";
 import type { DynamicFormItemRegistryItem } from "../DynamicFormItemRenderer/DynamicFormItemRegistry";
-import type { IDynamicFormInternalWidgets, IDynamicFormPropsMap } from "./DynamicFormWidgets";
+import type { IDefaultDynamicFormPropsMap, IDynamicFormInternalWidgets, IDynamicFormPropsMap } from "./DynamicFormWidgets";
+import type { HTMLAttributes } from "vue";
 
 export type DynamicFormNestNameGenerateType = 'dot'|'array'
+
+export type DynamicFormFormAdditionalPropsCommon = HTMLAttributes;
 
 
 // DynamicForm 实例方法接口
@@ -91,7 +94,7 @@ export interface IDynamicFormOptions<
   /**
    * 表单组件附加属性
    */
-  formAdditionaProps?: P['Form'];
+  formAdditionaProps?: P['Form'] & DynamicFormFormAdditionalPropsCommon;
   /**
    * 表单组件附加事件绑定
    */
@@ -167,7 +170,7 @@ export function configDefaultDynamicFormOptions(options: Omit<IDynamicFormOption
  */
 export function defineDynamicFormOptions<
   const T extends IDynamicFormItemUnion[],
-  P extends IDynamicFormPropsMap = IDynamicFormPropsMap,
+  P extends IDynamicFormPropsMap = IDefaultDynamicFormPropsMap,
 >(options: Omit<IDynamicFormOptions<T, P>, 'formItems'> & { formItems: T }) {
   return options;
 }

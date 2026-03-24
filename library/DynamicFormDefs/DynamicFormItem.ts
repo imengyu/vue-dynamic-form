@@ -3,7 +3,7 @@ import type { Rule } from 'async-validator';
 import type { RowProps } from "../DynamicFormBasicControls";
 import type { Slot } from "vue";
 import type { IDynamicFormPropsMap, IDynamicFormWidgetPropsMap } from "./DynamicFormWidgets";
-import type { IDynamicFormRef } from "./DynamicFormOptions";
+import type { DynamicFormFormAdditionalPropsCommon, IDynamicFormRef } from "./DynamicFormOptions";
 import type { IDynamicFormObject } from "../DynamicForm";
 
 /**
@@ -82,7 +82,7 @@ export interface IDynamicFormItem<
   /**
    * 附加组件属性。支持动态回调(只支持第一级传入回调)。
    */
-  additionalProps?: P|IDynamicFormItemCallback<P>;
+  additionalProps?: (P & DynamicFormFormAdditionalPropsCommon)|IDynamicFormItemCallback<P & DynamicFormFormAdditionalPropsCommon>;
   /**
    * 附加组件插槽。
    * 
@@ -147,7 +147,7 @@ export interface IDynamicFormItem<
   /**
    * 附加 FormItem 组件属性
    */
-  formProps?: M['FormItem'];
+  formProps?: M['FormItem'] & DynamicFormFormAdditionalPropsCommon;
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
@@ -167,7 +167,7 @@ export interface IDynamicFormItem<
   /**
    * 子条目。仅在 object 或者其他容器条目中有效。
    */
-  children?: IDynamicFormItemUnion[];
+  children?: IDynamicFormItemUnion<M>[];
   /**
    * 当子对象为数组时，可设置这个自定义回调。用于添加按钮新建一个对象，如果这个函数为空，则没有添加按钮。
    */
@@ -210,7 +210,8 @@ type DynamicFormWidgetType = keyof IDynamicFormWidgetPropsMap;
 type DynamicFormItemByType<K extends DynamicFormWidgetType, M extends IDynamicFormPropsMap = IDynamicFormPropsMap> =
   Omit<IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], M>, 'additionalProps'> & {
     type: K;
-    additionalProps?: IDynamicFormWidgetPropsMap[K]|IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K]>;
+    additionalProps?: (IDynamicFormWidgetPropsMap[K] & DynamicFormFormAdditionalPropsCommon)
+      |IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K] & DynamicFormFormAdditionalPropsCommon>;
   };
 export type IDynamicFormItemUnion<M extends IDynamicFormPropsMap = IDynamicFormPropsMap> = {
   [K in keyof IDynamicFormWidgetPropsMap]: DynamicFormItemByType<K, M>

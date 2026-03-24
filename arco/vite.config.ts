@@ -11,7 +11,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
     dts({
-      tsconfigPath: './tsconfig.app.json',
+      tsconfigPath: './tsconfig.type.json',
     }),
   ],
   build: {
