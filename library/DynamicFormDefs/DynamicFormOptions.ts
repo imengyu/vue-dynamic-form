@@ -91,7 +91,7 @@ export interface IDynamicFormOptions<
   /**
    * 表单组件附加属性
    */
-  formAdditionaProps?: P;
+  formAdditionaProps?: P['Form'];
   /**
    * 表单组件附加事件绑定
    */

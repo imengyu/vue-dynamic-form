@@ -108,6 +108,14 @@ export interface IDynamicFormWidgetPropsMap {
 //表单组件属性映射
 //
 export interface IDynamicFormPropsMap {
+  Form: any;
+  FormItem: any;
+  FormEvents: any;
+  Rules: any;
+  ItemRules: any;
+  ItemEvents: any;
+}
+export interface IDefaultDynamicFormPropsMap extends IDynamicFormPropsMap {
   Form: FormProps;
   FormItem: FormItemProps;
   FormEvents: Record<string, Function>;

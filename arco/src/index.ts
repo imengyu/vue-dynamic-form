@@ -1,6 +1,6 @@
 export * from './components/dynamicf/index';
 import '@arco-design/web-vue/dist/arco.css';
-import ArcoDesign from '@arco-design/web-vue';
+import ArcoDesign, { type FormInstance, type FormItemInstance } from '@arco-design/web-vue';
 import VNodeRenderer from './components/VNodeRenderer.vue';
 
 import {
@@ -26,6 +26,7 @@ import {
   registerAllFormComponents,
 } from './components/dynamicf/index';
 import type { Plugin } from 'vue';
+import type { IDynamicFormPropsMap } from '@imengyu/vue-dynamic-form';
 export * from './components/dynamicf/Display/ShowImageList.vue';
 export * from './components/dynamicf/Display/ShowDateOrNull.vue';
 export * from './components/dynamicf/Display/ShowImageOrNull.vue';
@@ -44,11 +45,19 @@ export * from './components/dynamicf/TreeValue';
 export * from './components/dynamicf/RadioValue';
 export * from './components/dynamicf/RadioId';
 export * from './components/dynamicf/SelectValue';
-export * from '../../rich/src/components/dynamicf/Sign.vue';
 export * from './components/dynamicf/UploaderFormItem';
 export * from './components/dynamicf/WhiteSpace';
 export * from './components/dynamicf/CheckBoxValue';
 export * from './components/dynamicf/CheckBoxList.vue';
+
+export interface IArcoDynamicFormPropsMap extends IDynamicFormPropsMap {
+  Form: Partial<Omit<FormInstance['$props'], 'model' | 'rules'>>;
+  FormItem: Partial<Omit<FormItemInstance['$props'], 'rules'>>;
+  FormEvents: Partial<Record<string, Function>>;
+  Rules: Partial<FormInstance['$props']['rules']>;
+  ItemRules: Partial<Omit<FormItemInstance['$props']['rules'], 'required'>>;
+  ItemEvents: Record<string, Function>;
+}
 
 export {
   VNodeRenderer,
