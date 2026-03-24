@@ -60,7 +60,7 @@ export interface IDynamicFormItem<
   P = unknown, 
   E = Record<string, Function>,
   FP = IDynamicFormPropsMap['FormItem'],
-  RL = IDynamicFormPropsMap['Rules']
+  RL = IDynamicFormPropsMap['ItemRules']
 > {
   /**
    * 当前表单类型
@@ -209,12 +209,12 @@ export interface IDynamicFormItem<
 }
 
 type DynamicFormWidgetType = keyof IDynamicFormWidgetPropsMap;
-type DynamicFormItemByType<K extends DynamicFormWidgetType, FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['Rules']> =
+type DynamicFormItemByType<K extends DynamicFormWidgetType, FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['ItemRules']> =
   Omit<IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], Record<string, Function>, FP, RL>, 'additionalProps'> & {
     type: K;
     additionalProps?: IDynamicFormWidgetPropsMap[K]|IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K]>;
   };
-export type IDynamicFormItemUnion<FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['Rules']> = {
+export type IDynamicFormItemUnion<FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['ItemRules']> = {
   [K in keyof IDynamicFormWidgetPropsMap]: DynamicFormItemByType<K, FP, RL>
 }[keyof IDynamicFormWidgetPropsMap];
 

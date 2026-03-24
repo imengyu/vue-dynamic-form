@@ -3,12 +3,11 @@
     <a-tree
       ref="selectRef"
       style="min-width: 150px"
-      :defaultOpen="true"
       v-model:expandedKeys="expandedKeys"
       v-model:checkedKeys="checkedKeys"
       checkable
-      :tree-data="treeData"
-      :load-data="handleLoadData"
+      :data="treeData"
+      :loadMore="handleLoadData"
       :allow-clear="allowClear"
       v-bind="customProps"
     />
@@ -18,6 +17,8 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from "vue";
 import type { TreeNode, TreeValueProps } from "./TreeValue";
+import type { TreeDataNode } from "ant-design-vue/es/vc-tree-select/interface";
+import type { TreeNodeData } from "@arco-design/web-vue";
 
 const props = withDefaults(defineProps<TreeValueProps & {
   value?: (string|number)[]
@@ -43,21 +44,19 @@ const handleChange = () => {
   });
 };
 
-const handleLoadData = (treeNode: { dataRef: TreeNode } | null) => {
-  return new Promise((resolve: (value?: unknown) => void) => {
-    doLoadData(treeNode?.dataRef || null).then(() => resolve()).catch(() => resolve());
-  });
-};
+async function handleLoadData(treeNode: TreeNodeData) {
+  await doLoadData(treeNode as TreeNode);
+}
 
-const doLoadData = (dataRef: TreeNode | null) => {
-  const { id, level } = dataRef || { id: 0, level: 0 };
+const doLoadData = (dataRef: TreeNode|undefined) => {
+  const { 
+    id, 
+    level = 0 
+  } = dataRef || {};
   const pid = id as number;
   const loadData = props.loadData;
   if (typeof loadData === 'function') {
-    return loadData(pid, level as number).then((d) => {
-      if (dataRef && !dataRef.children) {
-        dataRef.children = [];
-      }
+    return loadData(pid, level).then((d) => {
       d.forEach(h => {
         h.level = level as number + 1;
         if (props.maxLevel > 0 && h.level >= props.maxLevel) {
@@ -74,7 +73,9 @@ const doLoadData = (dataRef: TreeNode | null) => {
           }
         }
         if (dataRef) {
-          dataRef.children?.push(h);
+          if (!dataRef.children)
+            dataRef.children = [];
+          dataRef.children.push(h);
         } else {
           treeData.value.push(h);
         }
@@ -132,7 +133,7 @@ onMounted(() => {
   setTimeout(() => {
     if (props.loadAtStart) {
       treeData.value = [];
-      handleLoadData(null);
+      doLoadData(undefined);
     }
   }, 300);
 });

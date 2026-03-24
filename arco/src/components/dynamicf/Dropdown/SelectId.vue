@@ -1,16 +1,15 @@
 <template>
   <a-select
-    :value="valueV"
+    :modelValue="(valueV as string)"
     :mode="multiple ? 'multiple' : 'combobox'"
     :allowClear="allowClear"
-    :showSearch="showSearch"
+    :allowSearch="showSearch"
     :disabled="disabled"
     :placeholder="placeholder"
     :default-active-first-option="false"
-    :notFoundContent="notFoundContent"
     :options="finalData"
     :filterOption="showSearch && filterDirectly ? filterOption : false"
-    @update:value="handleChange"
+    @update:FileStatus ="handleChange"
     @search="handleSearch"
     :fieldNames="{
       label: 'text',
@@ -22,6 +21,9 @@
   >
     <template v-if="renderOption" #option="data">
       <VNodeRenderer :render="(renderOption as any)" :data="data" />
+    </template>
+    <template v-if="notFoundContent" #empty>
+      <a-empty :description="notFoundContent" />
     </template>
     <a-select-option v-if="showNull" :value="null">(空)</a-select-option>
   </a-select>
@@ -62,7 +64,6 @@ const finalData = computed<SelectOptionData[]>(() => {
     value: item.value as string|number,
   }));
 });
-const lastLoadValue = ref(null);
 const lastSearchValue = ref('');
 
 const searchDebunce = new Debounce(500, () => {

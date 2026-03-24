@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type PropType } from 'vue';
+import { onMounted, ref } from 'vue';
 
 export interface CheckBoxListItem {
   text: string;

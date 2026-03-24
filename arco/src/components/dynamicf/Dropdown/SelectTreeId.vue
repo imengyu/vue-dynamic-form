@@ -6,13 +6,12 @@
     v-else
     ref="selectRef"
     style="min-width: 150px"
-    :defaultOpen="true"
-    :value="valueV"
+    :labelInValue="true"
+    :modelValue="(valueV as any)"
+    :defaultValue="(valueV as any)"
     :dropdown-style="dropdownStyle"
-    :notFoundContent="notFoundContent"
-    :tree-data="treeData"
-    :load-data="handleLoadData"
-    :treeDataSimpleMode="true"
+    :data="treeData"
+    :loadMore="handleLoadData"
     :placeholder="placeholder"
     :allow-clear="allowClear"
     :multiple="multiple"
@@ -23,21 +22,26 @@
     }"
     v-bind="customProps"
     @blur="handleSelectBlur"
-    @update:value="handleChange"
-  />
+    @update:modelValue="handleChange"
+  >
+    <template v-if="notFoundContent" #empty>
+      <a-empty :description="notFoundContent" />
+    </template>
+  </a-tree-select>
 </template>
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from "vue";
-import type { TreeDataItem } from "../TreeValue";
+import type { TreeNode } from "../TreeValue";
 import type { SelectTreeIdGetDiaplayValue, SelectTreeIdInterface, SelectTreeIdProps } from "./SelectTreeId";
+import type { TreeNodeData } from "@arco-design/web-vue";
 
 /**
  * 使用数据的ID作为value的下拉框包装
  */
 
 const props = withDefaults(defineProps<SelectTreeIdProps & {
-  value?: string|number|null
+  value?: string|number|undefined
 }>(), {
   allowClear: true,
   multiple: false,
@@ -57,8 +61,8 @@ const emit = defineEmits([
 ]);
 
 const showDisplayValue = ref(false);
-const valueV = ref<null|number|string>(null);
-const treeData = ref<TreeDataItem[]>([]);
+const valueV = ref<undefined|number|string>();
+const treeData = ref<TreeNode[]>([]);
 const selectRef = ref();
 
 const displayValue = computed(() => {
@@ -77,11 +81,9 @@ function handleChange(value: unknown) {
     }
   })
 }
-function handleLoadData(treeNode: { dataRef: TreeDataItem }) {
-  return new Promise((resolve: (value?: unknown) => void) => {
-    const { id, level } = treeNode.dataRef;
-    doLoadData(id, level as number).then(() => resolve()).catch(() => resolve());
-  });
+async function handleLoadData(treeNode: TreeNodeData) {
+  const { id, level } = treeNode as TreeNode;
+  await doLoadData(id, level as number);
 }
 function handleDisplayValueClick() {
   showDisplayValue.value = false;
@@ -99,12 +101,12 @@ function handleSelectBlur() {
       showDisplayValue.value = true;
   }
 }
-function doLoadData(pid: string|number|null, level: number) {
+function doLoadData(pid: string|number|undefined, level: number) {
   const loadData = props.loadData;
   if(typeof loadData === 'function') {
     return loadData(pid as string, level).then((d) => {
       for(let i = treeData.value.length - 1; i >= 0; i--)
-        if(treeData.value[i]?.pId == pid)
+        if(treeData.value[i]?.pid == pid)
           treeData.value.splice(i, 1);
       d.forEach(h => {
         h.level = level + 1;
@@ -129,12 +131,12 @@ function doLoadData(pid: string|number|null, level: number) {
  * 获取某个ID的树(正排列)
  */
 function getTree(value: number) {
-  const result = new Array<TreeDataItem>();
-  let child : TreeDataItem|null = treeData.value.find((v) => v.id == value) as TreeDataItem;
+  const result = new Array<TreeNode>();
+  let child : TreeNode|null = treeData.value.find((v) => v.id == value) as TreeNode;
   while(child) {
     result.unshift(child);
-    if(child.pId == 0) child = null;
-    else child = treeData.value.find((v) => v.id == (child as TreeDataItem).pId) as TreeDataItem;
+    if(child.pid == 0) child = null;
+    else child = treeData.value.find((v) => v.id == (child as TreeNode).pid) as TreeNode;
   }
   return result;
 }
@@ -144,7 +146,7 @@ function getTree(value: number) {
 function getLableByValue(value: number) {
   const data = treeData.value;
   for (let i = 0; i < data.length; i++) {
-    if(data[i]?.value == value)
+    if(data[i]?.id == value)
       return data[i]!.title || '';
   }
   return '';
@@ -159,7 +161,7 @@ function reload() {
 
 
 watch(() => props.value, (v) => {
-  valueV.value = v || null;
+  valueV.value = v || undefined;
 });
 watch(() => props.showDisplayValueBeforeEdit, (v, old) => {
   if(!old && v) {
@@ -168,7 +170,7 @@ watch(() => props.showDisplayValueBeforeEdit, (v, old) => {
 });
 
 onMounted(() => { 
-  valueV.value = props.value || null;
+  valueV.value = props.value || undefined;
   if(props.showDisplayValueBeforeEdit)
     showDisplayValue.value = true;
   setTimeout(() => { 

@@ -1,9 +1,9 @@
-import type { CascaderInstance } from "@arco-design/web-vue";
+import type { CascaderInstance, CascaderOption } from "@arco-design/web-vue";
 
 export type CascaderProps = CascaderInstance['$props'];
 export type CascaderFormItemOptionType = CascaderProps['options'];
 
-export type CascaderFormItemLoadDataFun = (parentValue: string|number|null, level: number, parentObject: unknown) => Promise<CascaderFormItemOptionType>;
+export type CascaderFormItemLoadDataFun = (value: number, option: CascaderOption) => Promise<CascaderFormItemOptionType>;
 export type CascaderFormItemOnChooseFun = (values: (string|number|null)[], objects: unknown[]) => void;
 
 /**

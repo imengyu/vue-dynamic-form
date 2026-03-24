@@ -18,8 +18,8 @@
 <script setup lang="ts">
 import { StringUtils } from '@imengyu/imengyu-utils';
 import { ref, computed, watch, onMounted } from 'vue';
-import ImageFailed from '../../../common/ImageFailed.png';
-import ImageEmpty from '../../../common/ImageEmpty.png';
+import ImageFailed from '@/assets/images/ImageFailed.png';
+import ImageEmpty from '@/assets/images/ImageEmpty.png';
 
 export interface ShowImageOrNullProps {
   nullImage?: string;

@@ -1,5 +1,8 @@
 import { StringUtils } from "@imengyu/imengyu-utils";
-import { message, type UploadProps } from "@arco-design/web-vue";
+import { 
+  type FileItem, type FileStatus, Message, 
+  type RequestOption, type UploadInstance, type UploadRequest 
+} from "@arco-design/web-vue";
 
 export interface UploaderFormItemProps {
   /**
@@ -46,7 +49,7 @@ export interface UploaderFormItemProps {
   /**
    * a-upload 其他自定义参数
    */
-  customProps?: UploadProps;
+  customProps?: UploadInstance['$props'];
 }
 
 /**
@@ -56,40 +59,11 @@ export interface UploadCoInterface {
   /**
     * 上传主函数。由 ant-upload 调用。
     */
-  uploadRequest: (requestOption: AntUploadRequestOption) => void,
+  uploadRequest: (requestOption: RequestOption) => UploadRequest,
   /**
     * 获取上传返回后的URL函数。
     */
   getUrlByUploadResponse: (response: unknown) => string,
-}
-
-export interface FileItem {
-  uid: string;
-  name?: string;
-  status?: string;
-  response?: string;
-  url: string;
-  type: string;
-  size: number;
-  originFileObj?: unknown;
-}
-
-export interface FileInfo {
-  file: FileItem;
-  fileList: FileItem[];
-}
-
-export interface AntUploadRequestOption {
-  action: string|Promise<string>;
-  filename: string;
-  data : unknown;
-  file: File;
-  headers: { [index: string]: string; };
-  withCredentials: boolean;
-  method: string;
-  onProgress: (e: { percent: number }) => void;
-  onSuccess: (ret : { url: string, key: string }, xhr : XMLHttpRequest|null) => void;
-  onError: (err : Error|null|undefined, ret : unknown) => void;
 }
 
 /**
@@ -99,12 +73,14 @@ export interface AntUploadRequestOption {
  */
 export function useBeforeUploadImageChecker(limitSizeMB = 32) : (file: FileItem) => boolean {
   return (file) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!file.file)
+      return false;
+    const isJpgOrPng = file.file?.type === 'image/jpeg' || file.file?.type === 'image/png';
     if (!isJpgOrPng) 
-      message.error('请选择图片文件!');
-    const isLt2M = file.size / 1024 / 1024 < limitSizeMB;
+      Message.error('请选择图片文件!');
+    const isLt2M = file.file.size / 1024 / 1024 < limitSizeMB;
     if (!isLt2M) 
-      message.error(`图片大小不能大于${limitSizeMB}MB!`);
+      Message.error(`图片大小不能大于${limitSizeMB}MB!`);
     return isJpgOrPng && isLt2M;
   };
 }
@@ -116,12 +92,14 @@ export function useBeforeUploadImageChecker(limitSizeMB = 32) : (file: FileItem)
  */
 export function useBeforeUploadAudioChecker(limitSizeMB = 256) : (file: FileItem) => boolean {
   return (file) => {
-    const isVideo = file.type.startsWith('audio/');
+    if (!file.file)
+      return false;
+    const isVideo = file.file.type.startsWith('audio/');
     if (!isVideo) 
-      message.error('请选择音频文件!');
-    const isLt2M = file.size / 1024 / 1024 < limitSizeMB;
+      Message.error('请选择音频文件!');
+    const isLt2M = file.file.size / 1024 / 1024 < limitSizeMB;
     if (!isLt2M) 
-      message.error(`音频大小不能大于${limitSizeMB}MB!`);
+      Message.error(`音频大小不能大于${limitSizeMB}MB!`);
     return isVideo && isLt2M;
   };
 }
@@ -134,12 +112,14 @@ export function useBeforeUploadAudioChecker(limitSizeMB = 256) : (file: FileItem
  */
 export function useBeforeUploadVideoChecker(limitSizeMB = 4096) : (file: FileItem) => boolean {
   return (file) => {
-    const isVideo = file.type.startsWith('video/');
+    if (!file.file)
+      return false;
+    const isVideo = file.file.type.startsWith('video/');
     if (!isVideo) 
-      message.error('请选择视频文件!');
-    const isLt2M = file.size / 1024 / 1024 < limitSizeMB;
+      Message.error('请选择视频文件!');
+    const isLt2M = file.file.size / 1024 / 1024 < limitSizeMB;
     if (!isLt2M) 
-      message.error(`视频大小不能大于${limitSizeMB}MB!`);
+      Message.error(`视频大小不能大于${limitSizeMB}MB!`);
     return isVideo && isLt2M;
   };
 }
@@ -155,7 +135,7 @@ export function stringUrlsToUploadedItems(arr: string[]) : FileItem[] {
     return {
       uid: k.toString(),
       name: i ? decodeURIComponent(StringUtils.path.getFileName(i)) : '',
-      status: 'done',
+      status: 'done' as FileStatus ,
       url: i,
       size: 0,
       type: '',

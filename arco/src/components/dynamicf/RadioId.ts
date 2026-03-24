@@ -1,4 +1,4 @@
-import type { RadioGroupProps, RadioProps } from "@arco-design/web-vue";
+import { RadioGroupInstance, RadioInstance } from "@arco-design/web-vue";
 
 export interface RadioIdOption {
   /**
@@ -31,9 +31,9 @@ export interface RadioIdFormItemProps {
   /**
    * a-radio 其他自定义参数
    */
-  customProps?: RadioProps;
+  customProps?: RadioInstance['$props'];
   /**
    * a-radio 其他自定义参数
    */
-  customGroupProps?: RadioGroupProps;
+  customGroupProps?: RadioGroupInstance['$props'];
 }

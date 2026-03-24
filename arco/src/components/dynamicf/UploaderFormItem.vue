@@ -24,14 +24,14 @@
         />
       </div>
       <div v-else :style="{ width: singleImageSize.width, height: singleImageSize.height }">
-        <loading-outlined v-if="uploadingSubImg"></loading-outlined>
-        <plus-outlined v-else></plus-outlined>
+        <IconLoading v-if="uploadingSubImg"></IconLoading>
+        <IconPlus v-else></IconPlus>
         <div class="ant-upload-text">上传</div>
       </div>
     </template>
     <template v-else>
-      <loading-outlined v-if="uploadingSubImg"></loading-outlined>
-      <plus-outlined v-else></plus-outlined>
+      <IconLoading v-if="uploadingSubImg"></IconLoading>
+      <IconPlus v-else></IconPlus>
       <div class="ant-upload-text">上传</div>
     </template>
   </a-upload>
@@ -43,13 +43,12 @@
  */
 import { 
   stringUrlsToUploadedItems,
-  type AntUploadRequestOption, type FileInfo, type FileItem, 
   type UploaderFormItemProps
 } from './UploaderFormItem';
-import { message } from '@arco-design/web-vue';
-import { PlusOutlined, LoadingOutlined } from '@ant-design/icons-vue';
+import { FileItem, Message, RequestOption } from '@arco-design/web-vue';
+import { IconPlus, IconLoading } from '@arco-design/web-vue/es/icon';
 import { ref, onMounted, watch } from 'vue';
-import FailImage from '../../common/ImageFailed.png';
+import FailImage from '@/assets/images/ImageFailed.png';
 
 const props = withDefaults(defineProps<UploaderFormItemProps & {
   value?: unknown;
@@ -103,41 +102,41 @@ function handleBeforeUpload(file: FileItem) {
   const result = props.beforeUpload?.(file) ?? true;
   if (!result)
     needRemoveItem.push(file.uid);
-  if (props.maxFileSize && props.maxFileSize > 0 && file.size > props.maxFileSize) {
-    message.error('文件大小不能超过' + props.maxFileSize + '字节！');
+  if (props.maxFileSize && props.maxFileSize > 0 && file.file && file.file.size > props.maxFileSize) {
+    Message.error('文件大小不能超过' + props.maxFileSize + '字节！');
     return false;
   }
   return result;
 }
-async function handleUpload(requestOption: AntUploadRequestOption) {
-  props.upload?.uploadRequest(requestOption);
+function handleUpload(requestOption: RequestOption) {
+  return props.upload?.uploadRequest(requestOption);
 }
-function handleUploadSubImgReject(e: FileInfo) {
+function handleUploadSubImgReject(e: FileItem) {
   console.log(e);
 }
-function handleUploadSubImgChange(info: FileInfo) {
-  if (info.file.status === 'uploading') {
+function handleUploadSubImgChange(_: FileItem[], fileItem: FileItem) {
+  if (fileItem.status === 'uploading') {
     uploadingSubImg.value = true;
     return;
   }
-  if (info.file.status === 'removed') {
+  if (fileItem.status === undefined) {
     if (props.single)
       emits('update:value', '');
     else
-      emits('update:value', (props.value as string[] || []).filter(url => url != info.file.url));
+      emits('update:value', (props.value as string[] || []).filter(url => url != fileItem.url));
     return;
   }
-  if (info.file.status === 'done') {
-    const url = props.upload?.getUrlByUploadResponse(info.file.response) || '';
+  if (fileItem.status === 'done') {
+    const url = props.upload?.getUrlByUploadResponse(fileItem.response) || '';
     if (props.single)
       emits('update:value', url);
     else
       emits('update:value', (props.value as string[] || []).concat([ url ]));
     uploadingSubImg.value = false;
   }
-  if (info.file.status === 'error') {
+  if (fileItem.status === 'error') {
     uploadingSubImg.value = false;
-    message.error('上传失败！' + info.file.response);
+    Message.error('上传失败！' + fileItem.response);
   }
 }
 </script>

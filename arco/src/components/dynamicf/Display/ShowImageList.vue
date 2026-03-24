@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import ImageFailed from '../../../common/ImageFailed.png';
+import ImageFailed from '@/assets/images/ImageFailed.png';
 
 export interface ShowImageListProps {
   images?: string[] | null;

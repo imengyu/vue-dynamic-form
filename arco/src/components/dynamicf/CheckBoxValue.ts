@@ -1,7 +1,7 @@
-import type { CheckboxProps } from "@arco-design/web-vue";
+import type { CheckboxInstance } from "@arco-design/web-vue";
 
 export interface CheckBoxValueProps {
-  checkboxProps?: CheckboxProps,
+  checkboxProps?: CheckboxInstance['$props'],
   text: string,
   checkedValue?: unknown,
   uncheckedValue?: unknown,

@@ -5,13 +5,13 @@
     :disabled="disabled"
     v-bind="customProps"
   >
-    <a-select-option 
-    v-for="it in options" 
-    :key="it.value" 
-    :value="it.value"
+    <a-option 
+      v-for="it in options" 
+      :key="it.value" 
+      :value="it.value"
     >
       {{ it.text }}
-    </a-select-option>
+    </a-option>
   </a-select>
 </template>
 

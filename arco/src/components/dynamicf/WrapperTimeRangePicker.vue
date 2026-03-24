@@ -1,18 +1,18 @@
 <template>
-  <a-time-range-picker
+  <a-range-picker
     v-bind="$props"
+    showTime
     @update:value="(v: unknown) => $emit('update:value', v)"
   />
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, type PropType } from "vue";
-import type { TimeRangePickerProps } from "@arco-design/web-vue/es/time-picker";
+import type { RangePickerProps } from "@arco-design/web-vue/es/date-picker/interface";
 
 export interface WrapperTimeRangePickerProps {
 }
 
-const props = withDefaults(defineProps<WrapperTimeRangePickerProps & TimeRangePickerProps & {
+const props = withDefaults(defineProps<WrapperTimeRangePickerProps & RangePickerProps & {
   value?: unknown;
 }>(), {
 });

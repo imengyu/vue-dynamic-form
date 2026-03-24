@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { RangePickerProps } from '@arco-design/web-vue/es/date-picker';
+import type { RangePickerProps } from '@arco-design/web-vue/es/date-picker/interface';
 
 export interface WrapperRangePickerProps {
 }

@@ -23,7 +23,7 @@
   "author": "imengyu",
   "license": "MIT",
   "dependencies": {
-    "@arco-design/web-vue": "^2.57.0",
+    "@arco-design/web-vue": "^2.58.0-beta.1",
     "@imengyu/imengyu-utils": "^0.0.16",
     "@imengyu/vue-dynamic-form": "^0.1.8",
     "@imengyu/vue-scroll-rect": "^0.1.7",

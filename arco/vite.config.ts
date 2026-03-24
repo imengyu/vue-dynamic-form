@@ -10,7 +10,9 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    dts({ tsconfigPath: './tsconfig.app.json' }),
+    dts({
+      tsconfigPath: './tsconfig.app.json',
+    }),
   ],
   build: {
     lib: {

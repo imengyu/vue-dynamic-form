@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import type { IDynamicFormItemSelectOption } from "@imengyu/vue-dynamic-form";
-import { computed, type PropType } from "vue";
+import { computed } from "vue";
 
 export interface IStateOption extends IDynamicFormItemSelectOption {
   badgeState?: 'success' | 'processing' | 'error' | 'default' | 'warning';

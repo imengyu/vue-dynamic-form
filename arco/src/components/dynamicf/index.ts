@@ -84,14 +84,14 @@ export function registerAllFormComponents() {
   DynamicFormItemRegistry
 
     //Basic
-    .register('text', markRaw(Input))
+    .register('text', markRaw(Input), {}, 'modelValue')
     .register('password', markRaw(PasswordWithStrengthInput))
-    .register('number', markRaw(InputNumber))
-    .register('textarea', markRaw(Textarea))
-    .register('rate', markRaw(Rate))
-    .register('switch', markRaw(Switch), {}, 'checked')
+    .register('number', markRaw(InputNumber), {}, 'modelValue')
+    .register('textarea', markRaw(Textarea), {}, 'modelValue')
+    .register('rate', markRaw(Rate), {}, 'modelValue')
+    .register('switch', markRaw(Switch), {}, 'modelValue')
     .register('cascader', markRaw(CascaderFormItem))
-    .register('check-box', markRaw(Checkbox), {}, 'checked')
+    .register('check-box', markRaw(Checkbox), {}, 'modelValue')
     .register('check-box-int', markRaw(CheckBoxToInt))
     .register('check-box-value', markRaw(CheckBoxValue))
     .register('check-box-list', markRaw(CheckBoxList), {}, 'modelValue')
@@ -106,16 +106,16 @@ export function registerAllFormComponents() {
         value: 'value',
         options: 'options',
       }
-    })
+    }, 'modelValue')
     .register('select-value', markRaw(SelectValue))
     .register('select-id', markRaw(SelectId))
     .register('select-tree-id', markRaw(SelectTreeId))
     .register('tree-id', markRaw(TreeValue))
 
     //Date
-    .register('date', markRaw(DatePicker))
+    .register('date', markRaw(DatePicker), {}, 'modelValue')
     .register('date-range', markRaw(WrapperRangePicker))
-    .register('time', markRaw(TimePicker))
+    .register('time', markRaw(TimePicker), {}, 'modelValue')
     .register('time-range', markRaw(WrapperTimeRangePicker))
     .register('datetime', markRaw(DatePicker), { showTime: true })
     .register('datetime-range', markRaw(WrapperRangePicker), { showTime: true })

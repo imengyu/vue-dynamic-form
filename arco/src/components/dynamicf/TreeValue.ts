@@ -1,71 +1,17 @@
-import type { SelectProps } from "@arco-design/web-vue";
+import type { SelectProps, TreeNodeData } from "@arco-design/web-vue";
 
 export type TreeValueLoadDataFun = (pid: string|number, level: number) => Promise<TreeNode[]>;
 export type TreeValueCheckClickableFun = (item: TreeNode) => Promise<boolean>;
 
 export type TreeValueGetDiaplayValue = (ref: TreeValueInterface) => string;
 export type TreeValueGetRef = (ref: TreeValueInterface) => void;
-export interface TreeDataItem {
-  id: string | number;
-  pId?: number;
-  value: string | number;
-  title?: string;
-  isLeaf?: boolean;
-  selectable?: boolean;
-  checkable?: boolean;
-  disableCheckbox?: boolean;
-  disabled?: boolean;
-  level?: number;
-}
 
-export interface TreeNode {
+export interface TreeNode extends TreeNodeData {
   id?: number;
   pid?: number;
   level?: number;
 
-  /**
-   * 当树为 checkable 时，设置独立节点是否展示 Checkbox
-   */
-  checkable?: boolean;
-  /**
-   * 节点的 class
-   */
-  class?: string;
-  /**
-   * 	禁掉 checkbox
-   */
-  disableCheckbox?: boolean;
-  /**
-   * 禁掉响应
-   */
-  disabled?: boolean;
-  /**
-   * 自定义图标。可接收组件，props 为当前节点 props
-   */
-  icon?: unknown;
-  /**
-   * 设置为叶子节点(设置了loadData时有效)
-   */
-  isLeaf?: boolean;
-  /**
-   * 被树的 (default)ExpandedKeys / (default)CheckedKeys / (default)SelectedKeys 属性所用。注意：整个树范围内的所有节点的 key 值不能重复！
-   */
-  key: string | number;
-  /**
-   * 设置节点是否可被选中
-   */
-  selectable?: boolean;
-  /**
-   * 节点的 style	
-   */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  style?: string|object;
-  /**
-   * 标题
-   */
-  title: string;
-
-  children?: TreeNode[],
+  children?: TreeNode[];
 }
 
 /**

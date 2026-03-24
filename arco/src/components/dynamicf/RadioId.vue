@@ -20,14 +20,12 @@
 /**
  * 下拉框表单控件，用于解决 a-select 不能选择对象的问题
  */
-import { useDataLoader } from '../../common/DataLoader';
+import { useDataLoader } from './Loader/DataLoader';
 import type { RadioIdFormItemProps, RadioIdOption } from './RadioId';
 
 const props = defineProps<RadioIdFormItemProps>();
 const emit = defineEmits([
   'update:value',
 ]);
-const loader = useDataLoader<RadioIdOption[]>(async () => await props.loadData?.() || [], {
-  immediate: true,
-});
+const loader = useDataLoader<RadioIdOption[]>(async () => await props.loadData?.() || [], { immediate: true });
 </script>

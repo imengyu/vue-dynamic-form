@@ -20,7 +20,7 @@
 /**
  * 下拉框表单控件，用于解决 a-select 不能选择对象的问题
  */
-import { Form, type InputNumberProps } from '@arco-design/web-vue';
+import { Form, InputNumberInstance } from '@arco-design/web-vue';
 import { ref, watch, onMounted } from 'vue';
 
 export interface NumberRangeProps {
@@ -31,7 +31,7 @@ export interface NumberRangeProps {
   /**
    * a-number-input 其他自定义参数
    */
-  customProps?: InputNumberProps;
+  customProps?: InputNumberInstance['$props'];
   /**
    * 最小值占位符
    */

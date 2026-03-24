@@ -2,17 +2,6 @@ export * from './lib';
 import Default from './lib';
 export default Default;
 
-import type { 
-  InputNumberProps, InputProps, TextAreaProps,
-  SwitchProps, CheckboxProps, 
-  SelectProps,
-  DatePickerProps,
-  TimePickerProps,
-  TimeRangePickerProps,
-  ImageProps,
-  ButtonProps,
-  AlertProps
-} from "ant-design-vue";
 import type { PasswordWithStrengthInputProps } from "./lib/components/dynamicf/PasswordWithStrengthInput.vue";
 import type { CheckBoxIntProps } from "./lib/components/dynamicf/CheckBoxToInt.vue";
 import type { CheckBoxValueProps } from "./lib/components/dynamicf/CheckBoxValue";
@@ -25,11 +14,7 @@ import type { SelectIdProps } from "./lib/components/dynamicf/Dropdown/SelectId"
 import type { SelectTreeIdProps } from "./lib/components/dynamicf/Dropdown/SelectTreeId";
 import type { TreeValueProps } from "./lib/components/dynamicf/TreeValue";
 import type { WrapperRangePickerProps } from "./lib/components/dynamicf/WrapperRangePicker.vue";
-import type { RangePickerProps } from "ant-design-vue/es/date-picker";
 import type { WrapperTimeRangePickerProps } from "./lib/components/dynamicf/WrapperTimeRangePicker.vue";
-import type { MapPointPickerProps } from "./lib/components/dynamicf/Map/MapPointPicker.vue";
-import type { RichTextProps } from "./lib/components/dynamicf/Editor/RichText.vue";
-import type { SignProps } from "./lib/components/dynamicf/Sign.vue";
 import type { UploaderFormItemProps } from "./lib/components/dynamicf/UploaderFormItem";
 import type { ActionRenderProps } from "./lib/components/dynamicf/ActionRender";
 import type { ShowDateOrNullProps } from "./lib/components/dynamicf/Display/ShowDateOrNull.vue";
@@ -37,42 +22,54 @@ import type { ShowImageListProps } from "./lib/components/dynamicf/Display/ShowI
 import type { ShowValueOrNullProps } from "./lib/components/dynamicf/Display/ShowValueOrNull.vue";
 import type { WhiteSpaceProps } from "./lib/components/dynamicf/WhiteSpace";
 import type { StateRendererProps } from "./lib/components/dynamicf/Display/StateRenderer.vue";
+import type { 
+  InputInstance, InputNumberInstance, TextareaInstance, 
+  SwitchInstance, CheckboxInstance,
+  ButtonProps,
+  DatePickerInstance,
+  RangePickerInstance,
+  SelectInstance,
+  ImageInstance,
+  AlertInstance,
+  TimePickerInstance
+} from '@arco-design/web-vue';
+import { RangePickerProps } from 'ant-design-vue/es/date-picker';
 
 declare module '@imengyu/vue-dynamic-form' {
   export interface IDynamicFormWidgetPropsMap {
-    'text': InputProps;
+    'text': InputInstance['$props'];
     'password': PasswordWithStrengthInputProps;
-    'number': InputNumberProps;
-    'textarea': TextAreaProps;
-    'switch': SwitchProps;
-    'check-box': CheckboxProps;
+    'number': InputNumberInstance['$props'];
+    'textarea': TextareaInstance['$props'];
+    'switch': SwitchInstance['$props'];
+    'check-box': CheckboxInstance['$props'];
     'check-box-int': CheckBoxIntProps;
     'check-box-value': CheckBoxValueProps;
     'check-box-list': CheckBoxListProps;
     'radio-id': RadioIdFormItemProps;
     'radio-value': RadioValueFormItemProps;
     'number-range': NumberRangeProps;
-    'select': SelectProps;
+    'select': SelectInstance['$props'];
     'select-value': SelectValueProps;
     'select-id': SelectIdProps<any>;
     'select-tree-id': SelectTreeIdProps;
     'tree-id': TreeValueProps;
-    'date': DatePickerProps;
-    'date-range': WrapperRangePickerProps & RangePickerProps;
-    'time': TimePickerProps;
-    'time-range': WrapperTimeRangePickerProps & TimeRangePickerProps;
-    'datetime': DatePickerProps;
+    'date': DatePickerInstance['$props'];
+    'date-range': WrapperRangePickerProps & RangePickerInstance['$props'];
+    'time': TimePickerInstance['$props'];
+    'time-range': WrapperTimeRangePickerProps & Omit<RangePickerInstance['$props'], 'showTime'>;
+    'datetime': DatePickerInstance['$props'];
     'datetime-range': WrapperRangePickerProps & RangePickerProps;
     'uploader': UploaderFormItemProps;
     'actions': ActionRenderProps;
-    'image': ImageProps;
+    'image': ImageInstance['$props'];
     'button': ButtonProps;
-    'alert': AlertProps;
+    'alert': AlertInstance['$props'];
     'space': WhiteSpaceProps;
-    'static-image': ImageProps;
+    'static-image': ImageInstance['$props'];
     'static-state': StateRendererProps;
     'static-value': ShowValueOrNullProps;
     'static-date': ShowDateOrNullProps;
     'static-image-list': ShowImageListProps;
-  };
+  }
 }
