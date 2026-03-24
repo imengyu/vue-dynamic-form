@@ -28,14 +28,8 @@
       @update:model="(v: unknown) => finalModel[item.name] = v"
       :disabled="options.disabled"
     >
-      <template #arrayButtonAdd="props">
-        <slot name="formArrayButtonAdd" v-bind="props" />
-      </template>
-      <template #arrayButtons="props">
-        <slot name="formArrayButtons" v-bind="props" />
-      </template>
-      <template #formCeil="values">
-        <slot name="formCeil" v-bind="values" />
+      <template v-for="(_, name) in $slots" #[name]="slotProps">
+        <slot :name="(name as keyof typeof slots)" v-bind="slotProps ?? {}" />
       </template>
     </DynamicFormItemContainer>
     <slot name="endButton" />
@@ -67,6 +61,11 @@ const props = defineProps({
     default: ''
   }
 });
+
+const slots = defineSlots<{
+  empty(props?: {}): any;
+  endButton(props?: {}): any;
+}>();
 
 const editmode = inject('editmode', false);
 

@@ -2,6 +2,7 @@ export * from './DynamicForm'
 export * from './DynamicFormDefs/DynamicFormItem'
 export * from './DynamicFormDefs/DynamicFormOptions'
 export * from './DynamicFormDefs/DynamicFormWidgets'
+export * from './DynamicFormItemNormal.vue';
 export * from './DynamicFormBasicControls'
 export * from './DynamicFormItemControls'
 export * from './DynamicFormItemRenderer/DynamicFormItemRegistry'

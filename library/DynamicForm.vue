@@ -7,7 +7,11 @@
     @finish="emits('finish')"
     @finishFailed="emits('finishFailed', $event)"
     @submit="emits('submit', $event)"
-  />
+  >
+    <template v-for="(_, name) in $slots" #[name]="slotProps">
+      <slot :name="(name as keyof typeof slots)" v-bind="slotProps ?? {}" />
+    </template>
+  </DynamicFormRender>
 </template>
 
 <script setup lang="ts" generic="T extends IDynamicFormOptions">
@@ -22,6 +26,7 @@ import { defaultDynamicFormOptions } from './DynamicFormDefs/DynamicFormOptions'
 import type { IDynamicFormOptions, IDynamicFormRef } from './DynamicFormDefs/DynamicFormOptions';
 import type { IDynamicFormItem } from './DynamicFormDefs/DynamicFormItem';
 import DynamicFormRender from './DynamicFormRender.vue';
+import type { FormCeilProps } from './DynamicFormItemNormal.vue';
 
 /**
  * 动态表单组件。
@@ -52,6 +57,44 @@ const emits = defineEmits<{
   ready: [];
 }>();
 
+const slots = defineSlots<{
+  /**
+   * 默认插槽
+   * @param props 
+   */
+  default(props?: {}): any;
+  /**
+   * 空插槽
+   * @param props 
+   */
+  empty(props?: {}): any;
+  /**
+   * 末尾按钮插槽
+   * @param props 
+   */
+  endButton(props?: {}): any;
+  /**
+   * 数组按钮添加插槽
+   * @param props 
+   */
+  arrayButtonAdd(props: {
+    onClick: () => void;
+  }): any;
+  /**
+   * 数组按钮删除/上移/下移插槽
+   * @param props 
+   */
+  arrayButtons(props: {
+    onDeleteClick: () => void;
+    onUpClick: () => void;
+    onDownClick: () => void;
+  }): any;
+  /**
+   * 表单条目自定义渲染插槽
+   * @param props 
+   */
+  formCeil(props: FormCeilProps): any;
+}>()
 
 const { options, model, name } = toRefs(props);
 const finalOptions = computed<IDynamicFormOptions>(() => ({
