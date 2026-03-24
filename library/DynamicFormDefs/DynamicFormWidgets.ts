@@ -110,6 +110,8 @@ export interface IDynamicFormWidgetPropsMap {
 export interface IDynamicFormPropsMap {
   Form: FormProps;
   FormItem: FormItemProps;
+  FormEvents: Record<string, Function>;
   Rules: Record<string, Rule>;
   ItemRules: Rule[];
+  ItemEvents: Record<string, Function>;
 }

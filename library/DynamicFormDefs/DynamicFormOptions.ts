@@ -1,8 +1,6 @@
 import type { ColProps } from "../DynamicFormBasicControls/Layout/Col.vue";
-import type { IDynamicFormItem, IDynamicFormItemUnion } from "./DynamicFormItem";
+import type { IDynamicFormItemUnion } from "./DynamicFormItem";
 import type { DynamicFormItemRegistryItem } from "../DynamicFormItemRenderer/DynamicFormItemRegistry";
-import type { Rule } from 'async-validator';
-import { type Slot, type VNode, h } from "vue";
 import type { IDynamicFormInternalWidgets, IDynamicFormPropsMap } from "./DynamicFormWidgets";
 
 export type DynamicFormNestNameGenerateType = 'dot'|'array'
@@ -68,9 +66,7 @@ export interface IDynamicFormRef {
 }
 export interface IDynamicFormOptions<
   T = IDynamicFormItemUnion[],
-  R = IDynamicFormPropsMap['Rules'],
-  P = IDynamicFormPropsMap['Form'],
-  E = Record<string, Function>,
+  P extends IDynamicFormPropsMap = IDynamicFormPropsMap,
 > {
   /**
    * 表单条目数据
@@ -79,7 +75,7 @@ export interface IDynamicFormOptions<
   /**
    * 表单的校验规则
    */
-  formRules?: R;
+  formRules?: P['Rules'];
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
@@ -99,8 +95,7 @@ export interface IDynamicFormOptions<
   /**
    * 表单组件附加事件绑定
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  formAdditionalEvents?: E;
+  formAdditionalEvents?: P['FormEvents'];
   /**
    * 表单嵌套名称生成类型。默认是 dot 。
    * 该选项用于生成嵌套表单对象的名称，例如 `a.b.c` 或者 `['a','b','c']` ，
@@ -171,7 +166,8 @@ export function configDefaultDynamicFormOptions(options: Omit<IDynamicFormOption
  * @returns 
  */
 export function defineDynamicFormOptions<
-  const T extends IDynamicFormItemUnion[]
->(options: Omit<IDynamicFormOptions<T>, 'formItems'> & { formItems: T }) {
+  const T extends IDynamicFormItemUnion[],
+  P extends IDynamicFormPropsMap = IDynamicFormPropsMap,
+>(options: Omit<IDynamicFormOptions<T, P>, 'formItems'> & { formItems: T }) {
   return options;
 }

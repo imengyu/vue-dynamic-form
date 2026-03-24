@@ -31,9 +31,20 @@ import type {
   SelectInstance,
   ImageInstance,
   AlertInstance,
-  TimePickerInstance
+  TimePickerInstance,
+  FormInstance,
+  FormItemInstance,
 } from '@arco-design/web-vue';
 import { RangePickerProps } from 'ant-design-vue/es/date-picker';
+
+export interface IArcoDynamicFormPropsMap {
+  Form: FormInstance['$props'];
+  FormItem: FormItemInstance['$props'];
+  FormEvents: Record<string, Function>;
+  Rules: FormInstance['$props']['rules'];
+  ItemRules: FormItemInstance['$props']['rules'];
+  ItemEvents: Record<string, Function>;
+}
 
 declare module '@imengyu/vue-dynamic-form' {
   export interface IDynamicFormWidgetPropsMap {

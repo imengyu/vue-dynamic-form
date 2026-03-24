@@ -58,9 +58,7 @@ export type IDynamicFormItemCallback<T> = {
 export interface IDynamicFormItem<
   T = string, 
   P = unknown, 
-  E = Record<string, Function>,
-  FP = IDynamicFormPropsMap['FormItem'],
-  RL = IDynamicFormPropsMap['ItemRules']
+  M extends IDynamicFormPropsMap = IDynamicFormPropsMap,
 > {
   /**
    * 当前表单类型
@@ -96,7 +94,7 @@ export interface IDynamicFormItem<
   /**
    * 附加组件事件绑定。事件名称不需要加 on 前缀。
    */
-  additionalEvents?: E;
+  additionalEvents?: M['FormEvents'];
   /**
    * 附加组件属性。此属性直接应用到目标渲染组件上，没有联动回调。
    */
@@ -115,7 +113,7 @@ export interface IDynamicFormItem<
   /**
    * 当前条目的校验规则，赋值至 FormItem 上。
    */
-  rules?: RL;
+  rules?: M['ItemRules'];
 
   /**
    * 加载时的钩子函数
@@ -149,7 +147,7 @@ export interface IDynamicFormItem<
   /**
    * 附加 FormItem 组件属性
    */
-  formProps?: FP;
+  formProps?: M['FormItem'];
   /**
    * 表单label栅格宽度。如果使用自定义Form，请同时设置属性名映射。
    */
@@ -193,7 +191,7 @@ export interface IDynamicFormItem<
   /**
    * 应用到当前子级项目的 FormItem 组件属性。仅在 object 或者其他容器条目中有效。
    */
-  childrenFormProps?: IDynamicFormPropsMap['FormItem'],
+  childrenFormProps?: M['FormItem'],
   /**
    * 当前条目的 Col 配置属性(应用到当前条目上)。仅在 object 或者其他容器条目中有效。
    */
@@ -209,13 +207,13 @@ export interface IDynamicFormItem<
 }
 
 type DynamicFormWidgetType = keyof IDynamicFormWidgetPropsMap;
-type DynamicFormItemByType<K extends DynamicFormWidgetType, FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['ItemRules']> =
-  Omit<IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], Record<string, Function>, FP, RL>, 'additionalProps'> & {
+type DynamicFormItemByType<K extends DynamicFormWidgetType, M extends IDynamicFormPropsMap = IDynamicFormPropsMap> =
+  Omit<IDynamicFormItem<K, IDynamicFormWidgetPropsMap[K], M>, 'additionalProps'> & {
     type: K;
     additionalProps?: IDynamicFormWidgetPropsMap[K]|IDynamicFormItemCallback<IDynamicFormWidgetPropsMap[K]>;
   };
-export type IDynamicFormItemUnion<FP = IDynamicFormPropsMap['FormItem'], RL = IDynamicFormPropsMap['ItemRules']> = {
-  [K in keyof IDynamicFormWidgetPropsMap]: DynamicFormItemByType<K, FP, RL>
+export type IDynamicFormItemUnion<M extends IDynamicFormPropsMap = IDynamicFormPropsMap> = {
+  [K in keyof IDynamicFormWidgetPropsMap]: DynamicFormItemByType<K, M>
 }[keyof IDynamicFormWidgetPropsMap];
 
 /**
