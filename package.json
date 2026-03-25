@@ -28,6 +28,7 @@
     "build": "cd library && vite build",
     "build-ant": "cd ant && vite build",
     "build-arco": "cd arco && vite build",
+    "build-rich": "cd rich && vite build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:serve": "vitepress serve docs"
