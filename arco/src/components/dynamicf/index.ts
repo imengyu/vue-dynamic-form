@@ -63,16 +63,16 @@ export const defaultConfig = {
       component: markRaw(Form),
       propsMap: {
         rules: 'rules',
-        wrapperCol: 'wrapperCol',
-        labelCol: 'labelCol',
+        wrapperCol: 'wrapper-col-props',
+        labelCol: 'label-col-props',
       },
     },
     FormItem: {
       component: markRaw(FormItem),
       propsMap: {
         name: 'field',
-        wrapperCol: 'wrapperCol',
-        labelCol: 'labelCol',
+        wrapperCol: 'wrapper-col-props',
+        labelCol: 'label-col-props',
       },
     },
   },
