@@ -1,6 +1,6 @@
 {
   "name": "@imengyu/vue-dynamic-form-arco",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "main": "lib/vue-dynamic-form-arco.umd.js",
   "module": "lib/vue-dynamic-form-arco.es.js",
   "type": "module",

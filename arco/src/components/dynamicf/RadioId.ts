@@ -1,4 +1,4 @@
-import { RadioGroupInstance, RadioInstance } from "@arco-design/web-vue";
+import { type RadioGroupInstance, type RadioInstance } from "@arco-design/web-vue";
 
 export interface RadioIdOption {
   /**

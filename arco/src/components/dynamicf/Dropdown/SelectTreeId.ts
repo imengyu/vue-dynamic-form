@@ -1,9 +1,9 @@
 import type { SelectProps } from "@arco-design/web-vue";
-import type { TreeDataItem } from "../TreeValue";
+import type { TreeNode } from "../TreeValue";
 import type { CSSProperties } from "vue";
 
-export type SelectTreeIdLoadDataFun = (pid: string|number, level: number) => Promise<TreeDataItem[]>;
-export type SelectTreeIdCheckClickableFun = (item: TreeDataItem) => Promise<boolean>;
+export type SelectTreeIdLoadDataFun = (pid: string|number, level: number) => Promise<TreeNode[]>;
+export type SelectTreeIdCheckClickableFun = (item: TreeNode) => Promise<boolean>;
 
 export type SelectTreeIdGetDiaplayValue = (ref: SelectTreeIdInterface) => string;
 export type SelectTreeIdGetRef = (ref: SelectTreeIdInterface) => void;
@@ -16,7 +16,7 @@ export interface SelectTreeIdInterface {
    * 获取某个ID的树(正排列)
    * @param value 要获取的ID
    */
-  getTree(value: number) : Array<TreeDataItem>;
+  getTree(value: number) : Array<TreeNode>;
   /**
    * 获取某个ID的Lablel
    * @param value 要获取的ID

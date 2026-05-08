@@ -7,8 +7,8 @@
   >
     <a-radio 
       v-for="it in options"
-      :key="it.value"
-      :value="it.value"
+      :key="(it.value as string | number)"
+      :value="(it.value as string | number | boolean)"
       v-bind="customProps"
     >
       {{it.text}}

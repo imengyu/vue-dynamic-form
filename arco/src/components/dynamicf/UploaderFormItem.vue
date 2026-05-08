@@ -45,7 +45,7 @@ import {
   stringUrlsToUploadedItems,
   type UploaderFormItemProps
 } from './UploaderFormItem';
-import { FileItem, Message, RequestOption } from '@arco-design/web-vue';
+import { type FileItem, Message, type RequestOption } from '@arco-design/web-vue';
 import { IconPlus, IconLoading } from '@arco-design/web-vue/es/icon';
 import { ref, onMounted, watch } from 'vue';
 import FailImage from '@/assets/images/ImageFailed.png';
