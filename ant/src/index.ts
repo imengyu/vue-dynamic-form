@@ -1,6 +1,6 @@
 export * from './components/dynamicf/index';
 import 'ant-design-vue/dist/reset.css';
-import Antd from 'ant-design-vue';
+import Antd, { type FormItemProps, type FormProps } from 'ant-design-vue';
 import VNodeRenderer from './components/VNodeRenderer.vue';
 
 import {
@@ -26,6 +26,7 @@ import {
   registerAllFormComponents,
 } from './components/dynamicf/index';
 import type { App, Plugin } from 'vue';
+import type { IDynamicFormPropsMap } from '@imengyu/vue-dynamic-form';
 export * from './components/dynamicf/Display/ShowImageList.vue';
 export * from './components/dynamicf/Display/ShowDateOrNull.vue';
 export * from './components/dynamicf/Display/ShowImageOrNull.vue';
@@ -44,11 +45,19 @@ export * from './components/dynamicf/TreeValue';
 export * from './components/dynamicf/RadioValue';
 export * from './components/dynamicf/RadioId';
 export * from './components/dynamicf/SelectValue';
-export * from '../../rich/src/components/dynamicf/Sign.vue';
 export * from './components/dynamicf/UploaderFormItem';
 export * from './components/dynamicf/WhiteSpace';
 export * from './components/dynamicf/CheckBoxValue';
 export * from './components/dynamicf/CheckBoxList.vue';
+
+export interface IAntdDynamicFormPropsMap extends IDynamicFormPropsMap {
+  Form: Partial<Omit<FormProps, 'model' | 'rules'>>;
+  FormItem: Partial<Omit<FormItemProps, 'rules'>>;
+  FormEvents: Partial<Record<string, Function>>;
+  Rules: Partial<FormProps['rules']>;
+  ItemRules: Partial<Omit<FormItemProps['rules'], 'required'>>;
+  ItemEvents: Record<string, Function>;
+}
 
 export {
   VNodeRenderer,

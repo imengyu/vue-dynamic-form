@@ -27,8 +27,6 @@ import type { TreeValueProps } from "./lib/components/dynamicf/TreeValue";
 import type { WrapperRangePickerProps } from "./lib/components/dynamicf/WrapperRangePicker.vue";
 import type { RangePickerProps } from "ant-design-vue/es/date-picker";
 import type { WrapperTimeRangePickerProps } from "./lib/components/dynamicf/WrapperTimeRangePicker.vue";
-import type { MapPointPickerProps } from "./lib/components/dynamicf/Map/MapPointPicker.vue";
-import type { RichTextProps } from "./lib/components/dynamicf/Editor/RichText.vue";
 import type { UploaderFormItemProps } from "./lib/components/dynamicf/UploaderFormItem";
 import type { ActionRenderProps } from "./lib/components/dynamicf/ActionRender";
 import type { ShowDateOrNullProps } from "./lib/components/dynamicf/Display/ShowDateOrNull.vue";
