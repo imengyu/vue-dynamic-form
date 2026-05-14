@@ -26,6 +26,7 @@
     "dev": "vite dev editor",
     "test:unit": "vitest --environment jsdom --root src/",
     "build": "cd library && vite build",
+    "type-check": "cd library && tsc --noEmit",
     "build-ant": "cd ant && vite build",
     "build-arco": "cd arco && vite build",
     "build-rich": "cd rich && vite build",

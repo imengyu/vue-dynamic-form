@@ -103,7 +103,8 @@ export interface IDynamicFormWidgetPropsMap {
   'tab-page-custom': IDynamicFormTabPageProps;
   'array-single': FormArrayGroupProps;
   'array-object': FormArrayGroupProps;
-
+  'array-object-select': FormArrayGroupProps;
+  'static-text': { text?: string };
 };
 //表单组件属性映射
 //

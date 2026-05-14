@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { FormConfig, FormItemCommonConfig, FormItemLastCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
+import { FormItemCommonConfig, FormItemLastCommonConfig, getFormItemDef } from '../dynamic/ItemsDef';
 import { ScrollRect } from '@imengyu/vue-scroll-rect'; 
 import type { FormProps } from 'ant-design-vue';
 import type { IDynamicFormItem, IDynamicFormOptions } from '@imengyu/vue-dynamic-form';
