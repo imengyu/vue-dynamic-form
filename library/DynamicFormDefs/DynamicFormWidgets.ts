@@ -105,6 +105,7 @@ export interface IDynamicFormWidgetPropsMap {
   'array-object': FormArrayGroupProps;
   'array-object-select': FormArrayGroupProps;
   'static-text': { text?: string };
+  'custom': {},
 };
 //表单组件属性映射
 //
