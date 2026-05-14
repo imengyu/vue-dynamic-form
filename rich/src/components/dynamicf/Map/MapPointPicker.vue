@@ -45,7 +45,10 @@ const props = withDefaults(defineProps<MapPointPickerProps & {
   showSearch: true,
 });
 
-const emit = defineEmits(['update:modelValue' ])
+const emit = defineEmits([
+  'update:modelValue',
+  'choosedAddress'
+])
 const center = ref(defaultCenter) as Ref<number[]>;
 let map: any = null;
 
@@ -58,6 +61,7 @@ function handleChoosedAddress(address: AddressItem) {
   center.value = [Number(address.lng), Number(address.lat)];
   handleUpdateCenter(center.value);
   map.setCenter(center.value);
+  emit('choosedAddress', address);
 }
 function loadCenter() {
   if (props.modelValue)
