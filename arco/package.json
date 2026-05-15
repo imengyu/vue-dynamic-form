@@ -25,7 +25,6 @@
   "dependencies": {
     "@arco-design/web-vue": "^2.58.0-beta.1",
     "@imengyu/imengyu-utils": "^0.0.16",
-    "@imengyu/vue-dynamic-form": "^0.1.9",
     "@imengyu/vue-scroll-rect": "^0.1.7",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
@@ -43,5 +42,8 @@
     "vite-plugin-dts": "^4.5.4",
     "vite-plugin-vue-devtools": "^8.0.2",
     "vue-tsc": "^3.1.0"
+  },
+  "peerDependencies": {
+    "@imengyu/vue-dynamic-form": ">=0.1.8"
   }
 }
