@@ -1,6 +1,6 @@
 {
   "name": "@imengyu/vue-dynamic-form-rich",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "lib/vue-dynamic-form-rich.umd.js",
   "module": "lib/vue-dynamic-form-rich.es.js",
   "type": "module",
@@ -23,14 +23,14 @@
   "author": "imengyu",
   "license": "MIT",
   "dependencies": {
-    "@imengyu/imengyu-utils": "^0.0.16",
-    "@imengyu/vue-scroll-rect": "^0.1.7",
     "@tinymce/tinymce-vue": "^6.3.0",
     "@vuemap/vue-amap": "^2.1.17",
     "tinymce": "^8.3.2",
     "vue-esign": "^1.1.4"
   },
   "peerDependencies": {
+    "@imengyu/vue-scroll-rect": ">=0.1.7",
+    "@imengyu/imengyu-utils": ">=0.0.16",
     "@imengyu/vue-dynamic-form": ">=0.1.8",
     "vue": ">=3.5.0"
   },

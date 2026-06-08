@@ -21,6 +21,8 @@ export default defineConfig({
         'vue',
         'vue-router',
         '@imengyu/vue-dynamic-form',
+        '@imengyu/imengyu-utils',
+        '@imengyu/vue-scroll-rect'
       ],
       output: {
         globals: {
@@ -28,6 +30,8 @@ export default defineConfig({
           'vue-router': 'VueRouter',
           '@imengyu/vue-dynamic-form': 'VueDynamicForm',
           '@vuemap/vue-amap': 'VueAMap',
+          '@imengyu/imengyu-utils': 'imengyuUtils',
+          '@imengyu/vue-scroll-rect': 'VueScrollRect',
         },
         assetFileNames: 'vue-dynamic-form-rich.[ext]',
       },
